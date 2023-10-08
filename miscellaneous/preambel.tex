@@ -1,0 +1,237 @@
+% !TeX root = ..\main.tex
+
+% Papierformat
+\documentclass[a4paper, 12pt]{report}
+
+% Sprache
+\usepackage[ngerman]{babel}
+\usepackage{hyphenat}
+% Bsp.: \hyphenation{Mathe-matik wieder-gewinnen}
+
+% Seitenränder
+\usepackage[a4paper,left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
+
+% Schriftpakete
+\usepackage{tabularx}       % Dynamische Tabellen
+\usepackage{multirow}       % Mehrere Zeilen untereinander zusammenfassen
+\usepackage[utf8]{inputenc}	% Benutze UTF8 Zeichen
+\usepackage[T1]{fontenc}	% Bessere Wort-Trennung
+\usepackage[scaled]{helvet} % Skalierte Helvetica-Schriftart (serifenfrei)
+\usepackage[gen]{eurosym}   % Eurosymbol '€'
+% \usepackage{underscore}     % Unterstriche mit '_' anstatt '\_' schreiben
+\usepackage{lmodern}        % Latin Modern -> schönere Schrift in PDF-Files
+\usepackage{microtype}      % Mikrotypografische Einstellungen verbessern
+% 	\usepackage{textcmds}       % Englische Anführungszeichen
+\usepackage{seqsplit}
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\usepackage{colortbl}
+\usepackage{xltabular}
+
+% Eineinhalbfacher Zeilenabstand
+\usepackage[onehalfspacing]{setspace}
+
+\usepackage{tocloft}
+
+% Literaturverzeichnis
+\usepackage[sorting=none, backend=bibtex, style=numeric]{biblatex}
+\usepackage{xurl}
+
+% Quellcode einbinden
+\usepackage{ifthen}	  % IF-THEN Befehle
+\usepackage{listings} % Quellcode anzeigen
+\usepackage{textcomp} % Straight Single quotes in listings
+
+% Mathematik
+\usepackage{amsmath}  % Mathematische Funktionen
+\usepackage{amsfonts} % Mathematische Schrift
+\usepackage{amssymb}  % Mathematische Symbole
+\usepackage{tikz}	  % Grafische Zeichnungen mit Linien, Punkten, Kurven, Rechtecken, ...
+\usepackage[outline]{contour} % Pfeile fett machen
+% \usepackage{minted} pygmentize not working on Windows
+
+% Abkürzungsverzeichnis
+\usepackage{acronym}
+\usepackage{titlesec}
+
+% Weitere Pakete
+\usepackage{float}        % Floating objects wie figures oder tables
+\usepackage{graphicx}     % Bilder/Grafiken
+\usepackage{svg}		  % SVG (Skalierbare Vektorgrafiken) als Bildformat
+\usepackage{pdfpages}     % PDF-Seiten/PDF-Dokumente einbinden
+%\usepackage{filecontents} % Externe Files generieren
+\usepackage{url}	  	  % Anzeige von URLs
+\usepackage{fancyhdr} 	  % Kopf- und Fußzeile manipulieren
+\usepackage{caption}      % Bildunterschrift
+\usepackage{csquotes}     % Quotes
+\usepackage{xpatch}
+\usepackage{xcolor}
+\usepackage{realboxes}
+
+% Verweis-Einstellungen
+\usepackage[colorlinks=true, % Blöcke ausblenden, Verweise farbig markieren
+linkcolor=black, % Abkürzungs-Links in schwarz
+citecolor=black, % Zitat-Links      in schwarz
+urlcolor=blue]   % URL-Links        in blau
+{hyperref}	     % Einbinden von URL
+
+%Dokumenteneinstellung
+% Kopf- und Fußzeile
+\fancypagestyle{fancy-style}{% Own style
+	\fancyhf{}% Clear header and footer
+	\fancyhead[C]{\slshape\nouppercase{\rightmark}}
+%		\fancyhead[LE,RO]{\slshape\nouppercase{\rightmark}}
+%		\fancyhead[LO,RE]{\slshape\nouppercase{\leftmark}}
+	\fancyfoot[C]{\sffamily\thepage}% Custom footer
+	\renewcommand{\headrulewidth}{0.4pt}% Line at the header visible
+%	   \renewcommand{\footrulewidth}{0.4pt}% Line at the footer visible
+}
+
+% Redefine the plain page style
+\fancypagestyle{plain}{%
+	\fancyhf{}%
+	\fancyfoot[C]{\sffamily\thepage}%
+	\renewcommand{\headrulewidth}{0pt}% Line at the header invisible
+	\renewcommand{\footrulewidth}{0pt}% Line at the footer invisible
+}
+
+\pagestyle{fancy-style}
+
+\titleformat{\chapter}[display]{\normalfont\sffamily\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}{\normalfont\sffamily\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\sffamily\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\sffamily\normalsize\bfseries}{\thesubsection}{1em}{}
+
+% Redefine content fonts in chapter, section, figure, table
+\renewcommand{\cftchapfont}{\sffamily\bfseries}
+\renewcommand{\cftsecfont}{}
+\renewcommand{\cftfigfont}{Figure }
+\renewcommand{\cfttabfont}{Table }
+
+% Obere Trennlinie
+\renewcommand{\headrulewidth}{0.4pt}   % obere Trennlinie
+\setlength{\headheight}{14.5pt}        % Höhe der Kopfzeile
+
+% Untere Trennlinie
+%\renewcommand{\footrulewidth}{0.4pt}  % untere Trennlinie
+
+% Einrücktiefe für Absätze
+\setlength\parindent{24pt}			   % Einrück-Tiefe der ersten Zeile für alle folgenden Absätze
+
+% Quellenverzeichnis
+\addbibresource{chapters/literature.bib}
+\renewcommand{\mkbibnamelast}[1]{\sffamily\MakeUppercase{#1}}
+\renewcommand{\mkbibnamefirst}[1]{\sffamily\MakeUppercase{#1}}
+\xpatchbibdriver{misc} % Komma statt Punkt nach Titel
+{\usebibmacro{title}\newunit}
+{\usebibmacro{title}\printunit{\addcomma\space}}{}{}
+
+% Starte neue Seite für jede neue Chapter
+\let\stdchapter\chapter
+\newcommand{\npchapter}{\newpage\stdchapter}
+
+% Starte neue Seite für jede neue Section
+\let\stdsection\section
+\newcommand{\npsection}{\newpage\stdsection}
+
+% Zeilenumbruch bei URLs korrekt gestalten
+%\makeatletter 
+%\g@addto@macro\UrlBreaks{ 
+	%	\do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j 
+	%	\do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t 
+	%	\do\u\do\v\do\w\do\x\do\y\do\z\do\&\do\1\do\2\do\3 
+	%	\do\4\do\5\do\6\do\7\do\8\do\9\do\0\do\-\do\/\do\_\do\.} 
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\a%
+	\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j\do\k\do\l\do\m\do\n%
+	\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v\do\w\do\x\do\y\do\z\do\&}
+
+% Grafikpfad setzen
+\graphicspath{{images/}}
+
+% Sprache
+\selectlanguage{english}
+
+% Visio-Grafiken ohne Rand einbinden
+\newcommand{\includevisio}[2][]{\includegraphics[clip, trim=0.7mm 0.7mm 0.7mm 0.7mm, #1]{#2}}
+
+% Bildunterschriften - Quelle
+\newcommand{\source}{\\ Source: }
+
+\definecolor{codeGray}{rgb}{0.9,0.9,0.9}
+
+% Setze als Programmiersprache HTML
+\lstdefinestyle{myStyle}{
+	breaklines=true,
+	numbers=none, 
+	escapeinside={\%*}{*)},
+	basicstyle=\footnotesize\ttfamily,
+	showstringspaces=false,
+	keepspaces=true,
+	identifierstyle=\color{black},
+	backgroundcolor=\color{codeGray},
+}
+\lstset{style=myStyle, language = HTML}
+
+\colorlet{punct}{red!60!black}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+\lstdefinelanguage{json}{
+	upquote=true,
+	literate=
+	*{:}{{{\color{punct}{:}}}}{1}
+	{,}{{{\color{punct}{,}}}}{1}
+	{\{}{{{\color{delim}{\{}}}}{1}
+	{\}}{{{\color{delim}{\}}}}}{1}
+	{[}{{{\color{delim}{[}}}}{1}
+	{]}{{{\color{delim}{]}}}}{1},
+}
+\lstdefinelanguage{java}{
+	upquote=true,
+	literate=
+	*{;}{{{\color{DCLred}{;}}}}{1}
+	{[}{{{\color{delim}{[}}}}{1}
+	{]}{{{\color{delim}{]}}}}{1},
+	morekeywords={encodedString},
+	keywordstyle={\color{black}},
+	morekeywords=[2]{String, byte, binary}, 
+	keywordstyle=[2]{\color{delim}}
+}
+
+\colorlet{DCLmagenta}{punct}
+\colorlet{DCLred}{red}
+\colorlet{DCLblue}{blue}
+\lstdefinelanguage{dcl}{
+	upquote=true,
+	literate =
+	*{;}{{{\color{DCLred}{;}}}}{1}
+	{0}{{{\color{DCLblue}{0}}}}{1}
+	{1}{{{\color{DCLblue}{1}}}}{1}
+	{2}{{{\color{DCLblue}{2}}}}{1}
+	{3}{{{\color{DCLblue}{3}}}}{1}
+	{4}{{{\color{DCLblue}{4}}}}{1}
+	{5}{{{\color{DCLblue}{5}}}}{1}
+	{6}{{{\color{DCLblue}{6}}}}{1}
+	{7}{{{\color{DCLblue}{7}}}}{1}
+	{8}{{{\color{DCLblue}{8}}}}{1}
+	{9}{{{\color{DCLblue}{9}}}}{1}
+	{[}{{{\color{DCLred}{[}}}}{1}
+	{]}{{{\color{DCLred}{]}}}}{1},
+	morekeywords={POLICY, DEFAULT, FUNCTION, TEST, SCHEMA},
+	keywordstyle={\color{delim}},
+	morekeywords=[2]{GRANT, IN, ON, WHERE, AND, OR, LIKE, BETWEEN, USE, IS, NOT, NULL, RETURN, DENY, INPUT, Number, String}, 
+	keywordstyle=[2]{\color{DCLred}}
+}
+
+
+\makeatletter
+\xpretocmd\lstinline{\Colorbox{codeGray}\bgroup\appto\lst@DeInit{\egroup}}{}{}
+\makeatother
+
+% Fortführende Absätze einrücken
+\newcommand{\absatz}{\noindent\hspace*{12pt}}
+
+\newcommand{\hash}[1]{\ttfamily\seqsplit{#1}}
+\newcommand{\colorred}[1]{\textcolor{red}{#1}}
+\newcommand{\colorblue}[1]{\textcolor{blue}{#1}}
+\newcommand{\colorgreen}[1]{\textcolor{teal}{#1}}
+
+\newcommand\tab[1][1cm]{\hspace*{#1}} % \tab-command

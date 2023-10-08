@@ -1,0 +1,59 @@
+# ========== LaTeX ===============
+*.acn
+*.acr
+*.alg
+*.fls
+*.synctex(busy)
+*.fdb_latexmk
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.glg
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.ist
+*.lof
+*.log
+*.lol
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.out
+*.synctex.gz
+*.toc
+*.bcf
+*.run.xml
+*-blx.bib
+
+# ========== OSX ===============
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# ========== Windows ===============
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
