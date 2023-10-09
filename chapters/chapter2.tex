@@ -3,7 +3,32 @@
 Dieses Kapitel stellt die benötigten Grundlagen vor, die für das Verständnis der darauffolgenden Kapitel notwendig sind. Hierzu zählen die Vorstellung von Node.js und Bun sowie weiterer Grundlagen zu Performanceanalysen.
 
 \section{Node.js} \label{sec:Node.js}
-Node.js ist ein Open Source Laufzeitumgebung, die 2009 von Ryan Dahl veröffentlicht worden ist. Das Framework basiert auf der V8 JavaScript Engine von Google, die auch in Google Chrome verwendet wird. Sie ist für hohe Geschwindigkeit und Effizienz optimiert. \\
+Bei Node.js handelt es sich um ein beliebtes Tool für eine große Varianz an Projekten. \todo{Einsatzgebiete einfügen} Denn es handelt sich um eine Open Source, platformunabhängige Laufzeitumgebung, die es erlaubt JavaScript außerhalb des Browsers auszuführen. Es nutzt Googles V8 JavaScript Engine, die auch in Google Chrome verwendet wird. Dadurch kann Node.js eine gute Performance erreichen. Aufgrund dessen nutzen beispielsweise Netflix oder Uber Node.js in deren Software. \cite{OpenJSFoundation.2022} \\
+
+\noindent
+\todo{Abbildung einfügen} \\
+ 
+\noindent
+\todo{Referenz auf Abbildung} zeigt die Architektur von Node.js selbst. Grundsätzlich nutzt Node.js nur einen Thread und erstellt nicht für jede neue Anfrage einen neuen Thread. Sobald eine Applikation gestartet wird, werden in dem einzelnen Thread der Node.js-Prozess gestartet. Der Quellcode wird hierbei in nativen Maschinencode übersetzt, um darauffolgend die Applikation auszuführen. Die V8 Engine optimiert den Maschinencode an häufig benötigten Stellen zusätzlich. Dies wird nicht zu Beginn direkt durchgeführt, da die Übersetzung in Maschinencode aufgrund der Just-in-Time-Kompilierung eine zeitintensive Aufgabe darstellt. Außerdem ist in der Engine ein Garbage Collector inkludiert, der nicht mehr verwendete Objekte löscht. \cite{Springer.2022} \newline 
+Für weitere Aufgaben setzt Node.js auf Bibliotheken, die fertige und etablierte Lösungsansätze für häufig benötigte Aufgaben inkludieren. Nur für Aufgaben, für die es keine etablierte Bibliothek gab, werden eigene Implementierungen herangezogen. Die wichtigsten Komponenten werden im Folgenden vorgestellt. \cite{Springer.2022} \\
+
+\noindent
+\textbf{Event Loop} \newline
+Das Framework setzt auf eine eventgetriebene Architektur. Statt den Quellcode linear auszuführen, werden definierte Events gefeuert. Zuvor wurden Callback-Funktionen für die Events registriert. Diese werden nun ausgeführt. Dies wird verwendet um eine hohe Anzahl an asynchronen Aufgaben zu erledigen. Um dabei den einzelnen Thread für die Applikation nicht zu blockieren, werden Lese- und Schreibeoperationen an den Event Loop ausgelagert. Sobald auf eine externe Ressource zugegriffen werden muss, wird die Anfrage an den Eventloop weitergeleitet. Die registrierte Callback-Funktion leitet die Anfrage an das Betriebssystem weiter. Bis das Betriebssystem die Anfrage erledigt hat, kann Node.js andere Operationen ausführen. Das Ergebnis der externen Operation wird über den Event Loop zurückübermittelt. \cite{Springer.2022} \\
+
+\noindent
+\textbf{Libuv} \newline
+Der Event Loop von Node.js basiert ursprünglich auf der Bibliothek libev. Diese ist in C geschrieben und für eine hohe Performance mit umfangreichen Features bekannt. Allerdings baut libev auf nativen Features von UNIX auf, die unter Windows auf andere Art und Weise zur Verfügung stehen. Daher bildet Libuv die Abstraktionsebene zwischen Node.js und den darunterliegenden Bibliotheken für den Event Loop, um die Laufzeitumgebung auf allen Plattformen verwenden zu können. Libuv verwaltet alle asynchronen I/O-Operationen. D. h. alle Zugriffe auf das Dateisystem oder beispielsweise asynchrone TCP- und UDP-Verbindungen über libuv laufen. \cite{Springer.2022} \\ \todo{Event Queue und Loop von Ziel-Abbildung noch inkludieren, sobald Quelle gefunden}
+
+\noindent
+Zusammenfassend besitzt Node.js eine event-getriebene Architektur inklusive eines nicht-blockierenden Modell für die asynchrone Ein- und Ausgabe, das es leichtgewichtig und effizient gestaltet. Daraus leiten sich diverse Vor- und Nachteile ab. \newline
+Neben der Plattformunabhängigkeit ist die Verwendung einer etablierten Engine von Vorteil. Dadurch stehen sämtliche Features der Programmiersprache zur Verfügung. Des Weiteren ist JavaScript als Sprache selbst durch die Standardisierung von ECMAScript gut dokumentiert.  Zusätzlich hat sich eine große Community um die Open Source Software herum gebildet. Diese bietet viele Informationen, Tutorials und Lösungen für häufig Probleme. \cite{Springer.2022} \newline
+Nachteile sind ... \todo{Nachteile einfügen} \\
+
+\noindent
+Darüber hinaus bringt Node.js den \textit{Node Package Manager (NPM} mit. Der Paketmanager ist essenziell für den Erfolg von Node.js. Denn mit mehr als 2,1 Millionen Paketen im September 2022 gibt es in diesem Ökosystem einen ein Paket für nahezu alle Anwendungsfälle. Der ursprüngliche Zweck von NPM war die Abhängigkeiten eines Projektes zu verwalten. Mittlerweile wird es auch als Tool für JavaScript im Frontend unterstützt. \cite{OpenJSFoundation.2022}  \\
+
+
 
 \section{Bun} \label{sec:Node}
 TODO\\
