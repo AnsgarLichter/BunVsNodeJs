@@ -65,5 +65,35 @@ Node.js bietet viele Module, globale Objekte und Standard-Web-APIs an (siehe Kap
 \noindent
 Allerdings existieren auch viele Module und globale Objekte, für die die Unterstützung teilweise oder komplett fehlt, zum Beispiel assert oder http2 \cite{Bun.}. Daraus folgt, dass die Kompatibilität von bestehenden Projekten auf Basis von Node.js von den verwendeten Objekten und Modulen abhängt.
 
-\section{Performanceanalyse} \label{sec:Performanceanalyse}
-TODO\\
+\section{Performance von Software} \label{sec:Performance}
+Um eine qualitativ hochwertige Software zu entwickeln, genügt es nicht, lediglich die funktionalen Anforderungen zu erfüllen. Entwickler tragen die Verantwortung, die Anforderungen an eine Applikation, sowohl die funktionalen als auch die nichtfunktionalen Aspekte, in vollem Umfang zu erfüllen. Die Qualität einer Software besteht darin, in welchem Maße die Software die expliziten und impliziten Bedürfnisse seiner Stakeholder zufriedenstellt und so Mehrwehrt bietet. Diese Bedürfnisse werden im Qualitätsmodell nach ISO / IEC 25010 dargestellt. \cite{.2022}\\
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{./images/iso25010.png}
+	\caption[Node.js Architektur]{Node.js Architektur \cite{.2022}}
+	\label{fig:softwareQuality}
+\end{figure}
+\todo{Eigene Abbildung auf der Basis der Leseprobe von ISO selbst}
+
+Abbildung \ref{fig:softwareQuality} zeigt die 8 Charakteristika der Software-Qualität nach ISO / IEC 25010: Funktionalität, Performance, Kompatibilität, Benutzbarkeit, Zuverlässigkeit, Sicherheit, Wartbarkeit und Portierbarkeit. Der Standard bietet ein Framework für die Bewertung der Qualität einer Software an. Er hilft so Unternehmen ihre Software-Produkte zu verbessern und alle Teilbereiche zu beachten, indem der Standard als Leitfaden vom Identifizieren der Anforderungen bis zur Qualitätskontrolle der Software unterstützt. \cite{ISOIEC.}\\
+
+\noindent
+Performance definiert sich im IEEE Standard Glossary of Software Engineering Terminology wie folgt:
+\begin{quote}
+	\emph{''The degree to which a system or component accomplishes its designated functions within given constraints, such as speed, accuracy, or memory usage''} \cite{.}
+\end{quote}
+
+\noindent
+Demnach beschreibt Performance die Reaktion eines Systems auf die Durchführung einer Aktion über einen definierten Zeitraum. Um die Performance einer Software bestimmen zu können, stellt ISO / IEC 25010 3 Charakteristiken zur Verfügung (siehe Abbildung \ref{fig:softwareQuality}):
+\begin{itemize}
+	\item Zeitverhalten: das Maß, in dem die Reaktions-, Verarbeitungszeiten und Durchsatzraten einer Software bei der Ausführung den definierten Anforderungen entsprechen.
+	\item Ressourcennutzung: das Maß, in dem die Menge und Art der Ressourcen, die ein Produkt bei der Ausführung seiner Funktionalitäten beansprucht, den Anforderungen entsprechen.
+	\item Kapazität: das Maß, in dem die maximalen Grenzen eines Parameters einer Software den Anforderungen entsprechen. \cite{ISOIEC.}
+\end{itemize}
+
+\noindent
+Das Zeitverhalten ....\todo{auf alle 3 Charakteristika eingehen}\\
+
+\noindent
+Um die Performance einer produktiven Software zu bestimmen, nutzt man Benchmarks. \todo{Benchmarks - Was und Wie?}\\
