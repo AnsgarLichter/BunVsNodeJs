@@ -85,15 +85,20 @@ Performance definiert sich im IEEE Standard Glossary of Software Engineering Ter
 \end{quote}
 
 \noindent
-Demnach beschreibt Performance die Reaktion eines Systems auf die Durchführung einer Aktion über einen definierten Zeitraum. Um die Performance einer Software bestimmen zu können, stellt ISO / IEC 25010 3 Charakteristiken zur Verfügung (siehe Abbildung \ref{fig:softwareQuality}):
-\begin{itemize}
-	\item Zeitverhalten: das Maß, in dem die Reaktions-, Verarbeitungszeiten und Durchsatzraten einer Software bei der Ausführung den definierten Anforderungen entsprechen.
-	\item Ressourcennutzung: das Maß, in dem die Menge und Art der Ressourcen, die ein Produkt bei der Ausführung seiner Funktionalitäten beansprucht, den Anforderungen entsprechen.
-	\item Kapazität: das Maß, in dem die maximalen Grenzen eines Parameters einer Software den Anforderungen entsprechen. \cite{ISOIEC.}
-\end{itemize}
+Demnach beschreibt Performance die Reaktion eines Systems auf die Durchführung einer Aktion über einen definierten Zeitraum. Um die Performance einer Software bestimmen zu können, stellt ISO / IEC 25010 3 Charakteristiken zur Verfügung (siehe Abbildung \ref{fig:softwareQuality}), die in den folgenden Absätzen beschrieben werden.\\
 
 \noindent
-Das Zeitverhalten ....\todo{auf alle 3 Charakteristika eingehen}\\
+\textbf{Zeitverhalten}\newline
+Das Zeitverhalten beschreibt das Maß, in dem die Reaktions- Verarbeitungszeiten und Durchsatzraten eines Software-Produkts bei der Ausführung definierten Anforderungen entsprechen \cite{ISOIEC.}. Der Fokus liegt hier auf einer schnellen Reaktion der Software, um die definierten Vorgaben für die Performance einzuhalten. Das Zeitverhalten kann durch die Latenz und den Durchsatz genauer spezifiziert werden. Die Latenz definiert einen zeitlichen Intervall, in dem die Software eine Antwort auf die Anfrage liefern muss. Dieses Intervall wird in einem Zeitfenster durch eine minimale und maximale Zeitangabe definiert. Die Zeitangaben können absolut oder relativ in Bezug auf ein Event angegeben werden. Sobald die Reaktionszeit die maximale Zeitangabe überschreitet, erfüllt die Software die Latenzanforderung nicht. Die Anzahl an abgeschlossenen Antworten auf eine Anfrage innerhalb eines Beobachtungsintervalls beschreibt den Durchsatz. Dadurch kann die Verarbeitungsleistung (Processing Rate) der Software abgeleitet werden. Für eine zuverlässige Angabe, ist es empfohlen mehrere Zeitfenster zu beobachten. Denn es kann sein, dass eine Software 120 Anfragen innerhalb 1 Stunde bearbeiten kann. Dennoch könnte das System versagen, wenn 40 dieser Anfragen innerhalb von 3 Minuten abgearbeitet werden müssen. \cite{Barbacci.1995} \todo{Bessere Quelle suchen} \\
+
+\noindent
+\textbf{Ressourcennutzung}\newline
+Das Maß, in dem die Menge und Art der Ressource, die ein Produkt bei der Ausführung seiner Funktionalitäten beansprucht, den Anforderungen entsprechen, entspricht der Ressourcennutzung \cite{ISOIEC.}. Es geht um die effiziente Verwaltung der verfügbaren Ressourcen. Dazu zählen die CPU, der Arbeitsspeicher, die Bandbreite des Netzwerks, der Speicherplatz auf der Festplatte und viele mehr. Die wichtigsten Metriken sind die CPU-Auslastung, der Speicherbedarf sowohl im RAM als auch auf der Festplatte. \cite{Barbacci.1995} \todo{Bessere Quelle suchen} \\
+
+\noindent
+\textbf{Kapazität}\newline
+Die Kapazität entspricht dem Maß, in dem die maximalen Grenzen eines Parameters einer Software den Anforderungen entsprechen \cite{ISOIEC.}. Dadurch wird bestimmt, ob das System unter Spitzenlast funktionsfähig bleibt und dadurch gut skaliert. Hierbei müssen die Anforderungen an die maximale Latenz eingehalten werden. Daher kann die Kapazität alternativ auch als der maximal mögliche Durchsatz unter Einhaltung der gegebenen Latenzanforderungen bezeichnet werden. \cite{Barbacci.1995} \todo{Bessere Quelle suchen} Das umfasst mehrere Benutzer, die gleichzeitig auf die Software zugreifen, oder größere Transaktionen mit mehr Datenvolumen. Zu den Metriken zählen die maximale Anzahl an gleichzeitigen Benutzern und die maximale Anzahl an möglichen Transaktionen. \todo{Quelle}  \\
+
 
 \noindent
 Um die Performance einer produktiven Software zu bestimmen, nutzt man Benchmarks. \todo{Benchmarks - Was und Wie?}\\
