@@ -1,14 +1,66 @@
 % !TeX root = ..\main.tex
-\npchapter{Performanceanalyse}  \label{foundations}
+\npchapter{Performanceanalyse}  \label{performanceAnalysis}
+In diesem Kapitel wird die Performance von Bun detailliert betrachtet und mit Node.js verglichen. Hierbei liegt der Fokus darauf die Leitfrage ``Welche konkreten Leistungsverbesserungen können in Bun 1.0 im Vergleich zu Node.js festgestellt werden, und wie lassen sie sich quantifizieren?'' zu beantworten. Zuerst wird die Vorgehensweise bei den Teste vorgestellt. Im Anschluss daran wird der verwendete Versuchsaufbau und die Beispielimplementierungen vorgestellt. Darauffolgend werden die Ergebnisse der Tests analysiert.
 
-\section{Methodik} \label{sec:performance-methodology}
-TODO \\
+\section{Vorgehensweise} \label{sec:performance-approach}
+Als Metriken werden die Antwortzeiten, die gesamte Ausführungszeit und der dabei verwendete Arbeitsspeicher herangezogen (siehe Kapitel \ref{sec:foundations-Performance})\todo{Verifizieren, dass die Metriken dort inkludiert sind}. Um diese Metriken zu ermitteln, werden verschiedene Szenarien inklusive unterschiedlicher Implementierungen verwendet (siehe Kapitel \ref{sec:performance-implementations}). Die unterschiedlichen Implementierungen sind auf variierende Schnittstellen der Laufzeitumgebungen zurückzuführen. Beispielsweise weichen die Implementationen des HTTP-Servers voneinander ab. Durch das Nutzen der nativen Schnittstellen jeder Applikation wird die bestmögliche Performance betrachtet.  \\
+
+\noindent
+TODO: Vorgehen vorstellen - wie viele Anfragen\\
+
+\noindent
+TODO: Auswahl der Tools begründen
 
 \section{Versuchsaufbau} \label{sec:performance-testSetup}
-TODO \\
+Um eine konsistente und kontrollierte Umgebung für die Tests zu kreieren, werden die Tests auf einer spezifischen Auswahl an Hardware und Software ausgeführt. Das Ziel ist es die Testergebnisse möglichst reproduzierbar zu gestalten. Des Weiteren wird hierdurch eine Vergleichbarkeit zwischen Bun und Node.js gewährleistet, sodass die CPU-Auslastung, Antwort- und Ausführungszeiten quantifiziert werden können.\newline
+Die Tests werden auf mehreren Geräten mit unterschiedlichen Betriebssystemen ausgeführt, die in Tabelle \ref{table:hardware} dargestellt sind. Dadurch wird verifiziert, ob eventuelle Performanceverbesserungen auf eine bestimmte Systemumgebung zurückzuführen ist. Zusätzlich ist die native Implementierung für Windows noch experimentell und nicht vollständig für Performance optimiert \ref{sec:foundations-Bun}. Um die Vollständigkeit zu gewährleisten, wird die Windows-basierte Lösung dennoch inkludiert.\\
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|p{3cm}|}
+		\hline
+		Eigenschaften & Desktop-PC & Desktop-PC WSL2 & Macbook Pro \\
+		\hline
+		Prozessor & AMD Ryzen 7 2700 @ 3,6 GHz & AMD Ryzen 7 2700 @ 3,6 GHz & Apple M1 Pro \\
+		\hline
+		Arbeitsspeicher & 32 GB DDR4-3200 & 32 GB DDR4-3200 & 16 GB LPDDR5-6400 \\
+		\hline
+		Betriebssystem & Windows 11 & Ubuntu in WSL2 unter Windows 11 8 & macOS 14 Sonoma \\
+		\hline
+	\end{tabular}
+	\caption{Hardware für die Performanceanalyse}
+	\label{table:hardware}
+\end{table}
+
+\noindent
+Um die tatsächlichen Tests auszuführen, werden die folgenden Versionen der betrachteten Frameworks verwendet:
+\begin{itemize}
+	\item Bun Version 1.0.6 (Neuste)
+	\item Node.js Version 18.18.2 (LTS)
+	\item Node.js Version 21.0.0 (Neuste)
+\end{itemize}
+
+\noindent
+Die neuste Version von Bun wird für die Tests verwendet, die im Vergleich zur Version 1.0 bereits Fehlerkorrekturen enthält \cite{Sumner.2023}. Um Node.js zu analysieren, werden 2 Versionen inkludiert. Es wird einmal Version mit Long Term Support (LTS) betrachtet. Denn die Version empfiehlt Node.js für die meisten Benutzer aufgrund des langfristigen Supports. .\cite{OpenJSFoundation.o.J.} Die neuste Version von Node.js kann in diesem Vergleich nicht ausgeschlossen werden. Denn in der Version 20 wurde beispielsweise die neuste Version des URL-Parsers Ada eingeführt, die signifikante Performanceverbesserungen mit sich bringt \cite{OpenJSFoundation.2023}. Zusätzlich enthält die Version 21 weitere kleine Verbesserungen hinsichtlich der Performance. Des Weiteren wird die Version 20 des Frameworks im Laufe des Oktobers 2023 die neue LTS-Version. \cite{OpenJSFoundation.2023b}\\
+
+\noindent
+Zusätzlich werden die folgenden Tools benutzt, um die notwendigen Benchmarks zu erheben:
+\begin{itemize}
+	\item Hyperfine Version 1.18.0
+	\item Bombardier Version 1.2.6
+	\item \todo{CLI zum Messen von maximaler Auslastung von Prozessor und RAM}
+\end{itemize}
+
+\noindent
+Die vorgestellte Testkonfiguration ermöglicht die Quantifizierung der Performance-Metriken, um aus diesen Metriken fundierte Aussagen über die Performance beider Laufzeitumgebungen ableiten zu können und die 1. Forschungsfrage (siehe Kapitel \ref{sec:introduction-target}) zu beantworten.
+
 
 \section{Implementierungen} \label{sec:performance-implementations}
-TODO \\
+TODO 
+\todo{Bun HTTP-Server} 
+\todo{Node HTTP-Server} 
+\todo{Bun HTTP-Server mit SQLite Write und Read}
+\todo{Node HTTP-Server mit SQLite Write und Read}\\
 
 \section{Ergebnisse} \label{sec:performance-results}
 TODO \\
