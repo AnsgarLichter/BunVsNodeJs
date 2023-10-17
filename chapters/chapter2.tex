@@ -1,8 +1,8 @@
 % !TeX root = ..\main.tex
-\npchapter{Grundlagen} \label{Grundlagen}
+\npchapter{Grundlagen} \label{foundations}
 Dieses Kapitel stellt die benötigten Grundlagen vor, die für das Verständnis der darauffolgenden Kapitel notwendig sind. Hierzu zählen die Vorstellung von Node.js und Bun sowie weiterer Grundlagen zu Performanceanalysen.
 
-\section{Node.js} \label{sec:Node.js}
+\section{Node.js} \label{sec:foundations-Node.js}
 Node.js ist ein beliebtes Tool für eine große Varianz an Projekten, darunter leichtgewichtige Webservices, dynamische Webanwendungen und Tools für die Kommandozeile. Es handelt sich um eine Open Source, platformunabhängige Laufzeitumgebung, die es ermöglicht JavaScript außerhalb des Browsers auszuführen. Node.js verwendet die V8 JavaScript Engine von Google. Diese ist in C++ geschrieben und wird von Google Chrome verwendet. Dies ermöglicht Node.js eine hohe Performance, weshalb Unternehmen wie Netflix und Uber Node.js in ihren Softwareprojekten einsetzen. \cite{OpenJSFoundation.2022} \\
 
 \begin{figure}[h]
@@ -39,7 +39,7 @@ Allerdings existieren auch Nachteile bei der Verwendung von Node.js. Das Single-
 Ein weiterer Nachteil ist, dass Node.js im Vergleich zu einigen anderen Laufzeitumgebungen über eine begrenzte Standardbibliothek verfügt, sodass Entwickler häufig auf externe Module und Pakete zurückgreifen müssen. Darüber hinaus kann die Qualität einiger NPM-Pakete variieren, und schlecht gewartete Module können zu Kompatibilitätsproblemen und Sicherheitsrisiken führen. \todo{Quelle einfügen} \newline
 Insgesamt ist Node.js eine leistungsfähige und vielseitige Laufzeitumgebung, die sich gut für bestimmte Anwendungsfälle eignet, insbesondere wenn es darum geht, skalierbare und asynchrone Anwendungen zu entwickeln. \todo{Quelle einfügen}
 
-\section{Bun} \label{sec:Bun}
+\section{Bun} \label{sec:foundations-Bun}
 Bun ist ein Open Source Toolkit für JavaScript. Dieses kombiniert verschiedene wichtige serverseitige Komponenten, um eine leistungsstarkes Paket zur Verfügung zu stellen. Bun ist auf macOS und Linux für die produktive Nutzung freigegeben. Unter Windows steht aktuell nur eine experimentelle Version zur Verfügung, deren Performance noch nicht optimiert worden ist. Als Alternative kann über das Windows Subsystem für Linux die veröffentlichte Linux-Version genutzt werden. \cite{Sumner.2023} Ursprünglich ist Bun als ein persönliches Freizeitprojekt von Jared Sumner gestartet. Mittlerweile hat es sich als wettbewerbsfähige Alternative zu etablierten Technologien in der Webentwicklung etabliert. \cite{Tyson.2023}\\
 
 \begin{figure}[H]
@@ -51,11 +51,11 @@ Bun ist ein Open Source Toolkit für JavaScript. Dieses kombiniert verschiedene 
 \todo{Quellen für Abbildung oder wird das aus dem Text ersichtlich?}
 
 \noindent
-Abbildung \ref{fig:ecosystemComparison} zeigt das Ökosystem von Bun im Vergleich zu Node.js. Im Toolkit von Bun sind folgende Komponenten enthalten: eine Laufzeitumgebung für JavaScript, ein Paketmanager wie NPM (siehe Kapitel \ref{sec:Node.js}) oder Yarn, ein Transpiler wie Babel, ein Build-Tool wie Webpack, Bibliotheken zum Testen wie Jest oder Vitest und integrierte Unterstützung für TypeScript. \cite{Sumner.2023} Bun strebt an, das Rundum-sorglos-Tool zu sein, damit alle benötigten Funktionalitäten im Kontext von JavaScript nativ verfügbar sind. Gleichzeitig sollen dadurch die Abhängigkeiten einer Software auf Basis von Bun reduziert werden. \cite{Bun.} In Node.js ist nur die Laufzeitumgebung enthalten, die anderen Komponenten müssen separat installiert werden. \cite{Springer.2022} Dies bietet allerdings mehr Flexibilität bei der Auswahl der gewünschten Tools. \newline
+Abbildung \ref{fig:ecosystemComparison} zeigt das Ökosystem von Bun im Vergleich zu Node.js. Im Toolkit von Bun sind folgende Komponenten enthalten: eine Laufzeitumgebung für JavaScript, ein Paketmanager wie NPM (siehe Kapitel \ref{sec:foundations-Node.js}) oder Yarn, ein Transpiler wie Babel, ein Build-Tool wie Webpack, Bibliotheken zum Testen wie Jest oder Vitest und integrierte Unterstützung für TypeScript. \cite{Sumner.2023} Bun strebt an, das Rundum-sorglos-Tool zu sein, damit alle benötigten Funktionalitäten im Kontext von JavaScript nativ verfügbar sind. Gleichzeitig sollen dadurch die Abhängigkeiten einer Software auf Basis von Bun reduziert werden. \cite{Bun.} In Node.js ist nur die Laufzeitumgebung enthalten, die anderen Komponenten müssen separat installiert werden. \cite{Springer.2022} Dies bietet allerdings mehr Flexibilität bei der Auswahl der gewünschten Tools. \newline
 Bun ist in Zig geschrieben \cite{Bun.}. Zig ist eine systemnahe Programmiersprache wie C und C++, die sich vor allem auf Einfachheit und Klarheit für ein besseres Verständnis konzentriert \cite{ZigSoftwareFoundation.o.J.}. Die Entwickler haben sich aufgrund sehr guten Performance und des Speichermanagements für Zig entschieden. Anstatt der V8 Engine von Google verwendet Bun die JavaScriptCore Engine \cite{Bun.}. Diese ist die Engine für WebKit, die unter anderem in Apple's Safari-Browser genutzt wird \cite{Apple.o.J.}. In Kombination mit Zig sorgt die JavaScriptCore Engine für die bessere Performance von Bun. Dies ist auf die Architektur der JavaScriptCore Engine mit 3 Just-In-Time-Kompilern und Interpreter. Dadurch kann die Engine den Quellcode noch besser optimieren. So verbessert sich die Ausführungszeit des Quellcodes mit Bun. \cite{Apple.o.J.b} Darüber hinaus ermöglicht Zig mit dessen manuellem Speichermanagement und Klarheit im Kontrollfluss und Allokieren von Speicher weitere Verbesserungen der Effizienz. \cite{Bun.} Zusätzlich führen die beiden Komponenten noch zu drastisch reduzierten Startzeiten \cite{Bun.}. Das ist vor allem im Bereich des Serverless Computing ein enormer Vorteil gegenüber anderen Alternativen. Denn dies hilft die Skalierbarkeit einer Software zu verbessern, indem neue Knoten schneller hinzugezogen werden können. \cite{Silva.2020} 
 
 \noindent
-Node.js bietet viele Module, globale Objekte und Standard-Web-APIs an (siehe Kapitel \ref{sec:Node.js}). Bun möchte eine nahtlose Integration mit Node.js anbieten. Dazu haben die Entwickler verbesserte Versionen für viele dieser Objekte implementiert. Hierzu zählen beispielsweise:
+Node.js bietet viele Module, globale Objekte und Standard-Web-APIs an (siehe Kapitel \ref{sec:foundations-Node.js}). Bun möchte eine nahtlose Integration mit Node.js anbieten. Dazu haben die Entwickler verbesserte Versionen für viele dieser Objekte implementiert. Hierzu zählen beispielsweise:
 \begin{itemize}
 	\item Standard-Web-API: fetch, Request, Response,
 	\item Module: http, https, path,
@@ -65,7 +65,7 @@ Node.js bietet viele Module, globale Objekte und Standard-Web-APIs an (siehe Kap
 \noindent
 Allerdings existieren auch viele Module und globale Objekte, für die die Unterstützung teilweise oder komplett fehlt, zum Beispiel assert oder http2 \cite{Bun.}. Daraus folgt, dass die Kompatibilität von bestehenden Projekten auf Basis von Node.js von den verwendeten Objekten und Modulen abhängt.
 
-\section{Performance von Software} \label{sec:Performance}
+\section{Performance als Qualitätsattribut} \label{sec:foundations-Performance}
 Um eine qualitativ hochwertige Software zu entwickeln, genügt es nicht, lediglich die funktionalen Anforderungen zu erfüllen. Entwickler tragen die Verantwortung, die Anforderungen an eine Applikation, sowohl die funktionalen als auch die nichtfunktionalen Aspekte, in vollem Umfang zu erfüllen. Die Qualität einer Software besteht darin, in welchem Maße die Software die expliziten und impliziten Bedürfnisse seiner Stakeholder zufriedenstellt und so Mehrwehrt bietet. Diese Bedürfnisse werden im Qualitätsmodell nach ISO / IEC 25010 dargestellt. \cite{.2022}\\
 
 \begin{figure}[h]
