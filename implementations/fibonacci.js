@@ -10,4 +10,4 @@ const fibonacci = (number) => {
     return fibonacci(number-1) + fibonacci(number-2);
 };
 
-console.log(fibonacci(40));
+console.log(fibonacci(45));
