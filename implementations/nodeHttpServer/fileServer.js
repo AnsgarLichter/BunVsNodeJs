@@ -1,7 +1,7 @@
 import { createReadStream } from "node:fs";
 import http from "node:http";
 
-const basePath = "./data";
+const basePath = "../data";
 
 http.createServer((request, response) => {
     const filePath = `${basePath}${request.url}`;
