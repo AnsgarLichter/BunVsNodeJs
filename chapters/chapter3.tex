@@ -1,31 +1,43 @@
 % !TeX root = ..\main.tex
 \npchapter{Performanceanalyse}  \label{performanceAnalysis}
-In diesem Kapitel wird die Performance von Bun detailliert betrachtet und mit Node.js verglichen. Hierbei liegt der Fokus darauf die Leitfrage ``Welche konkreten Leistungsverbesserungen können in Bun 1.0 im Vergleich zu Node.js festgestellt werden, und wie lassen sie sich quantifizieren?'' zu beantworten. Zuerst wird die Vorgehensweise bei den Teste vorgestellt. Im Anschluss daran wird der verwendete Versuchsaufbau und die Beispielimplementierungen vorgestellt. Darauffolgend werden die Ergebnisse der Tests analysiert.
+In diesem Kapitel wird die Performance von Bun detailliert betrachtet und mit Node.js verglichen. Hierbei liegt der Fokus darauf, die Leitfrage ``Welche konkreten Leistungsverbesserungen können in Bun 1.0 im Vergleich zu Node.js festgestellt werden, und wie lassen sie sich quantifizieren?'' zu beantworten. Zuerst wird die Vorgehensweise bei den Tests vorgestellt. Anschließend wird der verwendete Versuchsaufbau und die Beispielimplementierungen präsentiert. Darauffolgend werden die Ergebnisse der Tests analysiert.
+
 
 \section{Vorgehensweise} \label{sec:performance-approach}
-Als Metriken werden die Antwortzeiten, die gesamte Ausführungszeit und der dabei verwendete Arbeitsspeicher herangezogen (siehe Kapitel \ref{sec:foundations-Performance})\todo{Verifizieren, dass die Metriken dort inkludiert sind}. Um diese Metriken zu ermitteln, werden verschiedene Szenarien inklusive unterschiedlicher Implementierungen verwendet (siehe Kapitel \ref{sec:performance-implementations}). Die unterschiedlichen Implementierungen sind auf variierende Schnittstellen der Laufzeitumgebungen zurückzuführen. Beispielsweise weichen die Implementationen des HTTP-Servers voneinander ab. Durch das Nutzen der nativen Schnittstellen jeder Applikation wird die bestmögliche Performance betrachtet.  \\
+Als Metriken werden die durchschnittliche Latenz, die Anzahl an HTTP-Anfragen pro Sekunde, der Anteil an erfolgreichen HTTP-Anfragen, die CPU-Auslastung un der maximal genutzte Arbeitsspeicher während der Ausführungszeit (siehe Kapitel \ref{sec:foundations-Performance})\todo{Verifizieren, dass die Metriken dort inkludiert sind}. Um diese Metriken zu ermitteln, werden verschiedene Szenarien inklusive unterschiedlicher Implementierungen verwendet (siehe Kapitel \ref{sec:performance-implementations}). Die unterschiedlichen Implementierungen sind auf variierende APIs \todo{Abkürzung einführen, falls in Theorie nicht geschehen} der Laufzeitumgebungen zurückzuführen. Diese müssen verwendet werden, damit die Leistung der Laufzeitumgebungen und nicht die Performance des Quellcodes geprüft wird.\\
 
 \noindent
-TODO: Vorgehen vorstellen - wie viele Anfragen\\
+Zuerst wird die grundlegende Performance von HTTP-Server beider Laufzeitumgebungen gemessen (siehe Kapitel \ref{subsec:httpServer}). Es greifen 500 gleichzeitige Benutzer auf den Server für 30 Sekunden lang zu und erhalten einen String als Antwort zurück. Dieses Szenario veranschaulicht die grundlegende Netzwerkgeschwindigkeit beider Laufzeitumgebungen. Als zweites Szenario wird ein Datei-Server verwendet, der jedem Aufrufer ein Bild zurückgibt (siehe Kapitel \ref{subsec:fileServer}). Diese Aufgabe wird für 50, 250, 500 und 1000 gleichzeitige Nutzer für eine Dauer von 30 Sekunden gemessen. Die Last wird variiert, um die Server näher an ihre Grenzen zu bringen. Der letzte Testfall berechnet die Fibonacci-Folge für die Zahl 45, damit die Leistung beider Laufzeitumgebungen bei rechenintensiven Aufgaben evaluiert wird (siehe Kapitel \ref{subsec:fibonacci}).
 
 \noindent
-TODO: Auswahl der Tools begründen
+Um die Performance korrekt zu bestimmen, müssen die richtigen Tools verwendet werden. In dieser Arbeit werden die Folgenden genutzt:
+
+\begin{itemize}
+	\item Bombardier,
+	\item GNU Time.
+\end{itemize}
+
+\noindent
+Bombardier generiert die HTTP-Anfragen an die Server im ersten und zweiten Testszenario. Im Tool kann die Dauer der Lasttests oder auch die Anzahl an zu versendeten Anfragen konfiguriert werden. Zusätzlich kann per Parameter bestimmt werden, wie viele gleichzeitige Benutzer simuliert werden. Nach dem Test gibt das Tool für die Anzahl an Anfragen pro Sekunde und für die Latenz die durchschnittlichen und maximalen Werte sowie die Standardabweichung aus. Zusätzlich kann der Anteil an erfolgreichen Anfragen bestimmt werden. Denn Bombardier gibt auch die Anzahl an Anfragen pro HTTP-Statuscode aus. Das Tool eignet sich aufgrund seinen detailreichen Aufgaben und seiner Performance. Es ist in Go geschrieben und verwendet das Paket ``fasthttp`` statt der nativen HTTP-Implementierung von Go und ist dadurch ausreichend performant. Damit die CPU-Auslastung und der maximal verwendete Arbeitsspeicher in den Ergebnissen berücksichtigt werden kann, wird GNU Time verwendet. GNU Time ist in Ubuntu bereits nativ verfügbar und eignet sich dadurch. Auf MacOS wird eine entsprechende Portierung dieses Tools verwendet, um vergleichbare Daten zu erheben.
+
+\noindent
+Die vorgestellte Testkonfiguration ermöglicht die Quantifizierung der Performance-Metriken, um aus diesen Metriken fundierte Aussagen über die Performance beider Laufzeitumgebungen ableiten zu können und die 1. Forschungsfrage (siehe Kapitel \ref{sec:introduction-target}) zu beantworten.
+
 
 \section{Versuchsaufbau} \label{sec:performance-testSetup}
-Um eine konsistente und kontrollierte Umgebung für die Tests zu kreieren, werden die Tests auf einer spezifischen Auswahl an Hardware und Software ausgeführt. Das Ziel ist es die Testergebnisse möglichst reproduzierbar zu gestalten. Des Weiteren wird hierdurch eine Vergleichbarkeit zwischen Bun und Node.js gewährleistet, sodass die CPU-Auslastung, Antwort- und Ausführungszeiten quantifiziert werden können.\newline
-Die Tests werden auf mehreren Geräten mit unterschiedlichen Betriebssystemen ausgeführt, die in Tabelle \ref{table:hardware} dargestellt sind. Dadurch wird verifiziert, ob eventuelle Performanceverbesserungen auf eine bestimmte Systemumgebung zurückzuführen ist. Zusätzlich ist die native Implementierung für Windows noch experimentell und nicht vollständig für Performance optimiert \ref{sec:foundations-Bun}. Um die Vollständigkeit zu gewährleisten, wird die Windows-basierte Lösung dennoch inkludiert.\\
+Um eine konsistente und kontrollierte Umgebung für die Tests zu schaffen, werden diese auf spezifischer Hardware und Software durchgeführt. Das Ziel besteht darin, die Testergebnisse so reproduzierbar wie möglich zu gestalten. Des Weiteren wird dadurch eine Vergleichbarkeit zwischen Bun und Node.js gewährleistet, was die Quantifizierung der verwendeten Metriken ermöglicht.
 
 \begin{table}[h]
 	\centering
 	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|p{3cm}|}
 		\hline
-		Eigenschaften & Desktop-PC & Desktop-PC WSL2 & Macbook Pro \\
+		Name & Desktop-PC & MacBook Pro \\
 		\hline
-		Prozessor & AMD Ryzen 7 2700 @ 3,6 GHz & AMD Ryzen 7 2700 @ 3,6 GHz & Apple M1 Pro \\
+		Prozessor & AMD Ryzen 7 2700 @ 3,6 GHz & Apple M1 Pro \\
 		\hline
-		Arbeitsspeicher & 32 GB DDR4-3200 & 32 GB DDR4-3200 & 16 GB LPDDR5-6400 \\
+		Arbeitsspeicher & 32 GB DDR4-3200 & 16 GB LPDDR5-6400 \\
 		\hline
-		Betriebssystem & Windows 11 & Ubuntu in WSL2 unter Windows 11 8 & macOS 14 Sonoma \\
+		Betriebssystem & Ubuntu 23.10 & macOS 14 Sonoma \\
 		\hline
 	\end{tabular}
 	\caption{Hardware für die Performanceanalyse}
@@ -33,37 +45,146 @@ Die Tests werden auf mehreren Geräten mit unterschiedlichen Betriebssystemen au
 \end{table}
 
 \noindent
+Die Tests werden auf verschiedenen Geräten mit unterschiedlichen Betriebssystemen durchgeführt, wie in Tabelle \ref{table:hardware} dargestellt. Dies dient der Verifikation, ob etwaige Performance-Verbesserungen auf eine spezifische Systemumgebung zurückzuführen sind. Die native Implementierung von Bun für Windows ist experimentell und nicht vollständig für die Performance optimiert (siehe Kapitel \ref{sec:foundations-Bun}). Die experimentelle Lösung ist nicht für die Öffentlichkeit zugänglich \cite{Verhelst.2023}. Daher kann die Funktionsweise von Bun unter Windows nicht getestet werden.
+
+\noindent
 Um die tatsächlichen Tests auszuführen, werden die folgenden Versionen der betrachteten Frameworks verwendet:
 \begin{itemize}
-	\item Bun Version 1.0.6 (Neuste)
+	\item Bun Version 1.0.6 (Neuste Version)
 	\item Node.js Version 18.18.2 (LTS)
 	\item Node.js Version 21.0.0 (Neuste)
 \end{itemize}
+\todo{Vermwerk, zu welchem Datum es sich um die aktuellsten Versionen handelt}
 
 \noindent
-Die neuste Version von Bun wird für die Tests verwendet, die im Vergleich zur Version 1.0 bereits Fehlerkorrekturen enthält \cite{Sumner.2023}. Um Node.js zu analysieren, werden 2 Versionen inkludiert. Es wird einmal Version mit Long Term Support (LTS) betrachtet. Denn die Version empfiehlt Node.js für die meisten Benutzer aufgrund des langfristigen Supports. .\cite{OpenJSFoundation.o.J.} Die neuste Version von Node.js kann in diesem Vergleich nicht ausgeschlossen werden. Denn in der Version 20 wurde beispielsweise die neuste Version des URL-Parsers Ada eingeführt, die signifikante Performanceverbesserungen mit sich bringt \cite{OpenJSFoundation.2023}. Zusätzlich enthält die Version 21 weitere kleine Verbesserungen hinsichtlich der Performance. Des Weiteren wird die Version 20 des Frameworks im Laufe des Oktobers 2023 die neue LTS-Version. \cite{OpenJSFoundation.2023b}\\
-
-\noindent
-Zusätzlich werden die folgenden Tools benutzt, um die notwendigen Benchmarks zu erheben:
-\begin{itemize}
-	\item Hyperfine Version 1.18.0
-	\item Bombardier Version 1.2.6
-	\item \todo{CLI zum Messen von maximaler Auslastung von Prozessor und RAM}
-\end{itemize}
-
-\noindent
-Die vorgestellte Testkonfiguration ermöglicht die Quantifizierung der Performance-Metriken, um aus diesen Metriken fundierte Aussagen über die Performance beider Laufzeitumgebungen ableiten zu können und die 1. Forschungsfrage (siehe Kapitel \ref{sec:introduction-target}) zu beantworten.
+Die neuste Version von Bun wird für die Tests verwendet, da sie im Vergleich zur Version 1.0 bereits Fehlerkorrekturen enthält \cite{Sumner.2023}. Bei der Analyse von Node.js werden zwei Versionen einbezogen. Zum einen die Version mit Long Term Support (LTS), da Node.js diese Version für die meisten Benutzer aufgrund des langfristigen Supports empfiehlt \cite{OpenJSFoundation.o.J.}. Zum anderen die neuste Version von Node,js, da in Version 20 beispielsweise die neuste Version des URL-Parsers Ada eingeführt wurde, die signifikante Performance-Verbesserungen mit sich bringt \cite{OpenJSFoundation.2023}. Zusätzlich enthält Version 21 weitere kleine Verbesserungen hinsichtlich der Performance \cite{OpenJSFoundation.2023b}.
 
 
 \section{Implementierungen} \label{sec:performance-implementations}
-TODO 
-\todo{Bun HTTP-Server} 
-\todo{Node HTTP-Server} 
-\todo{Bun HTTP-Server mit SQLite Write und Read}
-\todo{Node HTTP-Server mit SQLite Write und Read}\\
+Im Folgenden werden die verwendeten Implementierungen für jedes Testszenario (siehe Kapitel \ref{sec:performance-approach}) vorgestellt.
+
+\subsection{HTTP-Server} \label{subsec:httpServer}
+Um die grundlegende Performance von Netzwerkanfragen zu bestimmen, werden die zwei einfache Programme verwendet. Abbildung  \ref{fig:httpServerBun} zeigt den Quellcode für Bun, Abbildung \ref{fig:httpServerNode} für Node.js.
+
+\begin{lstlisting}[caption={HTTP-Server Bun},label={fig:httpServerBun}]
+	Bun.serve({
+		port: 3000,
+		fetch(request) {
+			return new Response("Hello from Bun!");
+		},
+	});
+\end{lstlisting}
+
+\begin{lstlisting}[caption={HTTP-Server Node.js},label={fig:httpServerNode}]
+	import http from "node:http";
+	
+	http.createServer(function (request, response) {
+		response.write('Hello from Node.js!')
+		response.end();
+	}).listen(3000);
+\end{lstlisting}
+
+\noindent
+Um die Performance der ersten beiden Programme zu testen, werden mit Bombardier 500 gleichzeitige Benutzer für eine Dauer von 30 Sekunden simuliert. Der dafür notwendige Befehl wird in Abbildung \ref{fig:bombardierHttpServer} visualisiert.
+\begin{lstlisting}[caption={Bombardier HTTP-Server},label={fig:bombardierHttpServer}]
+	bombardier -c 500 -d 30s http://localhost:3000
+\end{lstlisting}
+
+\noindent
+Die Server wurden mit der entsprechenden Laufzeitumgebung gestartet. Um die Auslastung der CPU und des RAMs zu bestimmen, wird GNU Time benutzt. Der dafür erforderliche Befehl wird in Abbildung \ref{fig:timeHTTPServerUbuntu} für Ubuntu und in Abbildung \ref{fig:timeHTTPServerMacOS} für MacOS dargestellt. In MacOS wurde ``gtime`` genutzt, das ``time`` unter Linux repräsentiert.
+
+\begin{lstlisting}[caption={Bombardier HTTP-Server},label={fig:timeHTTPServerUbuntu}]
+	/usr/bin/time -f "Maximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" bun httpServer.js
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Bombardier HTTP-Server},label={fig:timeHTTPServerMacOS}]
+	gtime --verbose bun httpServer.js
+\end{lstlisting}
+
+\subsection{File-Server} \label{subsec:fileServer}
+Eine häufige Aufgabe von Web-Servern ist es, Bilder für das Frontend zur Verfügung zu stellen \todo{Quelle?}. Daher wird dieses Szenario als Nächstes gemessen, um auch die Performance von Zugriffe auf das Dateisystem in den Vergleich einfließen zu lassen. \newline
+Abbildung  \ref{fig:fileServerBun} zeigt die Implementation für Bun, Abbildung \ref{fig:fileServerNode} für Node.js.
+
+\begin{lstlisting}[caption={File-Server Bun.js},label={fig:fileServerBun}]
+	const basePath = "../data";
+	
+	Bun.serve({
+		port: 3000,
+		fetch(request) {
+			const filePath = `${basePath}${new URL(request.url).pathname}`;
+			
+			try {
+				return new Response(Bun.file(filePath));
+			} catch (error) {
+				return new Response("File not found", {
+					status: 404
+				});
+			}
+		},
+	});
+\end{lstlisting}
+
+\begin{lstlisting}[caption={File-Server Node.js},label={fig:fileServerNode}]
+	import { createReadStream } from "node:fs";
+	import http from "node:http";
+	
+	const basePath = "../data";
+	
+	http.createServer((request, response) => {
+		const filePath = `${basePath}${request.url}`;
+		const readStream = createReadStream(filePath);
+		
+		readStream.on("open", () => {
+			response.setHeader("content-type", "image/png");
+			response.writeHead(200);
+			
+			readStream.pipe(response);
+		});
+		
+		readStream.on("error", () => {
+			response.writeHead(404, "Image not found");
+			response.end();
+		});
+	}).listen(3000);
+\end{lstlisting}
+
+\noindent
+Mit Hilfe von Bombardier rufen beide Server dasselbe Bild aus dem Dateisystem ab. Falls dieses nicht gefunden wird, geben beide eine entsprechende Fehlermeldung zurück. Dieses Testszenario wird jeweils mit 50, 250, 500 und 1000 gleichzeitigen Benutzern für eine Dauer von 30 Sekunden getestet (siehe Kapitel \ref{sec:performance-approach}). Abbildung  \ref{fig:bombardierFileServer} zeigt das resultierende Kommando für 50 gleichzeitige Nutzer. Die Befehle zum Messen der CPU- und RAM-Auslastung unterscheiden sich nicht im Vergleich zum HTTP-Server (siehe Kapitel \ref{subsec:httpServer}).
+
+\begin{lstlisting}[caption={Bombardier File-Server},label={fig:bombardierFileServer}]
+	bombardier -c 500 -d 30s http://localhost:3000/example.png
+\end{lstlisting}
+
+\subsection{Fibonacci} \label{subsec:fibonacci}
+Als letztes Szenario wird die Fibonacci-Folge für die Zahl 45 berechnet, um die Leistung bei der Ausführung rechenintensiver Aufgaben zu bewerten. Hierfür nutzen beide Laufzeitumgebungen die in Abbildung \ref{fig:fibonacci} dargestellte Implementierung.
+
+\begin{lstlisting}[caption={Berechnung der Fibonacci-Folge},label={fig:fibonacci}]
+	const fibonacci = (number) => {
+		if (number <= 0) {
+			return 0;
+		} else if (number <= 1) {
+			return 1;
+		} else if (number <= 2) {
+			return 2;
+		}
+		
+		return fibonacci(number-1) + fibonacci(number-2);
+	};
+	
+	console.log(fibonacci(45));
+\end{lstlisting}
+
+\noindent
+Das Programm wird mit beiden Laufzeitumgebungen und GNU Time zur Erhebung der notwendigen Metriken ausgeführt. Abbildung \ref{fig:timefibonacciUbuntu} stellt dies beispielsweise für Node.js unter Ubuntu dar.
+\begin{lstlisting}[caption={Fibonacci Node.js},label={fig:timefibonacciUbuntu}]
+	/usr/bin/time -f "Maximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" node fibonacci.js
+\end{lstlisting}
 
 \section{Ergebnisse} \label{sec:performance-results}
-TODO \\
+Im Folgenden werden die Ergebnisse der Testszenarien vorgestellt. Zuerst werden die Ergebnisse vorgestellt. Im Anschluss folgt die Diskussion über mögliche Konsequenzen.\\
+
+\noindent
+Im ersten Testszenario wurde die grundlegende Leistung der HTTP-Server verglichen. Abbildung \ref{TODO} zeigt die Anzahl an Anfragen pro Sekunden, die jede Laufzeitumgebung bei 500 Benutzern bewältigen konnte.
 
 \section{Fazit} \label{sec:performance-conclusion}
 TODO \\
