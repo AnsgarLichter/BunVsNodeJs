@@ -18,7 +18,8 @@ Um die Performance korrekt zu bestimmen, müssen die richtigen Tools verwendet w
 \end{itemize}
 
 \noindent
-Bombardier generiert die HTTP-Anfragen an die Server im ersten und zweiten Testszenario. Im Tool kann die Dauer der Lasttests oder auch die Anzahl an zu versendeten Anfragen konfiguriert werden. Zusätzlich kann per Parameter bestimmt werden, wie viele gleichzeitige Benutzer simuliert werden. Nach dem Test gibt das Tool für die Anzahl an Anfragen pro Sekunde und für die Latenz die durchschnittlichen und maximalen Werte sowie die Standardabweichung aus. Zusätzlich kann der Anteil an erfolgreichen Anfragen bestimmt werden. Denn Bombardier gibt auch die Anzahl an Anfragen pro HTTP-Statuscode aus. Das Tool eignet sich aufgrund seinen detailreichen Aufgaben und seiner Performance. Es ist in Go geschrieben und verwendet das Paket ``fasthttp`` statt der nativen HTTP-Implementierung von Go und ist dadurch ausreichend performant. Damit die CPU-Auslastung und der maximal verwendete Arbeitsspeicher in den Ergebnissen berücksichtigt werden kann, wird GNU Time verwendet. GNU Time ist in Ubuntu bereits nativ verfügbar und eignet sich dadurch. Auf MacOS wird eine entsprechende Portierung dieses Tools verwendet, um vergleichbare Daten zu erheben.
+Bombardier generiert die HTTP-Anfragen an die Server im ersten und zweiten Testszenario. Im Tool kann die Dauer der Lasttests oder auch die Anzahl an zu versendeten Anfragen konfiguriert werden. Zusätzlich kann per Parameter bestimmt werden, wie viele gleichzeitige Benutzer simuliert werden. Nach dem Test gibt das Tool für die Anzahl an Anfragen pro Sekunde und für die Latenz die durchschnittlichen und maximalen Werte sowie die Standardabweichung aus. Zusätzlich kann der Anteil an erfolgreichen Anfragen bestimmt werden. Denn Bombardier gibt auch die Anzahl an Anfragen pro HTTP-Statuscode aus. Das Tool eignet sich aufgrund seinen detailreichen Aufgaben und seiner Performance. Es ist in Go geschrieben und verwendet das Paket ``fasthttp`` statt der nativen HTTP-Implementierung von Go und ist dadurch ausreichend performant. Damit die CPU-Auslastung und der maximal verwendete Arbeitsspeicher in den Ergebnissen berücksichtigt werden kann, wird GNU Time verwendet. GNU Time ist in Ubuntu bereits nativ verfügbar und eignet sich dadurch. Auf MacOS wird eine entsprechende Portierung dieses Tools verwendet, um vergleichbare Daten zu erheben. \newline
+Um ein möglichst repräsentatives Ergebnis zu erhalten, wird jedes Testszenario für jede Laufzeitumgebung jeweils 5-mal ausgeführt. Aus den gesammelten Daten wird pro Eigenschaft der Durchschnitt gebildet. Dadurch fallen einzelne Ausreißer weniger ins Gewicht.
 
 \noindent
 Die vorgestellte Testkonfiguration ermöglicht die Quantifizierung der Performance-Metriken, um aus diesen Metriken fundierte Aussagen über die Performance beider Laufzeitumgebungen ableiten zu können und die 1. Forschungsfrage (siehe Kapitel \ref{sec:introduction-target}) zu beantworten.
@@ -91,14 +92,14 @@ Um die Performance der ersten beiden Programme zu testen, werden mit Bombardier 
 \end{lstlisting}
 
 \noindent
-Die Server wurden mit der entsprechenden Laufzeitumgebung gestartet. Um die Auslastung der CPU und des RAMs zu bestimmen, wird GNU Time benutzt. Der dafür erforderliche Befehl wird in Abbildung \ref{fig:timeHTTPServerUbuntu} für Ubuntu und in Abbildung \ref{fig:timeHTTPServerMacOS} für MacOS dargestellt. In MacOS wurde ``gtime`` genutzt, das ``time`` unter Linux repräsentiert.
+Die Server wurden mit der entsprechenden Laufzeitumgebung gestartet. Um die Auslastung der CPU und des RAMs zu bestimmen, wird GNU Time benutzt. Der dafür erforderliche Befehl wird in Abbildung \ref{fig:timeHTTPServerUbuntu} für Ubuntu und in Abbildung \ref{fig:timeHTTPServerMacOS} für MacOS dargestellt. In MacOS wurde ``gtime`` genutzt, das eine Portierung von ``time`` unter Linux ist.
 
 \begin{lstlisting}[caption={Bombardier HTTP-Server},label={fig:timeHTTPServerUbuntu}]
-	/usr/bin/time -f "Maximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" bun httpServer.js
+	/usr/bin/time -f "Execution Time: %e\nMaximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" bun httpServer.js
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Bombardier HTTP-Server},label={fig:timeHTTPServerMacOS}]
-	gtime --verbose bun httpServer.js
+	gtime -f "Execution Time: %e\nMaximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" bun httpServer.js
 \end{lstlisting}
 
 \subsection{File-Server} \label{subsec:fileServer}
@@ -175,16 +176,75 @@ Als letztes Szenario wird die Fibonacci-Folge für die Zahl 45 berechnet, um die
 \end{lstlisting}
 
 \noindent
-Das Programm wird mit beiden Laufzeitumgebungen und GNU Time zur Erhebung der notwendigen Metriken ausgeführt. Abbildung \ref{fig:timefibonacciUbuntu} stellt dies beispielsweise für Node.js unter Ubuntu dar.
+Das Programm wird mit beiden Laufzeitumgebungen und GNU Time zur Erhebung der notwendigen Metriken ausgeführt. Abbildung \ref{fig:timefibonacciUbuntu} stellt dies beispielsweise für Node.js unter Ubuntu dar. Auf MacOS muss ``/usr/bin/time`` durch ``gtime`` ersetzt werden.
 \begin{lstlisting}[caption={Fibonacci Node.js},label={fig:timefibonacciUbuntu}]
-	/usr/bin/time -f "Maximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" node fibonacci.js
+	/usr/bin/time -f "Execution Time: %e\nMaximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" node fibonacci.js
 \end{lstlisting}
+
+
 
 \section{Ergebnisse} \label{sec:performance-results}
 Im Folgenden werden die Ergebnisse der Testszenarien vorgestellt. Zuerst werden die Ergebnisse vorgestellt. Im Anschluss folgt die Diskussion über mögliche Konsequenzen.\\
 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{./images/httpServerAverageRequestsPerSecond.png}
+	\caption{HTTP-Server - Durchschnittliche Anzahl an Anfragen pro Sekunde}
+	\label{fig:httpServerAverageRequestsPerSecond}
+\end{figure}
+
+
 \noindent
-Im ersten Testszenario wurde die grundlegende Leistung der HTTP-Server verglichen. Abbildung \ref{TODO} zeigt die Anzahl an Anfragen pro Sekunden, die jede Laufzeitumgebung bei 500 Benutzern bewältigen konnte.
+Im ersten Testszenario wurde die grundlegende Leistung der HTTP-Server verglichen. Abbildung \ref{fig:httpServerAverageRequestsPerSecond} zeigt die durchschnittliche Anzahl an Anfragen pro Sekunde, die jede Laufzeitumgebung bei 500 Benutzern bewältigen konnte. Bun hat auf beiden Endgeräten deutlich besser abgeschnitten als die Node.js, unabhängig von dessen Version. Bun konnte auf dem Desktop-PC pro Sekunde ungefähr 103.000 Anfragen bewältigen, Node.js nur 30.000 (LTS) und 32.000 (Latest). Derselbe Sachverhalt macht sich auch in den Latenzzeiten bemerkbar. Bun hatte eine Latenz von 6,61ms auf dem MacBook Pro und 4,84ms auf dem Desktop-PC \todo{Diagramm im Anhang hinzufügen}. Im Vergleich musste ein Benutzer bei Node.js ungefähr 10ms auf dem MacBook Pro und ca. 16ms auf dem Desktop-PC auf eine Antwort warten.\newline
+Dieser signifikante Unterschied zeigt, dass Bun Potential bietet auch in realen Szenarien deutlich schneller zu sein als Node.js. Der erste Test zeigt, dass die Verwendung der JavaScriptCore Engine und Zig als Programmiersprache Vorteile zu bieten scheint. In der Produktionsumgebung können so mehrere gleichzeitige Nutzer ohne Performanceverluste bedient werden.\\
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{./images/fileServerAverageLatencyDesktop.png}
+	\caption{File-Server - Durchschnittliche Latenz}
+	\label{fig:fileServerAverageLatency}
+\end{figure}
+
+\noindent
+Das zweite Testszenario analysiert, inwiefern die Potentiale aus dem ersten Test in einem realen Anwendungsfall umgesetzt werden. Um die Diagramme übersichtlich zu halten, konzentriert sich die Darstellung auf den Desktop-PC. Denn die Unterschiede und Trends sind auf beiden Geräten ähnlich. Abbildung \ref{fig:fileServerAverageLatency} zeigt die durchschnittlichen Latenzzeiten beim Zugriff auf ein Bilddatei, die an den Aufrufer zurückgegeben wird. Bun schneidet deutlich besser ab als Node.js. Dies ist über alle 4 Vergleichsszenarien zu beobachten. Bei 50 gleichzeitigen Benutzern hat Bun eine Latenzzeit von 2ms, währned Node.js eine Latenz von 4,2ms (LTS) bzw. 3,5ms (Latest) aufweist. Der Unterschied zwischen Bun und Node.js wächst mit der Anzahl an gleichzeitigen Benutzern an. Bei 250 Nutzern beläuft sich Buns Latenz auf ca. 10ms, der beste Wert von Node.js liegt bei ca. 21ms (Latest). Bei 1000 gleichzeitigen Nutzern benötigt Node.js im Durchschnitt für ca. 116ms (Latest) für die Antwort ein den Benutzer. Bun schafft es dagegen in ca. 42ms. Die Unterschiede betragen teilweise mehr als 50\%. Dies führt zu drastischen Unterschieden bei der Ladezeit von Webseiten, wenn Bilder teilweise mehr als 50\% schneller geladen werden können. Dadurch, dass Bun die Anfragen selbst deutlich schneller beantwortet, bewältigt Bun gleichzeitig deutlich mehr Anfragen pro Sekunde. Dies ist unabhängig von der Anzahl an gleichzeitigen Benutzern. Auf dem Desktop-PC schaffen es alle Laufzeitumgebungen alle gesendeten Anfragen erfolgreich zu beantworten. Auf dem MacBook Pro beantwortet Bun bei 50, 250 und 500 gleichzeitigen Anwendern alle Anfragen erfolgreich. Bei 1000 Nutzern sinkt der Wert auf 99,96\%. Die LTS-Version von Node.js liefert auch erst bei 1000 gleichzeitigen Benutzern fehlerhafte Antworten zurück. Der Anteil erfolgreicher Anfragen beläuft sich auf 99,92\%. Erst bei der neusten Version von Node.js treten Unterschiede zu Bun und Node.js LTS auf. Diese neuste Version beantwortet ab 250 gleichzeitigen Nutzern nicht mehr alle Anfragen erfolgreich. Bei 1000 Nutzern sinkt der Wert auf 99,54\%. Die absolute Anzahl an Anfragen, die mit einem Fehler beantwortet wurden, ist sehr niedrig. Dennoch ist es sehr auffällig, dass die neuste Version von Node.js hier deutlich größere Defizite aufweist. Möglicherweise ist hier auch noch ein Fehler im neusten Release enthalten.\\
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{./images/fileServerRamUsage.png}
+	\caption{File-Server - Maximal verwendeter Arbeitsspeicher}
+	\label{fig:fileServerRamUsage}
+\end{figure}
+
+
+\noindent
+Bei der höchsten Last werden die RAM- und CPU-Nutzung der Laufzeitumgebungen verglichen. Denn bei der höchsten Last sind die Differenzen am besten zu erkennen sein. Abbildung \ref{fig:fileServerRamUsage} zeigt den maximal verwendeten Arbeitsspeicher während des Testzeitraums von 30 Sekunden. Hier manifestiert sich der Eindruck der zuvor betrachteten Eigenschaften. Bun performt deutlich besser als Node.js, unabhängig von der verwendeten Version. Auf dem MacBook Pro benötigt Bun ca. 56 MB Arbeitsspeicher, Node.js dagegen ca. 296 MB (LTS) bzw. ca. 330 MB (Latest). Die Differenz in der RAM-Nutzung ist auf dem Desktop-PC nicht so groß wie auf dem MacBook Pro. Bun verwendete ca. 84 MB. Node.js benötigt ca. 152 MB (LTS) bzw. ca. 212 MB (Latest). Die maximale Nutzung des Arbeitsspeicher ist ein kritischer Indikator für die Effizienz bei der Speichernutzung. D. h. Bun ist hier siginfikant effizienter als Node.js. Die hohe Effizienz könnte ein Grund für die bessere Performance sein. Der Sachverhalt zeigt, dass Zig und die JavaScriptCore Engine in Bun helfen die Speichereffizienz zu steigern. Die Beobachtungen deuten auf Vorteile in der Skalierbarkeit und Kosteneffizienz hin.\\
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{./images/fileServerCpuUsage.png}
+	\caption{File-Server - CPU-Auslastung }
+	\label{fig:fileServerCpuUsage}
+\end{figure}
+
+\noindent
+Abbildung \ref{fig:fileServerCpuUsage} zeigt die CPU-Auslastung bei 1000 gleichzeitigen Benutzern in Prozent. \todo{Mehr als 100\% CPU Nutzung erklären} Node.js ist auch im Bereich der CPU-Nutzung weniger effizienter als Bun. Bun beansprucht ungefähr 91\% der CPU auf dem MacBook Pro und 96\% der CPU auf dem Desktop-PC. Node.js LTS benötigt ca. 195\% auf dem MacBoook Pro und 167\% auf dem Desktop-PC. Die aktuellste Version von Node.js schneidet nochmals schlechter ab. Auf dem MacBook Pro ist der Unterschied zu Node.js LTS mit einer höheren CPU-Auslastung von 10\% relativ gering. Auf dem Desktop-PC nutzt die neuste Version von Node.js 280\% der CPU im Vergleich zu 167\% bei der LTS-Version. Dies zeigt wie die Nutzung des Arbeitsspeichers, dass Bun mit den vorhandenen Ressourcen effizienter umgeht. Daraus folgt, dass Bun bei begrenzten Ressourcen intensivere Aufgaben erledigen kann.\\
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{./images/fibonacciRuntime.png}
+	\caption{Ausführungszeit für die Berechnung der Fibonacci-Folge}
+	\label{fig:fibonacciRuntime}
+\end{figure}
+
+
+\noindent
+Der dritte Testfall vergleicht die Leistung von Bun und Node.js bei der Ausübung rechenintensiver Aufgaben. Abbildung \ref{fig:fibonacciRuntime} veranschaulicht die benötigte Zeit für die Berechnung. Beim Berechnen der Fibonacci-Folge für die Zahl 45 benötigt Bun im Durchschnitt nur 3,24 Sekunden auf dem MacBook Pro und 4,47 Sekunden auf dem Desktop-PC. Die Versionen von Node.js unterscheiden sich kaum voneinander. Die neuste Version ist auf beiden Endgeräten ca. 0,2 Sekunden schneller als die LTS-Version. Dennoch beläuft sich die schnellste Berechnung mit Node.js auf 6,32 Sekunden auf dem MacBook Pro und auf 7,18 Sekunden auf dem Desktop-PC. Somit ist Bun auf dem MacBook Pro ca. 50\% und auf dem Desktop-PC ungefähr 40\% schneller. Die CPU-Auslastung beträgt sowohl bei Bun als auch bei Node.js ca. 100\%. Der maximal verwendete Arbeitsspeicher unterscheidet sich auf dem Desktop-PC nur um maximal 3 MB. Erwähnenswert ist, dass hier die neuste Version von Node.js 1 MB weniger Arbeitsspeicher als Bun genutzt hat. Auf dem MacBook Pro sind die Unterschiede deutlich größer. Bun benötigt maixmal ca. 26 MB RAM, Node.js im Vergleich dazu 42 MB (LTS) und 37 MB (Latest).\newline
+Die Betrachtung der CPU-Auslastung, der RAM-Nutzung und der Ausführungszeiten im Kontext der Fibonacci-Folge bestätigt das Verhalten aus den zwei vorangegangenen Testszenarien. Bun besitzt eine deutlich höhere Leistung auf den genannten Endgeräten unabhängig von der betrachteten Metrik.
 
 \section{Fazit} \label{sec:performance-conclusion}
-TODO \\
+TODO: Fazit aus den Tests \\
+
+TODO: Limitationen -> Konzentration auf ausgewählte Eigenschaften zum Vergleich, spezifisches Hardware-Setup das sich von Servern unterscheidet, abhängig von Systemkonfiguration und Hintergrundprozessen, reale Anwendungen oft deutlich komplexer als die verwendeten Testszenarien\\
+
+TODO: Auffällige Unterschiede zwischen  Mac und Ubuntu könnten genauer analysiert werden\\
