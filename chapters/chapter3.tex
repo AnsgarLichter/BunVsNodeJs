@@ -184,7 +184,7 @@ Das Programm wird mit beiden Laufzeitumgebungen und GNU Time zur Erhebung der no
 
 
 \section{Ergebnisse} \label{sec:performance-results}
-Im Folgenden werden die Ergebnisse der Testszenarien vorgestellt. Zuerst werden die Ergebnisse vorgestellt. Im Anschluss folgt die Diskussion über mögliche Konsequenzen.\\
+Im Folgenden werden die Ergebnisse der Testszenarien vorgestellt. Im Anschluss folgt die Diskussion über mögliche Konsequenzen.\\
 
 
 \begin{figure}[h]
@@ -243,8 +243,12 @@ Der dritte Testfall vergleicht die Leistung von Bun und Node.js bei der Ausübun
 Die Betrachtung der CPU-Auslastung, der RAM-Nutzung und der Ausführungszeiten im Kontext der Fibonacci-Folge bestätigt das Verhalten aus den zwei vorangegangenen Testszenarien. Bun besitzt eine deutlich höhere Leistung auf den genannten Endgeräten unabhängig von der betrachteten Metrik.
 
 \section{Fazit} \label{sec:performance-conclusion}
-TODO: Fazit aus den Tests \\
+Dieses Kapitel widmet sich auf die Beantwortung der ersten Leitfrage ``Welche konkreten Leistungsverbesserungen können in Bun 1.0 im Vergleich zu Node.js festgestellt werden, und wie lassen sie sich quantifizieren?'' (siehe Kapitel \ref{introduction}). Die Ergebnisse des Benchmarks verdeutlichen, dass Bun in sämtlichen Testszenarien signifikant bessere Leistungen als Node.js erzielt hat. Dies zeigt sich in einer deutlich reduzierten Latenz, in einer geringeren Inanspruchnahme von Arbeitsspeicher und CPU-Ressourcen während der Verarbeitung von Netzwerkanfragen. Diese Resultate bestätigen sich bei der Ausführung rechenintensiver Aufgaben. Bun hat die Fibonacci-Folge bis zu 50\% schneller berechnet als Node.js. In diesem Szenario beansprucht Bun ähnlich viel Arbeitsspeicher wie Node.js, weist jedoch eine geringere CPU-Auslastung auf. \newline
+Diese Ergebnisse unterstreichen, dass Bun bei der Entwicklung gute Entscheidungen bei der Auswahl seiner Komponenten getroffen hat. Die JavaScriptCore Engine mit mehreren JIT-Kompilern (siehe Kapitel \ref{sec:foundations-Bun}) ermöglicht eine effizientere Optimierung es den Maschinencode. Die Auswahl von Zig als systemnahe Programmiersprache und das intensive Testen während der Entwicklung haben die Effizienz von Bun im Umgang mit den verfügbaren Ressourcen gesteigert. Allerdings ist die Performance nicht der alleinige Faktor bei der Wahl einer Laufzeitumgebung. Stabilität, Sicherheit, Zuverlässigkeit und auch Kompatibilität spielen eine ebenso wichtige Rolle.\\
 
-TODO: Limitationen -> Konzentration auf ausgewählte Eigenschaften zum Vergleich, spezifisches Hardware-Setup das sich von Servern unterscheidet, abhängig von Systemkonfiguration und Hintergrundprozessen, reale Anwendungen oft deutlich komplexer als die verwendeten Testszenarien\\
+\noindent
+Das Benchmark basiert auf den Vergleich ausgewählter Eigenschaften auf einem spezifischen Hardware-Setup. Es ist zu beachten, dass diese Ergebnisse unter Verwendung von Servern aus der Produktionsumgebung potenziell abweichen können. Des Weiteren sollten weitere Eigenschaften analysiert werden, um die Überlegenheit von Bun zu verifizieren. Selbst bei einer Reproduktion des Benchmarks auf identischer Hardware kann es aufgrund unterschiedlicher Systemkonfigurationen und laufender Hintergrundprozesse zu Abweichungen kommen. \newline
+Zudem beschränken sich die bisherigen Analysen auf einfache Beispiele, die sich auf die Performance der Laufzeitumgebungen konzentrieren. In der Realität sind Anwendungsquellcodes oft umfangreicher und komplexer. Die vorliegenden Ergebnisse geben daher nicht zwangsläufig die Performance solcher komplexeren Anwendungen wieder.\\
 
-TODO: Auffällige Unterschiede zwischen  Mac und Ubuntu könnten genauer analysiert werden\\
+\noindent
+Für eine umfassende Bewertung der Laufzeitleistung sollten die Unterschiede zwischen dem MacBook Pro und dem Desktop-PC genauer analysiert werden. Es ist wichtig, die Gründe für die signifikanten Unterschiede im Anteil erfolgreicher Anfragen zu ermitteln. Zudem sollte untersucht werden, warum die RAM-Nutzung bei der Berechnung der Fibonacci-Folge unter Ubuntu kaum variiert. Die Untersuchung sollte auf andere Hardware-Setups ausgeweitet werden, um die Generalisierbarkeit der Ergebnisse sicherzustellen.  Schließlich könnten umfangreichere Anwendungsbeispiele und realistischere Szenarien in die Analyse einbezogen werden, um die tatsächliche Performance in komplexen Umgebungen besser abzubilden.
