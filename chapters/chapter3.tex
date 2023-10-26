@@ -1,32 +1,29 @@
 % !TeX root = ..\main.tex
-\npchapter{Performanceanalyse}  \label{performanceAnalysis}
-In diesem Kapitel wird die Performance von Bun detailliert betrachtet und mit Node.js verglichen. Hierbei liegt der Fokus darauf, die Leitfrage ``Welche konkreten Leistungsverbesserungen können in Bun 1.0 im Vergleich zu Node.js festgestellt werden, und wie lassen sie sich quantifizieren?'' zu beantworten. Zuerst wird die Vorgehensweise bei den Tests vorgestellt. Anschließend wird der verwendete Versuchsaufbau und die Beispielimplementierungen präsentiert. Darauffolgend werden die Ergebnisse der Tests analysiert.
+\npchapter{Performanceanalyse} \label{performanceAnalysis}
+In diesem Kapitel wird die Performance von Bun ausführlich untersucht und mit Node.js verglichen. Hierbei liegt der Fokus darauf, die Leitfrage ``Welche konkreten Leistungsverbesserungen können in Bun 1.0 im Vergleich zu Node.js festgestellt werden, und wie lassen sie sich quantifizieren?'' zu beantworten (siehe Kapitel \ref{introduction}). Zuerst wird die Vorgehensweise bei den Tests vorgestellt. Anschließend werden der verwendete Versuchsaufbau erläutert. Vor der Betrachtung der Ergebnisse folgt die Vorstellung der Beispielimplementierungen.
 
 
 \section{Vorgehensweise} \label{sec:performance-approach}
-Als Metriken werden die durchschnittliche Latenz, die Anzahl an HTTP-Anfragen pro Sekunde, der Anteil an erfolgreichen HTTP-Anfragen, die CPU-Auslastung un der maximal genutzte Arbeitsspeicher während der Ausführungszeit (siehe Kapitel \ref{sec:foundations-Performance})\todo{Verifizieren, dass die Metriken dort inkludiert sind}. Um diese Metriken zu ermitteln, werden verschiedene Szenarien inklusive unterschiedlicher Implementierungen verwendet (siehe Kapitel \ref{sec:performance-implementations}). Die unterschiedlichen Implementierungen sind auf variierende APIs \todo{Abkürzung einführen, falls in Theorie nicht geschehen} der Laufzeitumgebungen zurückzuführen. Diese müssen verwendet werden, damit die Leistung der Laufzeitumgebungen und nicht die Performance des Quellcodes geprüft wird.\\
+Als Metriken für die Performance-Analyse werden die durchschnittliche Latenz, die Anzahl an HTTP-Anfragen pro Sekunde, der Anteil an erfolgreichen HTTP-Anfragen, die CPU-Auslastung und der maximal genutzte Arbeitsspeicher während der Ausführungszeit verwendet (siehe Kapitel \ref{sec:foundations-Performance})\todo{Verifizieren, dass die Metriken dort inkludiert sind}. Um diese Metriken zu ermitteln, werden verschiedene Testszenarien mit unterschiedlichen Implementierungen betrachtet (siehe Kapitel \ref{sec:performance-implementations}). Die unterschiedlichen Implementierungen sind auf variierende APIs \todo{Abkürzung einführen, falls in Theorie nicht geschehen} der Laufzeitumgebungen zurückzuführen. Diese ist notwendig, um die Leistung der Laufzeitumgebungen und nicht die Performance des Quellcodes zu bewerten.\\
 
 \noindent
-Zuerst wird die grundlegende Performance von HTTP-Server beider Laufzeitumgebungen gemessen (siehe Kapitel \ref{subsec:httpServer}). Es greifen 500 gleichzeitige Benutzer auf den Server für 30 Sekunden lang zu und erhalten einen String als Antwort zurück. Dieses Szenario veranschaulicht die grundlegende Netzwerkgeschwindigkeit beider Laufzeitumgebungen. Als zweites Szenario wird ein Datei-Server verwendet, der jedem Aufrufer ein Bild zurückgibt (siehe Kapitel \ref{subsec:fileServer}). Diese Aufgabe wird für 50, 250, 500 und 1000 gleichzeitige Nutzer für eine Dauer von 30 Sekunden gemessen. Die Last wird variiert, um die Server näher an ihre Grenzen zu bringen. Der letzte Testfall berechnet die Fibonacci-Folge für die Zahl 45, damit die Leistung beider Laufzeitumgebungen bei rechenintensiven Aufgaben evaluiert wird (siehe Kapitel \ref{subsec:fibonacci}).
+Zuerst erfolgt die Messung der grundlegenden Performance von HTTP-Servern in beiden Laufzeitumgebungen (siehe Kapitel \ref{subsec:httpServer}). Dabei greifen 500 gleichzeitige Benutzer für 30 Sekunden auf den Server zu und erhalten einen kurzen Text als Antwort zurück. Dieses Szenario dient der Untersuchung der grundlegenden Netzwerkgeschwindigkeit beider Laufzeitumgebungen. Als nächstes wird ein Datei-Server verwendet, der jedem Aufrufer ein Bild zurückgibt (siehe Kapitel \ref{subsec:fileServer}). Dieser Test wird für 50, 250, 500 und 1.000 gleichzeitige Nutzer über einen Zeitraum von 30 Sekunden durchgeführt. Die Last wird variiert, um die Server näher an ihre Grenzen zu bringen. Der letzte Testfall berechnet die Fibonacci-Folge für die Zahl 45, um die Leistung beider Laufzeitumgebungen bei rechenintensiven Aufgaben zu evaluieren (siehe Kapitel \ref{subsec:fibonacci}).
 
 \noindent
-Um die Performance korrekt zu bestimmen, müssen die richtigen Tools verwendet werden. In dieser Arbeit werden die Folgenden genutzt:
+Um die Performance korrekt zu bestimmen, müssen geeignete Tools verwendet werden. In dieser Arbeit kommen folgenden Tools zum Einsatz:
 
 \begin{itemize}
-	\item Bombardier,
+	\item Bombardier Version 1.2.6,
 	\item GNU Time.
 \end{itemize}
 
 \noindent
-Bombardier generiert die HTTP-Anfragen an die Server im ersten und zweiten Testszenario. Im Tool kann die Dauer der Lasttests oder auch die Anzahl an zu versendeten Anfragen konfiguriert werden. Zusätzlich kann per Parameter bestimmt werden, wie viele gleichzeitige Benutzer simuliert werden. Nach dem Test gibt das Tool für die Anzahl an Anfragen pro Sekunde und für die Latenz die durchschnittlichen und maximalen Werte sowie die Standardabweichung aus. Zusätzlich kann der Anteil an erfolgreichen Anfragen bestimmt werden. Denn Bombardier gibt auch die Anzahl an Anfragen pro HTTP-Statuscode aus. Das Tool eignet sich aufgrund seinen detailreichen Aufgaben und seiner Performance. Es ist in Go geschrieben und verwendet das Paket ``fasthttp`` statt der nativen HTTP-Implementierung von Go und ist dadurch ausreichend performant. Damit die CPU-Auslastung und der maximal verwendete Arbeitsspeicher in den Ergebnissen berücksichtigt werden kann, wird GNU Time verwendet. GNU Time ist in Ubuntu bereits nativ verfügbar und eignet sich dadurch. Auf MacOS wird eine entsprechende Portierung dieses Tools verwendet, um vergleichbare Daten zu erheben. \newline
-Um ein möglichst repräsentatives Ergebnis zu erhalten, wird jedes Testszenario für jede Laufzeitumgebung jeweils 5-mal ausgeführt. Aus den gesammelten Daten wird pro Eigenschaft der Durchschnitt gebildet. Dadurch fallen einzelne Ausreißer weniger ins Gewicht.
-
-\noindent
-Die vorgestellte Testkonfiguration ermöglicht die Quantifizierung der Performance-Metriken, um aus diesen Metriken fundierte Aussagen über die Performance beider Laufzeitumgebungen ableiten zu können und die 1. Forschungsfrage (siehe Kapitel \ref{sec:introduction-target}) zu beantworten.
+Bombardier generiert die HTTP-Anfragen an die Server in den ersten beiden Testszenarien. Mit diesem Tool kann die Dauer der Lasttests sowie die Anzahl der zu versendenden Anfragen konfiguriert werden. Außerdem lässt sich festlegen, wie viele gleichzeitige Benutzer simuliert werden. Nach dem Test liefert Bombardier durchschnittliche und maximale Werte für die Anzahl der Anfragen pro Sekunde und die Latenz, einschließlich der Standardabweichung. Zusätzlich schlüsselt das Tool die erhaltenen HTTP-Statuscodes auf. Dadurch kann der Anteil an erfolgreichen Anfragen bestimmt werden. Bombardier eignet sich aufgrund seinen detailreichen Aufgaben und seiner Performance. Es ist in Go geschrieben und verwendet das Paket ``fasthttp`` anstelle der nativen HTTP-Implementierung von Go. Dadurch ist es ausreichend performant. Zur Erfassung der CPU-Auslastung und des maximal genutzten Arbeitsspeichers wird GNU Time verwendet. GNU Time ist auf Ubuntu bereits nativ verfügbar und daher gut geeignet. Auf MacOS wird eine entsprechende Portierung dieses Tools genutzt, um vergleichbare Daten zu erheben. \newline
+Um möglichst repräsentative Ergebnisse zu erzielen, werden alle Testszenarien für jede Laufzeitumgebung jeweils 5-mal wiederholt. Die Durchschnittswerte aus den gesammelten Daten reduzieren die Auswirkung einzelner Ausreißer.
 
 
 \section{Versuchsaufbau} \label{sec:performance-testSetup}
-Um eine konsistente und kontrollierte Umgebung für die Tests zu schaffen, werden diese auf spezifischer Hardware und Software durchgeführt. Das Ziel besteht darin, die Testergebnisse so reproduzierbar wie möglich zu gestalten. Des Weiteren wird dadurch eine Vergleichbarkeit zwischen Bun und Node.js gewährleistet, was die Quantifizierung der verwendeten Metriken ermöglicht.
+Um eine konsistente und kontrollierte Umgebung für die Tests zu gewährleisten, werden diese auf spezifischer Hardware und Software durchgeführt. Das Ziel besteht darin, die Testergebnisse so reproduzierbar wie möglich zu gestalten. Dies gewährleistet zudem die Vergleichbarkeit zwischen Bun und Node.js, was die Quantifizierung der verwendeten Metriken ermöglicht.
 
 \begin{table}[h]
 	\centering
@@ -38,7 +35,7 @@ Um eine konsistente und kontrollierte Umgebung für die Tests zu schaffen, werde
 		\hline
 		Arbeitsspeicher & 32 GB DDR4-3200 & 16 GB LPDDR5-6400 \\
 		\hline
-		Betriebssystem & Ubuntu 23.10 & macOS 14 Sonoma \\
+		Betriebssystem & Ubuntu 23.10 & MacOS 14 Sonoma \\
 		\hline
 	\end{tabular}
 	\caption{Hardware für die Performanceanalyse}
@@ -46,26 +43,25 @@ Um eine konsistente und kontrollierte Umgebung für die Tests zu schaffen, werde
 \end{table}
 
 \noindent
-Die Tests werden auf verschiedenen Geräten mit unterschiedlichen Betriebssystemen durchgeführt, wie in Tabelle \ref{table:hardware} dargestellt. Dies dient der Verifikation, ob etwaige Performance-Verbesserungen auf eine spezifische Systemumgebung zurückzuführen sind. Die native Implementierung von Bun für Windows ist experimentell und nicht vollständig für die Performance optimiert (siehe Kapitel \ref{sec:foundations-Bun}). Die experimentelle Lösung ist nicht für die Öffentlichkeit zugänglich \cite{Verhelst.2023}. Daher kann die Funktionsweise von Bun unter Windows nicht getestet werden.
+Tabelle \ref{table:hardware} zeigt die eingesetze Hardware und die dazugehörigen Betriebssysteme. Dies dient der Verifikation, ob etwaige Performance-Verbesserungen auf eine spezifische Systemumgebung zurückzuführen sind. Die native Implementierung von Bun für Windows ist experimentell und ist für die Öffentlichkeit nicht zugänglich \cite{Verhelst.2023}. Daher ist es nicht möglich, die Funktionsweise von Bun unter Windows zu testen.
 
 \noindent
-Um die tatsächlichen Tests auszuführen, werden die folgenden Versionen der betrachteten Frameworks verwendet:
+Die folgenden Versionen der betrachteten Frameworks werden eingesetzt:
 \begin{itemize}
-	\item Bun Version 1.0.6 (Neuste Version)
-	\item Node.js Version 18.18.2 (LTS)
-	\item Node.js Version 21.0.0 (Neuste)
+	\item Bun Version 1.0.6 (Neuste Version\footnote{Stand 14.10.2023\label{footnote:Stand}})
+	\item Node.js Version 18.18.2 (LTS\footref{footnote:Stand})
+	\item Node.js Version 21.0.0 (Neuste\footref{footnote:Stand})
 \end{itemize}
-\todo{Vermwerk, zu welchem Datum es sich um die aktuellsten Versionen handelt}
 
 \noindent
-Die neuste Version von Bun wird für die Tests verwendet, da sie im Vergleich zur Version 1.0 bereits Fehlerkorrekturen enthält \cite{Sumner.2023}. Bei der Analyse von Node.js werden zwei Versionen einbezogen. Zum einen die Version mit Long Term Support (LTS), da Node.js diese Version für die meisten Benutzer aufgrund des langfristigen Supports empfiehlt \cite{OpenJSFoundation.o.J.}. Zum anderen die neuste Version von Node,js, da in Version 20 beispielsweise die neuste Version des URL-Parsers Ada eingeführt wurde, die signifikante Performance-Verbesserungen mit sich bringt \cite{OpenJSFoundation.2023}. Zusätzlich enthält Version 21 weitere kleine Verbesserungen hinsichtlich der Performance \cite{OpenJSFoundation.2023b}.
-
+Die neuste Version von Bun wird für die Tests verwendet, da sie im Vergleich zur Version 1.0 bereits Fehlerkorrekturen enthält \cite{Sumner.2023}. Bei der Analyse von Node.js werden zwei Versionen einbezogen. Einerseits die Version mit Long Term Support (LTS), da Node.js diese Version für die meisten Benutzer aufgrund des langfristigen Supports empfiehlt \cite{OpenJSFoundation.o.J.}. Andererseits die neuste Version von Node,js, da in Version 20 beispielsweise die neuste Version des URL-Parsers Ada eingeführt wurde. Alleine der aktualisierte URL-Parser verspricht signifikante Performance-Verbesserungen \cite{OpenJSFoundation.2023}. Zusätzlich enthält Version 21 weitere kleine Verbesserungen hinsichtlich der Performance \cite{OpenJSFoundation.2023b}. \newline
+Der Versuchsaufbau stellt sicher, dass die Performance-Tests auf aussagekräftige und vergleichbare Ergebnisse hinarbeiten und somit der Untersuchung der ersten Forschungsfrage (siehe Kapitel \ref{sec:introduction-target}) dienen.
 
 \section{Implementierungen} \label{sec:performance-implementations}
-Im Folgenden werden die verwendeten Implementierungen für jedes Testszenario (siehe Kapitel \ref{sec:performance-approach}) vorgestellt.
+Im Folgenden werden die für jedes Testszenario (siehe Kapitel \ref{sec:performance-approach}) verwendeten Implementierungen vorgestellt.
 
 \subsection{HTTP-Server} \label{subsec:httpServer}
-Um die grundlegende Performance von Netzwerkanfragen zu bestimmen, werden die zwei einfache Programme verwendet. Abbildung  \ref{fig:httpServerBun} zeigt den Quellcode für Bun, Abbildung \ref{fig:httpServerNode} für Node.js.
+Um die grundlegende Performance von Netzwerkanfragen zu bestimmen, werden zwei einfache Programme verwendet. Die Latenz spiegelt die Latenz der betrachteten Laufzeitumgebungen wider, da die Tests auf demselben Endgerät stattfinden und somit keine Verzögerungen durch das Netzwerk auftreten. In Abbildung \ref{fig:httpServerBun} ist der Quellcode für Bun dargestellt, während Abbildung \ref{fig:httpServerNode} den Quellcode für Node.js zeigt.
 
 \begin{lstlisting}[caption={HTTP-Server Bun},label={fig:httpServerBun}]
 	Bun.serve({
@@ -86,27 +82,27 @@ Um die grundlegende Performance von Netzwerkanfragen zu bestimmen, werden die zw
 \end{lstlisting}
 
 \noindent
-Um die Performance der ersten beiden Programme zu testen, werden mit Bombardier 500 gleichzeitige Benutzer für eine Dauer von 30 Sekunden simuliert. Der dafür notwendige Befehl wird in Abbildung \ref{fig:bombardierHttpServer} visualisiert.
+Um die Performance dieser Programme zu testen, werden mit Bombardier 500 gleichzeitige Benutzer für eine Dauer von 30 Sekunden simuliert, wie im Befehl in Abbildung \ref{fig:bombardierHttpServer} visualisiert.
 \begin{lstlisting}[caption={Bombardier HTTP-Server},label={fig:bombardierHttpServer}]
 	bombardier -c 500 -d 30s http://localhost:3000
 \end{lstlisting}
 
 \noindent
-Die Server wurden mit der entsprechenden Laufzeitumgebung gestartet. Um die Auslastung der CPU und des RAMs zu bestimmen, wird GNU Time benutzt. Der dafür erforderliche Befehl wird in Abbildung \ref{fig:timeHTTPServerUbuntu} für Ubuntu und in Abbildung \ref{fig:timeHTTPServerMacOS} für MacOS dargestellt. In MacOS wurde ``gtime`` genutzt, das eine Portierung von ``time`` unter Linux ist.
+Die Server werden mit der jeweiligen Laufzeitumgebung gestartet. Zur Ermittlung der CPU- und RAM-Auslastung wird GNU Time verwendet. Die Befehle zur Messung der CPU- und RAM-Auslastung sind in Ubuntu und MacOS in den Abbildungen \ref{fig:timeHTTPServerUbuntu} und \ref{fig:timeHTTPServerMacOS} dargestellt.
 
-\begin{lstlisting}[caption={Bombardier HTTP-Server},label={fig:timeHTTPServerUbuntu}]
+\begin{lstlisting}[caption={CPU- und RAM-Messung auf Ubuntu},label={fig:timeHTTPServerUbuntu}]
 	/usr/bin/time -f "Execution Time: %e\nMaximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" bun httpServer.js
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Bombardier HTTP-Server},label={fig:timeHTTPServerMacOS}]
+\begin{lstlisting}[caption={CPU- und RAM-Messung auf MacOS},label={fig:timeHTTPServerMacOS}]
 	gtime -f "Execution Time: %e\nMaximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" bun httpServer.js
 \end{lstlisting}
 
-\subsection{File-Server} \label{subsec:fileServer}
-Eine häufige Aufgabe von Web-Servern ist es, Bilder für das Frontend zur Verfügung zu stellen \todo{Quelle?}. Daher wird dieses Szenario als Nächstes gemessen, um auch die Performance von Zugriffe auf das Dateisystem in den Vergleich einfließen zu lassen. \newline
-Abbildung  \ref{fig:fileServerBun} zeigt die Implementation für Bun, Abbildung \ref{fig:fileServerNode} für Node.js.
+\subsection{Datei-Server} \label{subsec:fileServer}
+Eine häufige Aufgabe von Web-Servern ist es, Bilder für das Frontend zur Verfügung zu stellen \todo{Quelle?}. Das Szenario wird gemessen, um die Performance von Zugriffen auf das Dateisystem in den Vergleich einzubeziehen. \newline
+Die Implementierungen für Bun und Node.js sind in den Abbildungen \ref{fig:fileServerBun} und \ref{fig:fileServerNode} dargestellt.
 
-\begin{lstlisting}[caption={File-Server Bun.js},label={fig:fileServerBun}]
+\begin{lstlisting}[caption={Datei-Server Bun},label={fig:fileServerBun}]
 	const basePath = "../data";
 	
 	Bun.serve({
@@ -125,7 +121,7 @@ Abbildung  \ref{fig:fileServerBun} zeigt die Implementation für Bun, Abbildung 
 	});
 \end{lstlisting}
 
-\begin{lstlisting}[caption={File-Server Node.js},label={fig:fileServerNode}]
+\begin{lstlisting}[caption={Datei-Server Node.js},label={fig:fileServerNode}]
 	import { createReadStream } from "node:fs";
 	import http from "node:http";
 	
@@ -150,9 +146,9 @@ Abbildung  \ref{fig:fileServerBun} zeigt die Implementation für Bun, Abbildung 
 \end{lstlisting}
 
 \noindent
-Mit Hilfe von Bombardier rufen beide Server dasselbe Bild aus dem Dateisystem ab. Falls dieses nicht gefunden wird, geben beide eine entsprechende Fehlermeldung zurück. Dieses Testszenario wird jeweils mit 50, 250, 500 und 1000 gleichzeitigen Benutzern für eine Dauer von 30 Sekunden getestet (siehe Kapitel \ref{sec:performance-approach}). Abbildung  \ref{fig:bombardierFileServer} zeigt das resultierende Kommando für 50 gleichzeitige Nutzer. Die Befehle zum Messen der CPU- und RAM-Auslastung unterscheiden sich nicht im Vergleich zum HTTP-Server (siehe Kapitel \ref{subsec:httpServer}).
+Mithilfe von Bombardier rufen beide Server dasselbe Bild aus dem Dateisystem ab. Falls dieses nicht gefunden wird, geben beide eine entsprechende Fehlermeldung zurück. Dieses Testszenario wird jeweils mit 50, 250, 500 und 1.000 gleichzeitigen Benutzern für eine Dauer von 30 Sekunden getestet (siehe Kapitel \ref{sec:performance-approach}). Der Befehl für 50 gleichzeitige Benutzer ist in Abbildung \ref{fig:bombardierFileServer} dargestellt. Die Befehle zur Messung der CPU- und RAM-Auslastung unterscheiden sich nicht im Vergleich zum HTTP-Server (siehe Unterkapitel \ref{subsec:httpServer}).
 
-\begin{lstlisting}[caption={Bombardier File-Server},label={fig:bombardierFileServer}]
+\begin{lstlisting}[caption={Bombardier Datei-Server},label={fig:bombardierFileServer}]
 	bombardier -c 500 -d 30s http://localhost:3000/example.png
 \end{lstlisting}
 
@@ -177,7 +173,7 @@ Als letztes Szenario wird die Fibonacci-Folge für die Zahl 45 berechnet, um die
 
 \noindent
 Das Programm wird mit beiden Laufzeitumgebungen und GNU Time zur Erhebung der notwendigen Metriken ausgeführt. Abbildung \ref{fig:timefibonacciUbuntu} stellt dies beispielsweise für Node.js unter Ubuntu dar. Auf MacOS muss ``/usr/bin/time`` durch ``gtime`` ersetzt werden.
-\begin{lstlisting}[caption={Fibonacci Node.js},label={fig:timefibonacciUbuntu}]
+\begin{lstlisting}[caption={Messung der Fibonacci-Berechnung in Node.js unter Ubuntu},label={fig:timefibonacciUbuntu}]
 	/usr/bin/time -f "Execution Time: %e\nMaximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" node fibonacci.js
 \end{lstlisting}
 
@@ -186,8 +182,9 @@ Das Programm wird mit beiden Laufzeitumgebungen und GNU Time zur Erhebung der no
 \section{Ergebnisse} \label{sec:performance-results}
 Im Folgenden werden die Ergebnisse der Testszenarien vorgestellt. Im Anschluss folgt die Diskussion über mögliche Konsequenzen.\\
 
-
-\begin{figure}[h]
+\noindent
+\textbf{HTTP-Server Performance}
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=\linewidth]{./images/httpServerAverageRequestsPerSecond.png}
 	\caption{HTTP-Server - Durchschnittliche Anzahl an Anfragen pro Sekunde}
@@ -196,41 +193,45 @@ Im Folgenden werden die Ergebnisse der Testszenarien vorgestellt. Im Anschluss f
 
 
 \noindent
-Im ersten Testszenario wurde die grundlegende Leistung der HTTP-Server verglichen. Abbildung \ref{fig:httpServerAverageRequestsPerSecond} zeigt die durchschnittliche Anzahl an Anfragen pro Sekunde, die jede Laufzeitumgebung bei 500 Benutzern bewältigen konnte. Bun hat auf beiden Endgeräten deutlich besser abgeschnitten als die Node.js, unabhängig von dessen Version. Bun konnte auf dem Desktop-PC pro Sekunde ungefähr 103.000 Anfragen bewältigen, Node.js nur 30.000 (LTS) und 32.000 (Latest). Derselbe Sachverhalt macht sich auch in den Latenzzeiten bemerkbar. Bun hatte eine Latenz von 6,61ms auf dem MacBook Pro und 4,84ms auf dem Desktop-PC \todo{Diagramm im Anhang hinzufügen}. Im Vergleich musste ein Benutzer bei Node.js ungefähr 10ms auf dem MacBook Pro und ca. 16ms auf dem Desktop-PC auf eine Antwort warten.\newline
-Dieser signifikante Unterschied zeigt, dass Bun Potential bietet auch in realen Szenarien deutlich schneller zu sein als Node.js. Der erste Test zeigt, dass die Verwendung der JavaScriptCore Engine und Zig als Programmiersprache Vorteile zu bieten scheint. In der Produktionsumgebung können so mehrere gleichzeitige Nutzer ohne Performanceverluste bedient werden.\\
+Im ersten Testszenario wurde die grundlegende Leistung der HTTP-Server verglichen. Abbildung \ref{fig:httpServerAverageRequestsPerSecond} zeigt die durchschnittliche Anzahl an Anfragen pro Sekunde, die jede Laufzeitumgebung bewältigen konnte. Bun übertraf sowohl die LTS- als auch die neueste Version von Node.js auf beiden getesteten Geräten. Bun konnte auf dem Desktop-PC pro Sekunde ungefähr 103.000 Anfragen bewältigen, während Node.js LTS und die neueste Version nur 30.000 bzw. 32.000 Anfragen pro Sekunde verarbeiten konnten. Diese Leistungsunterschiede spiegelten sich auch in den Latenzzeiten wider. Bun hatte eine Latenz von 6,61ms auf dem MacBook Pro und 4,84ms auf dem Desktop-PC, verglichen mit ungefähr 10 ms (MacBook Pro) und etwa 16 ms (Desktop-PC) für Node.js (siehe auch Kapitel \ref(sec:benchmark-results-diagrams)).\newline
+Diese signifikanten Unterschiede deuten darauf hin, dass Bun das Potential bietet, in realen Szenarien erheblich schneller zu sein als Node.js. Diese Erkenntnisse legen nahe, dass die Verwendung der JavaScriptCore Engine und der Programmiersprache Zig klare Vorteile bei der Bewältigung von Netzwerkanfragen bietet. Das hat erhebliche Auswirkungen auf die Effizienz und Skalierbarkeit in Produktionsumgebungen.\\
 
-\begin{figure}[h]
+\noindent
+\textbf{Datei-Server Performance}
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=\linewidth]{./images/fileServerAverageLatencyDesktop.png}
-	\caption{File-Server - Durchschnittliche Latenz}
+	\caption{Datei-Server - Durchschnittliche Latenz}
 	\label{fig:fileServerAverageLatency}
 \end{figure}
 
 \noindent
-Das zweite Testszenario analysiert, inwiefern die Potentiale aus dem ersten Test in einem realen Anwendungsfall umgesetzt werden. Um die Diagramme übersichtlich zu halten, konzentriert sich die Darstellung auf den Desktop-PC. Denn die Unterschiede und Trends sind auf beiden Geräten ähnlich. Abbildung \ref{fig:fileServerAverageLatency} zeigt die durchschnittlichen Latenzzeiten beim Zugriff auf ein Bilddatei, die an den Aufrufer zurückgegeben wird. Bun schneidet deutlich besser ab als Node.js. Dies ist über alle 4 Vergleichsszenarien zu beobachten. Bei 50 gleichzeitigen Benutzern hat Bun eine Latenzzeit von 2ms, währned Node.js eine Latenz von 4,2ms (LTS) bzw. 3,5ms (Latest) aufweist. Der Unterschied zwischen Bun und Node.js wächst mit der Anzahl an gleichzeitigen Benutzern an. Bei 250 Nutzern beläuft sich Buns Latenz auf ca. 10ms, der beste Wert von Node.js liegt bei ca. 21ms (Latest). Bei 1000 gleichzeitigen Nutzern benötigt Node.js im Durchschnitt für ca. 116ms (Latest) für die Antwort ein den Benutzer. Bun schafft es dagegen in ca. 42ms. Die Unterschiede betragen teilweise mehr als 50\%. Dies führt zu drastischen Unterschieden bei der Ladezeit von Webseiten, wenn Bilder teilweise mehr als 50\% schneller geladen werden können. Dadurch, dass Bun die Anfragen selbst deutlich schneller beantwortet, bewältigt Bun gleichzeitig deutlich mehr Anfragen pro Sekunde. Dies ist unabhängig von der Anzahl an gleichzeitigen Benutzern. Auf dem Desktop-PC schaffen es alle Laufzeitumgebungen alle gesendeten Anfragen erfolgreich zu beantworten. Auf dem MacBook Pro beantwortet Bun bei 50, 250 und 500 gleichzeitigen Anwendern alle Anfragen erfolgreich. Bei 1000 Nutzern sinkt der Wert auf 99,96\%. Die LTS-Version von Node.js liefert auch erst bei 1000 gleichzeitigen Benutzern fehlerhafte Antworten zurück. Der Anteil erfolgreicher Anfragen beläuft sich auf 99,92\%. Erst bei der neusten Version von Node.js treten Unterschiede zu Bun und Node.js LTS auf. Diese neuste Version beantwortet ab 250 gleichzeitigen Nutzern nicht mehr alle Anfragen erfolgreich. Bei 1000 Nutzern sinkt der Wert auf 99,54\%. Die absolute Anzahl an Anfragen, die mit einem Fehler beantwortet wurden, ist sehr niedrig. Dennoch ist es sehr auffällig, dass die neuste Version von Node.js hier deutlich größere Defizite aufweist. Möglicherweise ist hier auch noch ein Fehler im neusten Release enthalten.\\
+Das zweite Testszenario analysiert, inwiefern die Potentiale aus dem ersten Test in einem realen Anwendungsfall umgesetzt werden. Um die Diagramme übersichtlich zu halten, konzentriert sich die Darstellung auf den Desktop-PC. Denn die Unterschiede und Trends sind auf beiden Geräten ähnlich. Abbildung \ref{fig:fileServerAverageLatency} zeigt die durchschnittlichen Latenzzeiten beim Zugriff auf Bilddateien. Bun schnitt erneut besser ab als Node.js. Bei 50 gleichzeitigen Benutzern betrug die Latenzzeit für Bun 2 ms, während Node.js LTS und die neueste Version Latenzzeiten von 4,2 ms bzw. 3,5 ms aufwiesen. Diese Unterschiede wurden bei steigender Anzahl gleichzeitiger Benutzer noch deutlicher. Bei 250 Nutzern beläuft sich Buns Latenz auf ca. 10ms, der beste Wert von Node.js liegt bei ca. 21ms (Neuste Version). Bei 1.000 gleichzeitigen Benutzern benötigte Bun durchschnittlich 42 ms für die Antwort, während Node.js bei 116 ms (neueste Version) lag. Die Unterschiede von mehr als 50\% führen zu erheblich schnelleren Ladezeiten von Webseiten, insbesondere bei einer hohen Anzahl von Bildern. Dadurch, dass Bun die Anfragen selbst deutlich schneller beantwortet, bewältigt Bun gleichzeitig deutlich mehr Anfragen pro Sekunde. Trotz der höheren Effizienz konnte Bun alle Anfragen erfolgreich beantworten, unabhängig von der Anzahl gleichzeitiger Benutzer. In der neuesten Version von Node.js wurden ab 250 gleichzeitigen Benutzern nicht mehr alle Anfragen erfolgreich beantwortet. Bei 1.000 gleichzeitigen Nutzern sank die Erfolgsrate auf dem MacBook Pro auf 99,54\%. Bun erzielte bei 50, 250 und 500 gleichzeitigen Benutzern eine hundertprozentige Erfolgsrate bei der Beantwortung aller Anfragen. Bei 1.000 simulierten Anwendern sank die Erfolgsrate auf 99,96\%. Node.js LTS zeigte ebenfalls eine sehr hohe Erfolgsrate, bei der erst ab 1.000 gleichzeitigen Benutzern fehlerhafte Antworten zurückgeliefert wurden, was zu einer Erfolgsrate von 99,92\% führte. Obwohl die absolute Anzahl der Anfragen mit Fehlern sehr niedrig war, ist es dennoch bemerkenswert, dass die neueste Version von Node.js hier deutlich größere Defizite aufwies. Möglicherweise sind Fehler im neusten Release enthalten, die diese Leistungsunterschiede erklären.\\
 
-\begin{figure}[h]
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=\linewidth]{./images/fileServerRamUsage.png}
-	\caption{File-Server - Maximal verwendeter Arbeitsspeicher}
+	\caption{Datei-Server - Maximal verwendeter Arbeitsspeicher}
 	\label{fig:fileServerRamUsage}
 \end{figure}
 
 
 \noindent
-Bei der höchsten Last werden die RAM- und CPU-Nutzung der Laufzeitumgebungen verglichen. Denn bei der höchsten Last sind die Differenzen am besten zu erkennen sein. Abbildung \ref{fig:fileServerRamUsage} zeigt den maximal verwendeten Arbeitsspeicher während des Testzeitraums von 30 Sekunden. Hier manifestiert sich der Eindruck der zuvor betrachteten Eigenschaften. Bun performt deutlich besser als Node.js, unabhängig von der verwendeten Version. Auf dem MacBook Pro benötigt Bun ca. 56 MB Arbeitsspeicher, Node.js dagegen ca. 296 MB (LTS) bzw. ca. 330 MB (Latest). Die Differenz in der RAM-Nutzung ist auf dem Desktop-PC nicht so groß wie auf dem MacBook Pro. Bun verwendete ca. 84 MB. Node.js benötigt ca. 152 MB (LTS) bzw. ca. 212 MB (Latest). Die maximale Nutzung des Arbeitsspeicher ist ein kritischer Indikator für die Effizienz bei der Speichernutzung. D. h. Bun ist hier siginfikant effizienter als Node.js. Die hohe Effizienz könnte ein Grund für die bessere Performance sein. Der Sachverhalt zeigt, dass Zig und die JavaScriptCore Engine in Bun helfen die Speichereffizienz zu steigern. Die Beobachtungen deuten auf Vorteile in der Skalierbarkeit und Kosteneffizienz hin.\\
+Die RAM- und CPU-Nutzung der Laufzeitumgebungen werden bei 1.000 gleichzeitigen Benutzern verglichen. Denn bei der höchsten Last sind die Differenzen am besten zu erkennen. Abbildung \ref{fig:fileServerRamUsage} zeigt den maximal verwendeten Arbeitsspeicher während des 30-sekündigen Tests. Bun war auch hier effizienter als Node.js auf beiden getesteten Geräten. Auf dem MacBook Pro verbrauchte Bun etwa 56 MB Arbeitsspeicher, während Node.js LTS und die neueste Version etwa 296 MB bzw. 330 MB benötigten. Auf dem Desktop-PC betrug der Arbeitsspeicherverbrauch von Bun etwa 84 MB, im Vergleich zu 152 MB (LTS) bzw. 212 MB (neueste Version) bei Node.js. Die Beobachtungen deuten auf klare Vorteile in Bezug auf Effizienz und Kosten. Bun kann mit begrenzten Ressourcen anspruchsvollere Aufgaben bewältigen.\\
 
-\begin{figure}[h]
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=\linewidth]{./images/fileServerCpuUsage.png}
-	\caption{File-Server - CPU-Auslastung }
+	\caption{Datei-Server - CPU-Auslastung }
 	\label{fig:fileServerCpuUsage}
 \end{figure}
 
 \noindent
-Abbildung \ref{fig:fileServerCpuUsage} zeigt die CPU-Auslastung bei 1000 gleichzeitigen Benutzern in Prozent. \todo{Mehr als 100\% CPU Nutzung erklären} Node.js ist auch im Bereich der CPU-Nutzung weniger effizienter als Bun. Bun beansprucht ungefähr 91\% der CPU auf dem MacBook Pro und 96\% der CPU auf dem Desktop-PC. Node.js LTS benötigt ca. 195\% auf dem MacBoook Pro und 167\% auf dem Desktop-PC. Die aktuellste Version von Node.js schneidet nochmals schlechter ab. Auf dem MacBook Pro ist der Unterschied zu Node.js LTS mit einer höheren CPU-Auslastung von 10\% relativ gering. Auf dem Desktop-PC nutzt die neuste Version von Node.js 280\% der CPU im Vergleich zu 167\% bei der LTS-Version. Dies zeigt wie die Nutzung des Arbeitsspeichers, dass Bun mit den vorhandenen Ressourcen effizienter umgeht. Daraus folgt, dass Bun bei begrenzten Ressourcen intensivere Aufgaben erledigen kann.\\
+Abbildung \ref{fig:fileServerCpuUsage} zeigt die CPU-Auslastung bei 1.000 gleichzeitigen Benutzern in Prozent. \todo{Mehr als 100\% CPU Nutzung erklären} Die CPU-Auslastung bestätigt, dass Bun mit den verfügbaren Ressourcen effizienter umgeht als Node.js. Die CPU-Nutzung bei Bun betrug etwa 91\% auf dem MacBook Pro und 96\% auf dem Desktop-PC. Node.js LTS hingegen benötigte etwa 195\% auf dem MacBook Pro und 167\% auf dem Desktop-PC, während die neueste Version noch schlechter abschnitt. Die Unterschiede in der CPU-Auslastung und Arbeitsspeichernutzung zeigen, dass Bun bei gleichzeitiger Last effizienter war und anspruchsvolle Aufgaben bewältigen konnte.\\
 
-\begin{figure}[h]
+\noindent
+\textbf{Performance bei der Berechnung der Fibonacci-Folge}
+\begin{figure}[h!]
 	\centering
 	\includegraphics[width=\linewidth]{./images/fibonacciRuntime.png}
 	\caption{Ausführungszeit für die Berechnung der Fibonacci-Folge}
@@ -239,16 +240,15 @@ Abbildung \ref{fig:fileServerCpuUsage} zeigt die CPU-Auslastung bei 1000 gleichz
 
 
 \noindent
-Der dritte Testfall vergleicht die Leistung von Bun und Node.js bei der Ausübung rechenintensiver Aufgaben. Abbildung \ref{fig:fibonacciRuntime} veranschaulicht die benötigte Zeit für die Berechnung. Beim Berechnen der Fibonacci-Folge für die Zahl 45 benötigt Bun im Durchschnitt nur 3,24 Sekunden auf dem MacBook Pro und 4,47 Sekunden auf dem Desktop-PC. Die Versionen von Node.js unterscheiden sich kaum voneinander. Die neuste Version ist auf beiden Endgeräten ca. 0,2 Sekunden schneller als die LTS-Version. Dennoch beläuft sich die schnellste Berechnung mit Node.js auf 6,32 Sekunden auf dem MacBook Pro und auf 7,18 Sekunden auf dem Desktop-PC. Somit ist Bun auf dem MacBook Pro ca. 50\% und auf dem Desktop-PC ungefähr 40\% schneller. Die CPU-Auslastung beträgt sowohl bei Bun als auch bei Node.js ca. 100\%. Der maximal verwendete Arbeitsspeicher unterscheidet sich auf dem Desktop-PC nur um maximal 3 MB. Erwähnenswert ist, dass hier die neuste Version von Node.js 1 MB weniger Arbeitsspeicher als Bun genutzt hat. Auf dem MacBook Pro sind die Unterschiede deutlich größer. Bun benötigt maixmal ca. 26 MB RAM, Node.js im Vergleich dazu 42 MB (LTS) und 37 MB (Latest).\newline
-Die Betrachtung der CPU-Auslastung, der RAM-Nutzung und der Ausführungszeiten im Kontext der Fibonacci-Folge bestätigt das Verhalten aus den zwei vorangegangenen Testszenarien. Bun besitzt eine deutlich höhere Leistung auf den genannten Endgeräten unabhängig von der betrachteten Metrik.
+Der dritte Testfall konzentriert sich auf die Leistung von Bun und Node.js bei der Ausübung rechenintensiver Aufgaben. Die Ausführungszeiten sind in Abbildung \ref{fig:fibonacciRuntime} dargestellt. Bun war erheblich schneller, wobei die Berechnung in durchschnittlich 3,24 Sekunden auf dem MacBook Pro und 4,47 Sekunden auf dem Desktop-PC abgeschlossen wurde. Node.js zeigte kaum Unterschiede zwischen der LTS- und der neuesten Version, wobei die schnellste Berechnung 6,32 Sekunden (MacBook Pro) und 7,18 Sekunden (Desktop-PC) dauerte. Somit ist Bun auf dem MacBook Pro ca. 50\% und auf dem Desktop-PC ungefähr 40\% schneller. Die CPU-Auslastung beträgt sowohl bei Bun als auch bei Node.js ca. 100\%. Der maximal verwendete Arbeitsspeicher unterscheidet sich auf dem Desktop-PC nur um maximal 3 MB. Erwähnenswert ist, dass hier die neuste Version von Node.js 1 MB weniger Arbeitsspeicher als Bun genutzt hat. Auf dem MacBook Pro sind die Unterschiede deutlich größer. Bun benötigt maximal ca. 26 MB RAM, Node.js im Vergleich dazu 42 MB (LTS) und 37 MB (Neuste Version).\newline
+Die Betrachtung der CPU-Auslastung, der RAM-Nutzung und der Ausführungszeiten bestätigt die beobachteten Leistungsunterschiede aus den beiden vorherigen Testszenarien. Unabhängig von der betrachteten Metrik weist Bun eine deutlich höhere Leistungsfähigkeit auf beiden Endgeräten auf.
 
 \section{Fazit} \label{sec:performance-conclusion}
 Dieses Kapitel widmet sich auf die Beantwortung der ersten Leitfrage ``Welche konkreten Leistungsverbesserungen können in Bun 1.0 im Vergleich zu Node.js festgestellt werden, und wie lassen sie sich quantifizieren?'' (siehe Kapitel \ref{introduction}). Die Ergebnisse des Benchmarks verdeutlichen, dass Bun in sämtlichen Testszenarien signifikant bessere Leistungen als Node.js erzielt hat. Dies zeigt sich in einer deutlich reduzierten Latenz, in einer geringeren Inanspruchnahme von Arbeitsspeicher und CPU-Ressourcen während der Verarbeitung von Netzwerkanfragen. Diese Resultate bestätigen sich bei der Ausführung rechenintensiver Aufgaben. Bun hat die Fibonacci-Folge bis zu 50\% schneller berechnet als Node.js. In diesem Szenario beansprucht Bun ähnlich viel Arbeitsspeicher wie Node.js, weist jedoch eine geringere CPU-Auslastung auf. \newline
-Diese Ergebnisse unterstreichen, dass Bun bei der Entwicklung gute Entscheidungen bei der Auswahl seiner Komponenten getroffen hat. Die JavaScriptCore Engine mit mehreren JIT-Kompilern (siehe Kapitel \ref{sec:foundations-Bun}) ermöglicht eine effizientere Optimierung es den Maschinencode. Die Auswahl von Zig als systemnahe Programmiersprache und das intensive Testen während der Entwicklung haben die Effizienz von Bun im Umgang mit den verfügbaren Ressourcen gesteigert. Allerdings ist die Performance nicht der alleinige Faktor bei der Wahl einer Laufzeitumgebung. Stabilität, Sicherheit, Zuverlässigkeit und auch Kompatibilität spielen eine ebenso wichtige Rolle.\\
+Die Ergebnisse unterstreichen, dass Bun im Entwicklungsprozess gute Entscheidungen bei der Auswahl seiner Komponenten getroffen hat. Die JavaScriptCore Engine mit mehreren JIT-Kompilern (siehe Kapitel \ref{sec:foundations-Bun}) ermöglicht eine effizientere Optimierung des Maschinencodes. Die Auswahl von Zig als systemnahe Programmiersprache und das intensive Testen während der Entwicklung haben die Effizienz von Bun im Umgang mit den verfügbaren Ressourcen gesteigert. Allerdings ist die Performance nicht der alleinige Faktor bei der Wahl einer Laufzeitumgebung. Stabilität, Sicherheit, Zuverlässigkeit und auch Kompatibilität spielen eine ebenso wichtige Rolle.\\
 
 \noindent
-Das Benchmark basiert auf den Vergleich ausgewählter Eigenschaften auf einem spezifischen Hardware-Setup. Es ist zu beachten, dass diese Ergebnisse unter Verwendung von Servern aus der Produktionsumgebung potenziell abweichen können. Des Weiteren sollten weitere Eigenschaften analysiert werden, um die Überlegenheit von Bun zu verifizieren. Selbst bei einer Reproduktion des Benchmarks auf identischer Hardware kann es aufgrund unterschiedlicher Systemkonfigurationen und laufender Hintergrundprozesse zu Abweichungen kommen. \newline
-Zudem beschränken sich die bisherigen Analysen auf einfache Beispiele, die sich auf die Performance der Laufzeitumgebungen konzentrieren. In der Realität sind Anwendungsquellcodes oft umfangreicher und komplexer. Die vorliegenden Ergebnisse geben daher nicht zwangsläufig die Performance solcher komplexeren Anwendungen wieder.\\
+Das Benchmark basiert auf den Vergleich ausgewählter Eigenschaften auf einem spezifischen Hardware-Setup. Es ist zu beachten, dass diese Ergebnisse unter Verwendung von Servern aus der Produktionsumgebung potenziell abweichen können. Des Weiteren sollten weitere Eigenschaften analysiert werden, um die Überlegenheit von Bun zu verifizieren. Selbst bei einer Reproduktion des Benchmarks auf identischer Hardware kann es aufgrund unterschiedlicher Systemkonfigurationen und laufender Hintergrundprozesse zu Abweichungen kommen. Zudem beschränken sich die bisherigen Analysen auf einfache Beispiele, die sich auf die Performance der Laufzeitumgebungen konzentrieren. In der Realität sind Anwendungsquellcodes oft umfangreicher und komplexer. Die vorliegenden Ergebnisse geben daher nicht zwangsläufig die Performance solcher komplexeren Anwendungen wieder.\\
 
 \noindent
-Für eine umfassende Bewertung der Laufzeitleistung sollten die Unterschiede zwischen dem MacBook Pro und dem Desktop-PC genauer analysiert werden. Es ist wichtig, die Gründe für die signifikanten Unterschiede im Anteil erfolgreicher Anfragen zu ermitteln. Zudem sollte untersucht werden, warum die RAM-Nutzung bei der Berechnung der Fibonacci-Folge unter Ubuntu kaum variiert. Die Untersuchung sollte auf andere Hardware-Setups ausgeweitet werden, um die Generalisierbarkeit der Ergebnisse sicherzustellen.  Schließlich könnten umfangreichere Anwendungsbeispiele und realistischere Szenarien in die Analyse einbezogen werden, um die tatsächliche Performance in komplexen Umgebungen besser abzubilden.
+Für eine umfassende Bewertung der Laufzeitleistung sollten die Unterschiede zwischen dem MacBook Pro und dem Desktop-PC genauer analysiert werden. Es ist wichtig, die Gründe für die signifikanten Unterschiede im Anteil erfolgreicher Anfragen zu ermitteln. Zudem sollte untersucht werden, warum die RAM-Nutzung bei der Berechnung der Fibonacci-Folge unter Ubuntu kaum variiert. Die Untersuchung sollte auf andere Hardware-Setups ausgeweitet werden, um die Generalisierbarkeit der Ergebnisse sicherzustellen. Schließlich könnten umfangreichere Anwendungsbeispiele und realistischere Szenarien in die Analyse einbezogen werden, um die tatsächliche Performance in komplexen Umgebungen besser abzubilden.

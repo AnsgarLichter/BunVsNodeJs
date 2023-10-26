@@ -280,10 +280,15 @@ urlcolor=blue]   % URL-Links        in blau
 
 
 % Alignment der Benchmark-Daten
+\usepackage{booktabs}
+\usepackage{rotating} % Landscape Mode#
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{lscape}
 \usepackage{siunitx} % Required for alignment
 \sisetup{
 	round-mode          = places, % Rounds numbers
-	round-precision     = 4, % to 2 places
-	locale              =DE,
+	round-precision     = 2, % to 2 places
+	locale              = DE,
 	group-separator     = {.},
 }
