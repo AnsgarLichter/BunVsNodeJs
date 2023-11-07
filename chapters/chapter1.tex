@@ -5,8 +5,22 @@
 Dieses Kapitel führt in die Thematik ein und motiviert, warum Bun evaluiert werden soll. Darauf werden die Ziele und der Aufbau dieser Arbeit vorgestellt.
 
 \section{Motivation} \label{sec:introduction-motivation}
-Die kontinuierliche Evolution von Softwaretechnologien und -umgebungen hat einen erheblichen Einfluss auf die Entwicklung und Leistung von Anwendungen. Kürzlich wurde die Version 1.0 der JavaScript Laufzeitumgebung Bun veröffentlicht, die vielversprechende Verbesserungen in Bezug auf die Leistung im Vergleich zu Node.js ankündigt \cite{Sumner.2023c}. \newline
-JavaScript ist eine Programmiersprache, die vor allem im Kontext der Web-Entwicklung verwendet wird \cite{Brown.November2019}. Aktuell erfreut sich JavaScript großer Beliebtheit. In einer Umfrage unter Entwicklern auf Stack Overflow, an der mehr als 89.000 Entwickler teilgenommen haben, wurde JavaScript zum 11. Jahr in Folge als die am häufigsten verwendete Programmiersprache identifiziert. Mehr als 63\% der befragten Entwickler haben JavaScript als ihre favorisierte Technologie angegeben. Unter den professionellen Entwicklern liegt der Anteil noch höher, bei mehr als 65\%. Zusätzlich ist TypeScript, eine stark typisierte Programmiersprache, die auf 
+Die kontinuierliche Evolution von Softwaretechnologien und -umgebungen hat einen erheblichen Einfluss auf die Entwicklung und Leistung von Anwendungen. Kürzlich wurde die Version 1.0 der JavaScript Laufzeitumgebung Bun veröffentlicht, die vielversprechende Verbesserungen in Bezug auf die Leistung im Vergleich zu Node.js ankündigt \cite{Sumner.2023c}.\\
+
+\begin{lstlisting}[label={fig:exampleHttpServerBun},caption={[HTTP-Server Bun]HTTP-Server Bun \cite{Sumner.2023c}}]
+Bun.serve({
+	port: 3000,
+	fetch(request) {
+		return new Response("Hello from Bun!");
+	},
+});
+\end{lstlisting}
+
+\noindent
+Bun ist eine Laufzeitumgebung für JavaScript, die einen integrierten Paketmanager, Bundler, Test-Bibliotheken und einen Transpiler zum Ausführen TypeScript enthält. Dafür sind keine weiteren Abhängigkeiten notwendig. Besitzt ein Projekt abhängige Pakete, können die über den Paketmanager mit \glqq bun install\grqq{} installiert werden. Danach kann Bun den Quellcode, der in Abbildung \ref{fig:exampleHttpServerBun} zu sehen ist, ausführen, indem der Befehl \glqq bun server.ts\grqq{} ausgeführt wird. Besitzt das Projekt noch Tests, können diese über \glqq bun test\grqq{} gestartet werden.\\
+
+\noindent
+Eine Laufzeitumgebung für JavaScript wird benötigt, da JavaScript eine beliebte Programmiersprache ist. Sie wird vor allem im Kontext der Web-Entwicklung verwendet \cite{Brown.November2019}. Aktuell erfreut sich JavaScript großer Beliebtheit. In einer Umfrage unter Entwicklern auf Stack Overflow, an der mehr als 89.000 Entwickler teilgenommen haben, wurde JavaScript zum 11. Jahr in Folge als die am häufigsten verwendete Programmiersprache identifiziert. Mehr als 63\% der befragten Entwickler haben JavaScript als ihre favorisierte Technologie angegeben. Unter den professionellen Entwicklern liegt der Anteil noch höher, bei mehr als 65\%. Zusätzlich ist TypeScript, eine stark typisierte Programmiersprache, die auf 
 JavaScript aufbaut, ebenfalls beliebt \cite{Microsoft.o.J.}. Etwa 39\% aller Entwickler und ungefähr 44\% der professionellen Entwickler nutzen TypeScript. Somit ist TypeScript die viertbeliebteste Programmiersprache. Dies unterstreicht die hohe Relevanz des JavaScript-Ökosystems.\cite{StackOverflow.2023}\\
 
 \begin{figure}[h]
@@ -45,5 +59,3 @@ Das vierte Kapitel setzt den Fokus auf die Kompatibilität von Projekten auf Bas
 
 \noindent
 Das letzte Kapitel fasst die Kernaussagen der Arbeit zusammen und prüft sie vor dem Hintergrund der zuvor definierten Ziele. Abschließend wird in einem Ausblick dargelegt, welche ergänzenden Forschungsthemen verbleiben und welchen zukünftigen Nutzen die Ergebnisse mit sich bringen.
-
-

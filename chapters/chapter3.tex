@@ -84,6 +84,7 @@ Um die grundlegende Performance von Netzwerkanfragen zu bestimmen, werden zwei e
 
 \noindent
 Um die Performance dieser Programme zu testen, werden mit Bombardier 500 gleichzeitige Benutzer für eine Dauer von 30 Sekunden simuliert, wie im Befehl in Abbildung \ref{fig:bombardierHttpServer} visualisiert.
+
 \begin{lstlisting}[caption={Bombardier HTTP-Server},label={fig:bombardierHttpServer}]
 	bombardier -c 500 -d 30s http://localhost:3000
 \end{lstlisting}
