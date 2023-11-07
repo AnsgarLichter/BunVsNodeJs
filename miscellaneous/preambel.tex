@@ -63,7 +63,7 @@
 %\usepackage{filecontents} % Externe Files generieren
 \usepackage{url}	  	  % Anzeige von URLs
 \usepackage{fancyhdr} 	  % Kopf- und Fußzeile manipulieren
-\usepackage{caption}      % Bildunterschrift
+% \usepackage{caption}      % Bildunterschrift
 \usepackage{csquotes}     % Quotes
 \usepackage{xpatch}
 \usepackage{xcolor}
@@ -150,7 +150,7 @@ urlcolor=blue]   % URL-Links        in blau
 \graphicspath{{images/}}
 
 % Sprache
-\selectlanguage{english}
+\selectlanguage{german}
 
 % Visio-Grafiken ohne Rand einbinden
 \newcommand{\includevisio}[2][]{\includegraphics[clip, trim=0.7mm 0.7mm 0.7mm 0.7mm, #1]{#2}}
@@ -292,3 +292,25 @@ urlcolor=blue]   % URL-Links        in blau
 	locale              = DE,
 	group-separator     = {.},
 }
+
+% Listings in Abbildungsverzeichnis
+% Grab the old \addcontentsline, which has been already being redefined by hyperref (eventually)
+\makeatletter
+% Grab the old \addcontentsline, which has been already being redefined by hyperref (eventually)
+\let\latex@@addcontentsline\addcontentsline 
+
+\AtBeginDocument{%
+	\renewcommand{\addcontentsline}[3]{%
+		\def\@@zzz{#1}\def\@@zxx{lol}
+		\latex@@addcontentsline{%
+			\ifx\@@zzz\@@zxx lof\else #1\fi
+		}{#2}{#3}%
+	}
+	
+	\renewcommand\lstlistingname{Abbildung}
+	\let\l@lstlisting\l@figure
+	\let\c@lstlisting\c@figure
+	\let\thelstlisting\thefigure
+	\let\ftype@lstlisting\ftype@figure
+}
+\makeatother
