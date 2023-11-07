@@ -8,6 +8,9 @@
 \usepackage{hyphenat}
 % Bsp.: \hyphenation{Mathe-matik wieder-gewinnen}
 
+% Sprache
+\selectlanguage{ngerman}
+
 % Seitenränder
 \usepackage[a4paper,left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
 
@@ -80,6 +83,7 @@ urlcolor=blue]   % URL-Links        in blau
 	\def\sectionautorefname{Kapitel}
 	\def\subsectionautorefname{Kapitel}
 }
+
 %Dokumenteneinstellung
 % Kopf- und Fußzeile
 \fancypagestyle{fancy-style}{% Own style
@@ -110,8 +114,8 @@ urlcolor=blue]   % URL-Links        in blau
 % Redefine content fonts in chapter, section, figure, table
 \renewcommand{\cftchapfont}{\sffamily\bfseries}
 \renewcommand{\cftsecfont}{}
-\renewcommand{\cftfigfont}{Figure }
-\renewcommand{\cfttabfont}{Table }
+%\renewcommand{\cftfigfont}{Figure }
+%\renewcommand{\cfttabfont}{Table }
 
 % Obere Trennlinie
 \renewcommand{\headrulewidth}{0.4pt}   % obere Trennlinie
@@ -152,9 +156,6 @@ urlcolor=blue]   % URL-Links        in blau
 
 % Grafikpfad setzen
 \graphicspath{{images/}}
-
-% Sprache
-\selectlanguage{german}
 
 % Visio-Grafiken ohne Rand einbinden
 \newcommand{\includevisio}[2][]{\includegraphics[clip, trim=0.7mm 0.7mm 0.7mm 0.7mm, #1]{#2}}
@@ -318,3 +319,7 @@ urlcolor=blue]   % URL-Links        in blau
 	\let\ftype@lstlisting\ftype@figure
 }
 \makeatother
+
+% Verzeichnisse
+\renewcaptionname{ngerman}{\figurename}{Abbildung}
+\renewcaptionname{ngerman}{\tablename}{Tabelle}
