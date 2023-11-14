@@ -82,13 +82,22 @@
 @misc{OvenSh.2023b,
  editor = {Oven-Sh},
  year = {2023},
+ title = {{Bun is a fast JavaScript all-in-one toolkit}},
+ url = {https://bun.sh/},
+ urldate = {14.11.2023}
+}
+
+
+@misc{OvenSh.2023c,
+ editor = {Oven-Sh},
+ year = {2023},
  title = {{Offizielle Dokumentation}},
  url = {https://bun.sh/docs},
  urldate = {07.11.2023}
 }
 
 
-@misc{OvenSh.2023c,
+@misc{OvenSh.2023d,
  editor = {Oven-Sh},
  year = {2023},
  title = {{TypeScript}},
@@ -100,9 +109,18 @@
 @misc{Postek.2023,
  author = {Postek, Krystian},
  year = {2023},
- title = {{Unable to build Nest based project}},
+ title = {{Unable to build NestJS based project}},
  url = {https://github.com/oven-sh/bun/issues/4803},
  urldate = {05.11.2023}
+}
+
+
+@misc{OpenJSFoundation.o.J.c,
+ author = {{OpenJS Foundation}},
+ year = {o. J.},
+ title = {{Node.js}},
+ url = {https://nodejs.org/en},
+ urldate = {17.10.2023}
 }
 
 
@@ -115,22 +133,6 @@
 
 
 @inproceedings{Silva.2020,
- abstract = {Function-as-service (FaaS) platforms promise a simpler programming model for cloud computing, in which the developers concentrate on writing its applications. In contrast, platform providers take care of resource management and administration. As FaaS users are billed based on the execution of the functions, platform providers have a natural incentive not to keep idle resources running at the platform's expense. However, this strategy may lead to the cold start issue, in which the execution of a function is delayed because there is no ready resource to host the execution. Cold starts can take hundreds of milliseconds to seconds and have been a prohibitive and painful disadvantage for some applications. This work describes and evaluates a technique to start functions, which restores snapshots from previously executed function processes. We developed a prototype of this technique based on the CRIU process checkpoint/restore Linux tool. We evaluate this prototype by running experiments that compare its start-up time against the standard Unix process creation/start-up procedure. We analyze the following three functions: i) a {\textquotedbl}do-nothing{\textquotedbl} function, ii) an Image Resizer function, and iii) a function that renders Markdown files. The results attained indicate that the technique can improve the start-up time of function replicas by 40{\%} (in the worst case of a {\textquotedbl}do-nothing{\textquotedbl} function) and up to 71{\%} for the Image Resizer one. Further analysis indicates that the runtime initialization is a key factor, and we confirmed it by performing a sensitivity analysis based on synthetically generated functions of different code sizes. These experiments demonstrate that it is critical to decide when to create a snapshot of a function. When one creates the snapshots of warm functions, the speed-up achieved by the prebaking technique is even higher: the speed-up increases from 127.45{\%} to 403.96{\%}, for a small, synthetic function; and for a bigger, synthetic function, this ratio increases from 121.07{\%} to 1932.49{\%}.},
- author = {Silva, Paulo and Fireman, Daniel and Pereira, Thiago Emmanuel},
- title = {{Prebaking Functions to Warm the Serverless Cold Start}},
- keywords = {cloud;faas;performance evaluation;serverless},
- pages = {1--13},
- publisher = {{Association for Computing Machinery}},
- isbn = {9781450381536},
- series = {{Middleware '20}},
- booktitle = {{Proceedings of the 21st International Middleware Conference}},
- year = {2020},
- address = {New York, NY, USA},
- doi = {10.1145/3423211.3425682}
-}
-
-
-@inproceedings{Silva.2020b,
  abstract = {Function-as-service (FaaS) platforms promise a simpler programming model for cloud computing, in which the developers concentrate on writing its applications. In contrast, platform providers take care of resource management and administration. As FaaS users are billed based on the execution of the functions, platform providers have a natural incentive not to keep idle resources running at the platform's expense. However, this strategy may lead to the cold start issue, in which the execution of a function is delayed because there is no ready resource to host the execution. Cold starts can take hundreds of milliseconds to seconds and have been a prohibitive and painful disadvantage for some applications. This work describes and evaluates a technique to start functions, which restores snapshots from previously executed function processes. We developed a prototype of this technique based on the CRIU process checkpoint/restore Linux tool. We evaluate this prototype by running experiments that compare its start-up time against the standard Unix process creation/start-up procedure. We analyze the following three functions: i) a {\textquotedbl}do-nothing{\textquotedbl} function, ii) an Image Resizer function, and iii) a function that renders Markdown files. The results attained indicate that the technique can improve the start-up time of function replicas by 40{\%} (in the worst case of a {\textquotedbl}do-nothing{\textquotedbl} function) and up to 71{\%} for the Image Resizer one. Further analysis indicates that the runtime initialization is a key factor, and we confirmed it by performing a sensitivity analysis based on synthetically generated functions of different code sizes. These experiments demonstrate that it is critical to decide when to create a snapshot of a function. When one creates the snapshots of warm functions, the speed-up achieved by the prebaking technique is even higher: the speed-up increases from 127.45{\%} to 403.96{\%}, for a small, synthetic function; and for a bigger, synthetic function, this ratio increases from 121.07{\%} to 1932.49{\%}.},
  author = {Silva, Paulo and Fireman, Daniel and Pereira, Thiago Emmanuel},
  title = {{Prebaking Functions to Warm the Serverless Cold Start}},
@@ -200,7 +202,7 @@
 @misc{Sumner.2022,
  author = {Sumner, Jarred},
  year = {2022},
- title = {{Support Nest}},
+ title = {{Support NestJS}},
  url = {https://github.com/oven-sh/bun/issues/1641}
 }
 
@@ -255,12 +257,33 @@
 }
 
 
-@misc{OpenJSFoundation.o.J.c,
- author = {{OpenJS Foundation}},
- year = {o. J.},
- title = {{Node.js}},
- url = {https://nodejs.org/en},
- urldate = {17.10.2023}
+@inproceedings{Silva.2020b,
+ abstract = {Function-as-service (FaaS) platforms promise a simpler programming model for cloud computing, in which the developers concentrate on writing its applications. In contrast, platform providers take care of resource management and administration. As FaaS users are billed based on the execution of the functions, platform providers have a natural incentive not to keep idle resources running at the platform's expense. However, this strategy may lead to the cold start issue, in which the execution of a function is delayed because there is no ready resource to host the execution. Cold starts can take hundreds of milliseconds to seconds and have been a prohibitive and painful disadvantage for some applications. This work describes and evaluates a technique to start functions, which restores snapshots from previously executed function processes. We developed a prototype of this technique based on the CRIU process checkpoint/restore Linux tool. We evaluate this prototype by running experiments that compare its start-up time against the standard Unix process creation/start-up procedure. We analyze the following three functions: i) a {\textquotedbl}do-nothing{\textquotedbl} function, ii) an Image Resizer function, and iii) a function that renders Markdown files. The results attained indicate that the technique can improve the start-up time of function replicas by 40{\%} (in the worst case of a {\textquotedbl}do-nothing{\textquotedbl} function) and up to 71{\%} for the Image Resizer one. Further analysis indicates that the runtime initialization is a key factor, and we confirmed it by performing a sensitivity analysis based on synthetically generated functions of different code sizes. These experiments demonstrate that it is critical to decide when to create a snapshot of a function. When one creates the snapshots of warm functions, the speed-up achieved by the prebaking technique is even higher: the speed-up increases from 127.45{\%} to 403.96{\%}, for a small, synthetic function; and for a bigger, synthetic function, this ratio increases from 121.07{\%} to 1932.49{\%}.},
+ author = {Silva, Paulo and Fireman, Daniel and Pereira, Thiago Emmanuel},
+ title = {{Prebaking Functions to Warm the Serverless Cold Start}},
+ keywords = {cloud;faas;performance evaluation;serverless},
+ pages = {1--13},
+ publisher = {{Association for Computing Machinery}},
+ isbn = {9781450381536},
+ series = {{Middleware '20}},
+ booktitle = {{Proceedings of the 21st International Middleware Conference}},
+ year = {2020},
+ address = {New York, NY, USA},
+ doi = {10.1145/3423211.3425682}
+}
+
+
+@inproceedings{Yeole.2011,
+ author = {Yeole, A. S. and Meshram, B. B.},
+ title = {{Analysis of different technique for detection of SQL injection}},
+ pages = {963},
+ publisher = {ACM},
+ isbn = {9781450304498},
+ editor = {Mishra, B. K. and Sedamkar, R. R. and Bharadi, V. A.},
+ booktitle = {{Proceedings of the International Conference {\&} Workshop on Emerging Trends in Technology 2011}},
+ year = {2011},
+ address = {New York},
+ doi = {10.1145/1980022.1980229}
 }
 
 
@@ -270,14 +293,6 @@
  title = {{Maintaining Dependencies}},
  url = {https://github.com/nodejs/node/blob/main/doc/contributing/maintaining/maintaining-dependencies.md},
  urldate = {09.10.2023}
-}
-
-
-@misc{Mysliwiec.2023,
- author = {Mysliwiec, Kamil},
- year = {2023},
- title = {{Introduction}},
- url = {https://docs.nest.com/}
 }
 
 
@@ -414,17 +429,11 @@
 }
 
 
-@inproceedings{Yeole.2011,
- author = {Yeole, A. S. and Meshram, B. B.},
- title = {{Analysis of different technique for detection of SQL injection}},
- pages = {963},
- publisher = {ACM},
- isbn = {9781450304498},
- editor = {Mishra, B. K. and Sedamkar, R. R. and Bharadi, V. A.},
- booktitle = {{Proceedings of the International Conference {\&} Workshop on Emerging Trends in Technology 2011}},
- year = {2011},
- address = {New York},
- doi = {10.1145/1980022.1980229}
+@misc{Mysliwiec.2023,
+ author = {Mysliwiec, Kamil},
+ year = {2023},
+ title = {{Introduction}},
+ url = {https://docs.nestjs.com/}
 }
 
 

@@ -2,26 +2,12 @@
 \pagestyle{fancy-style}
 \npchapter{Einleitung} \label{ch:introduction}
 \pagenumbering{arabic}
-Dieses Kapitel führt in die Thematik ein und motiviert, warum Bun evaluiert werden soll. Darauf werden die Ziele und der Aufbau dieser Arbeit vorgestellt.
+Dieses Kapitel führt in die Thematik ein und motiviert, warum Bun evaluiert wird. Darauf folgt die Vorstellung der Ziele und des Aufbaus dieser Arbeit.
 
 \section{Motivation} \label{sec:introduction-motivation}
-Die kontinuierliche Evolution von Softwaretechnologien und -umgebungen hat einen erheblichen Einfluss auf die Entwicklung und Leistung von Anwendungen. Kürzlich wurde die Version 1.0 der JavaScript Laufzeitumgebung Bun veröffentlicht, die vielversprechende Verbesserungen in Bezug auf die Leistung im Vergleich zu Node.js ankündigt \cite{Sumner.2023c}.\\
-
-\begin{lstlisting}[label={fig:exampleHttpServerBun},caption={[Beispielhafter HTTP-Server für Bun]Beispielhafter HTTP-Server für Bun \cite{Sumner.2023c}}]
-Bun.serve({
-	port: 3000,
-	fetch(request) {
-		return new Response("Hello from Bun!");
-	},
-});
-\end{lstlisting}
-
-\noindent
-Bun ist eine Laufzeitumgebung für JavaScript, die einen integrierten Paketmanager, Bundler, Test-Bibliotheken und einen Transpiler zum Ausführen TypeScript enthält. Dafür sind keine weiteren Abhängigkeiten notwendig. Besitzt ein Projekt abhängige Pakete, können die über den Paketmanager mit \glqq bun install\grqq{} installiert werden. Danach kann Bun den Quellcode, der in \autoref{fig:exampleHttpServerBun} zu sehen ist, ausführen, indem der Befehl \glqq bun server.ts\grqq{} ausgeführt wird. Besitzt das Projekt noch Tests, können diese über \glqq bun test\grqq{} gestartet werden.\\
-
-\noindent
-Eine Laufzeitumgebung für JavaScript wird benötigt, da JavaScript eine beliebte Programmiersprache ist. Sie wird vor allem im Kontext der Web-Entwicklung verwendet \cite{Brown.November2019}. Aktuell erfreut sich JavaScript großer Beliebtheit. In einer Umfrage unter Entwicklern auf Stack Overflow, an der mehr als 89.000 Entwickler teilgenommen haben, wurde JavaScript zum 11. Jahr in Folge als die am häufigsten verwendete Programmiersprache identifiziert. Mehr als 63\% der befragten Entwickler haben JavaScript als ihre favorisierte Technologie angegeben. Unter den professionellen Entwicklern liegt der Anteil noch höher, bei mehr als 65\%. Zusätzlich ist TypeScript, eine stark typisierte Programmiersprache, die auf 
-JavaScript aufbaut, ebenfalls beliebt \cite{Microsoft.o.J.}. Etwa 39\% aller Entwickler und ungefähr 44\% der professionellen Entwickler nutzen TypeScript. Somit ist TypeScript die viertbeliebteste Programmiersprache. Dies unterstreicht die hohe Relevanz des JavaScript-Ökosystems.\cite{StackOverflow.2023}\\
+JavaScript ist aktuell eine beliebte Programmiersprache. In einer Umfrage unter Entwicklern auf Stack Overflow, an der mehr als 89.000 Entwickler teilgenommen haben, wurde JavaScript zum elften Jahr in Folge als die am häufigsten verwendete Programmiersprache identifiziert. Mehr als 63\% der befragten Entwickler haben JavaScript als ihre favorisierte Technologie angegeben. Unter den professionellen Entwicklern liegt der Anteil mit 65\% noch höher. Zusätzlich ist TypeScript, eine stark typisierte Programmiersprache, die auf 
+JavaScript aufbaut, ebenfalls beliebt \cite{Microsoft.o.J.}. Etwa 39\% aller Entwickler und ungefähr 44\% der professionellen Entwickler nutzen TypeScript. Somit ist TypeScript die viertbeliebteste Programmiersprache. Dies unterstreicht die hohe Relevanz des JavaScript-Ökosystems.\cite{StackOverflow.2023}\newline
+Die Programmiersprache wird vor allem im Kontext der Web-Entwicklung verwendet \cite{Brown.November2019}. Darüber hinaus nutzen etwa 3\% der weltweit bekannten Server eine Laufzeitumgebung, die JavaScript ausführen kann \cite{QSuccess.2023}. Demnach wird die Programmiersprache nicht nur für die Entwicklung im Frontend, sondern auch im Backend eingesetzt.\\
 
 \begin{figure}[h]
 	\centering
@@ -31,21 +17,17 @@ JavaScript aufbaut, ebenfalls beliebt \cite{Microsoft.o.J.}. Etwa 39\% aller Ent
 \end{figure}
 
 \noindent
-JavaScript wird nicht nur für die Entwicklung im Frontend, sondern auch für die Entwicklung im Backend 
-eingesetzt. Etwa 3\% der weltweit bekannten Server nutzen eine Laufzeitumgebung, die JavaScript 
-ausführen kann \cite{QSuccess.2023}. Wie aus \autoref{fig:runtime-share} ersichtlich ist, ist Node.js die am weitesten verbreitete Laufzeitumgebung. In der Umfrage zur aktuellen Verwendung von JavaScript gaben ca. 71\% der 30.000 befragten Entwickler an, dass sie Node.js regelmäßig als Laufzeitumgebung verwenden \cite{Greif.2022}.
-Lediglich ca. 9\% der befragten Entwickler verwenden Deno, während ungefähr 3\% Bun als eine Alternative zu Node.js benutzen.
-
-
-\section{Zielsetzung} \label{sec:introduction-target}
-Aktuell ist Node.js die am weitesten verbreitete Laufzeitumgebung für JavaScript. Dennoch erscheinen immer wieder neue Laufzeitumgebungen, die versuchen, Node.js zu verdrängen. Eine neue Alternative ist Bun, das am 9. September 2023 in der Version 1.0 veröffentlicht wurde \cite{Sumner.2023c}. Die Entwickler von Bun werben mit Features wie erheblicher Leistungssteigerung, eleganten Schnittstellen und einer angenehmen Entwicklererfahrung.\\
+\autoref{fig:runtime-share} zeigt, dass Node.js die am weitesten verbreitete Laufzeitumgebung ist. In der Umfrage zum Zustand von JavaScript gaben ca. 71\% der 30.000 befragten Entwickler an, dass sie Node.js regelmäßig als Laufzeitumgebung verwenden \cite{Greif.2022}. Dennoch erscheinen immer wieder neue Laufzeitumgebungen, die versuchen, Node.js zu verdrängen. Die neuste Alternative ist Bun, das am 9. September 2023 in der Version 1.0 veröffentlicht wurde \cite{Sumner.2023c}. In der zuvor erwähnten Umfrage gaben etwa 3\% der Entwickler an, dass sie Bun als eine Alternative zu Node.js verwenden, obwohl sich Bun zu diesem Zeitpunkt noch im Entwicklungsstadium befunden hat \cite{Greif.2022}.\\
 
 \noindent
+Die Entwickler von Bun werben mit Features wie erheblicher Leistungssteigerung, eleganten Schnittstellen und einer angenehmen Entwicklererfahrung \cite{OvenSh.2023b}. Die Laufzeitumgebung inkludiert einen integrierten Paketmanager, Bundler, Test-Bibliotheken und auch einen Transpiler zum Ausführen von TypeScript. Besitzt ein Projekt abhängige Pakete, können diese über den Paketmanager mit \glqq bun install\grqq{} installiert werden. Danach sorgt der Befehl \glqq bun <Dateiname>\grqq{} dafür, dass Bun die gewünschte Applikation unter Angabe des Dateinamens ausführt.\cite{Sumner.2023c}
+
+\section{Zielsetzung} \label{sec:introduction-target}
 Das Hauptziel dieser Arbeit besteht darin, die Version 1.0 von Bun einer eingehenden Evaluierung zu unterziehen. Konkret wird untersucht, ob die in den Ankündigungen versprochene signifikante Leistungssteigerung im Vergleich zu Node.js tatsächlich existiert und reproduzierbar ist. Darüber hinaus wird geprüft, inwiefern bestehende Projekte auf der Basis von Node.js mit Bun kompatibel sind. Die Ergebnisse dieser Arbeit können Entwicklern bei der Entscheidung helfen, ob sie auf Bun 1.0 migrieren sollten, und sie dabei unterstützen, die Leistung ihrer bestehenden Projekte zu verbessern. Insgesamt zielt diese Untersuchung darauf ab, Klarheit über die Versprechungen von Bun 1.0 zu schaffen und Entwicklern fundierte Informationen für ihre Entscheidungsfindung zur Verfügung zu stellen. Dies spiegelt sich in den folgenden Leitfragen wider:
 \begin{itemize}
     \item Welche konkreten Leistungsverbesserungen können in Bun 1.0 im Vergleich zu Node.js festgestellt werden, und wie lassen sie sich quantifizieren?
     \item Inwiefern sind Node.js-Projekte kompatibel mit Bun? Wie schwierig gestaltet sich die Migration?
-    \item Welche Herausforderungen und potenziellen Vorteile ergeben sich bei der Verwendung von Bun 1.0 im Vergleich zu Node.js für Entwickler und Projekte?
+    \item Welche Herausforderungen und Vorteile ergeben sich bei der Verwendung von Bun 1.0 im Vergleich zu Node.js für Entwickler und Projekte?
 \end{itemize}
 
 \section{Aufbau der Arbeit} \label{sec:introduction-overview}
@@ -55,7 +37,7 @@ Im folgenden Kapitel vermittelt die Arbeit alle notwendigen theoretischen Grundl
 Im dritten Kapitel werden die Performance von Bun und Node.js in ausgewählten Testszenarien verglichen. Hierzu werden zuerst die Vorgehensweise, der Versuchsaufbau und die Implementierungen vorgestellt. Im Anschluss daran folgt de die Präsentation der Ergebnisse und ein zusammenfassendes Fazit.\\
 
 \noindent
-Das vierte Kapitel setzt den Fokus auf die Kompatibilität von Projekten auf Basis von Node.js. Der Fokus liegt auf den Frameworks Express und Nest. Um die Kompatibilität bewerten zu können, werden 2 Anwendungen beispielhaft migriert. Die Ergebnisse werden in einem Fazit bewertet.\\
+Das vierte Kapitel setzt den Fokus auf die Kompatibilität von Projekten auf Basis von Node.js. Die Betrachtung beschränkt sich auf die Frameworks Express und Nest. Um die Kompatibilität bewerten zu können, wird pro Framework eine Anwendung beispielhaft migriert. Die Ergebnisse werden in einem Fazit bewertet.\\
 
 \noindent
 Das letzte Kapitel fasst die Kernaussagen der Arbeit zusammen und prüft sie vor dem Hintergrund der zuvor definierten Ziele. Abschließend wird in einem Ausblick dargelegt, welche ergänzenden Forschungsthemen verbleiben und welchen zukünftigen Nutzen die Ergebnisse mit sich bringen.
