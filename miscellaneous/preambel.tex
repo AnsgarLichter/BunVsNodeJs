@@ -160,7 +160,7 @@ urlcolor=blue]   % URL-Links        in blau
 \newcommand{\includevisio}[2][]{\includegraphics[clip, trim=0.7mm 0.7mm 0.7mm 0.7mm, #1]{#2}}
 
 % Bildunterschriften - Quelle
-\newcommand{\source}{\\ Source: }
+\newcommand{\source}{\protect\linebreak Quelle: }
 
 \definecolor{codeGray}{rgb}{0.9,0.9,0.9}
 
@@ -296,6 +296,19 @@ urlcolor=blue]   % URL-Links        in blau
 	locale              = DE,
 	group-separator     = {.},
 }
+\usepackage{varwidth}
+\usepackage{caption}
+\DeclareCaptionFormat{myformat}{%
+	% #1: label (e.g. "Table 1")
+	% #2: separator (e.g. ": ")
+	% #3: caption text
+	\begin{varwidth}{\linewidth}%
+		\centering
+		#1#2#3%
+	\end{varwidth}%
+}
+
+
 
 % Listings in Abbildungsverzeichnis
 % Grab the old \addcontentsline, which has been already being redefined by hyperref (eventually)
