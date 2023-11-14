@@ -65,7 +65,7 @@ Im Folgenden werden die für jedes Testszenario (siehe \autoref{sec:performance-
 \subsection{HTTP-Server} \label{subsec:httpServer}
 Um die grundlegende Performance von Netzwerkanfragen zu bestimmen, werden zwei einfache Programme verwendet. Die Latenz spiegelt die Latenz der betrachteten Laufzeitumgebungen wider, da die Tests auf demselben Endgerät stattfinden und somit keine Verzögerungen durch das Netzwerk auftreten. In \autoref{fig:httpServerBun} ist der Quellcode für Bun dargestellt, während \autoref{fig:httpServerNode} den Quellcode für Node.js zeigt.
 
-\begin{lstlisting}[caption={HTTP-Server Bun},label={fig:httpServerBun}]
+\begin{lstlisting}[caption={[HTTP-Server Bun]HTTP-Server Bun\\\textit{Quelle: Eigene Darstellung}},label={fig:httpServerBun}]
 	Bun.serve({
 		port: 3000,
 		fetch(request) {
@@ -74,7 +74,7 @@ Um die grundlegende Performance von Netzwerkanfragen zu bestimmen, werden zwei e
 	});
 \end{lstlisting}
 
-\begin{lstlisting}[caption={HTTP-Server Node.js},label={fig:httpServerNode}]
+\begin{lstlisting}[caption={[HTTP-Server Node.js]HTTP-Server Node.js\\\textit{Quelle: Eigene Darstellung}},label={fig:httpServerNode}]
 	import http from "node:http";
 	
 	http.createServer(function (request, response) {
@@ -86,18 +86,18 @@ Um die grundlegende Performance von Netzwerkanfragen zu bestimmen, werden zwei e
 \noindent
 Um die Performance dieser Programme zu testen, werden mit Bombardier 500 gleichzeitige Benutzer für eine Dauer von 30 Sekunden simuliert, wie im Befehl in \autoref{fig:bombardierHttpServer} visualisiert.
 
-\begin{lstlisting}[caption={Bombardier HTTP-Server},label={fig:bombardierHttpServer}]
+\begin{lstlisting}[caption={[Bombardier HTTP-Server]Bombardier HTTP-Server\\\textit{Quelle: Eigene Darstellung}},label={fig:bombardierHttpServer}]
 	bombardier -c 500 -d 30s http://localhost:3000
 \end{lstlisting}
 
 \noindent
 Die Server werden mit der jeweiligen Laufzeitumgebung gestartet. Zur Ermittlung der CPU- und RAM-Auslastung wird GNU Time verwendet. Die Befehle zur Messung der CPU- und RAM-Auslastung sind in Ubuntu und MacOS in den Abbildungen \ref{fig:timeHTTPServerUbuntu} und \ref{fig:timeHTTPServerMacOS} dargestellt.
 
-\begin{lstlisting}[caption={CPU- und RAM-Messung auf Ubuntu},label={fig:timeHTTPServerUbuntu}]
+\begin{lstlisting}[caption={[CPU- und RAM-Messung auf Ubuntu]CPU- und RAM-Messung auf Ubuntu\\\textit{Quelle: Eigene Darstellung}},label={fig:timeHTTPServerUbuntu}]
 	/usr/bin/time -f "Execution Time: %e\nMaximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" bun httpServer.js
 \end{lstlisting}
 
-\begin{lstlisting}[caption={CPU- und RAM-Messung auf MacOS},label={fig:timeHTTPServerMacOS}]
+\begin{lstlisting}[caption={[CPU- und RAM-Messung auf macOS]CPU- und RAM-Messung auf macOS\\\textit{Quelle: Eigene Darstellung}},label={fig:timeHTTPServerMacOS}]
 	gtime -f "Execution Time: %e\nMaximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" bun httpServer.js
 \end{lstlisting}
 
@@ -105,7 +105,7 @@ Die Server werden mit der jeweiligen Laufzeitumgebung gestartet. Zur Ermittlung 
 Eine häufige Aufgabe von Web-Servern ist es, Bilder für das Frontend zur Verfügung zu stellen. Das Szenario wird gemessen, um die Performance von Zugriffen auf das Dateisystem in den Vergleich einzubeziehen. \newline
 Die Implementierungen für Bun und Node.js sind in den Abbildungen \ref{fig:fileServerBun} und \ref{fig:fileServerNode} dargestellt.
 
-\begin{lstlisting}[caption={Datei-Server Bun},label={fig:fileServerBun}]
+\begin{lstlisting}[caption={[Datei-Server Bun]Datei-Server Bun\\\textit{Quelle: Eigene Darstellung}},label={fig:fileServerBun}]
 	const basePath = "../data";
 	
 	Bun.serve({
@@ -124,7 +124,7 @@ Die Implementierungen für Bun und Node.js sind in den Abbildungen \ref{fig:file
 	});
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Datei-Server Node.js},label={fig:fileServerNode}]
+\begin{lstlisting}[caption={[Datei-Server Node.js]Datei-Server Node.js\\\textit{Quelle: Eigene Darstellung}},label={fig:fileServerNode}]
 	import { createReadStream } from "node:fs";
 	import http from "node:http";
 	
@@ -151,14 +151,14 @@ Die Implementierungen für Bun und Node.js sind in den Abbildungen \ref{fig:file
 \noindent
 Beide Server rufen dasselbe Bild aus dem Dateisystem ab, da in jeder Anfrage derselbe Pfad angegeben wird. Falls unter dem angeforderten Pfad keine Datei gefunden wird, geben beide Server eine entsprechende Fehlermeldung zurück. Dieses Testszenario wird jeweils mit 50, 250, 500 und 1.000 gleichzeitigen Benutzern für eine Dauer von 30 Sekunden getestet (siehe \autoref{sec:performance-approach}). Der Befehl für 50 gleichzeitige Benutzer ist in \autoref{fig:bombardierFileServer} dargestellt. Die Befehle zur Messung der CPU- und RAM-Auslastung unterscheiden sich nicht im Vergleich zum HTTP-Server (siehe \autoref{subsec:httpServer}).
 
-\begin{lstlisting}[caption={Bombardier Datei-Server},label={fig:bombardierFileServer}]
+\begin{lstlisting}[caption={[Bombardier Datei-Server]Bombardier Datei-Server\\\textit{Quelle: Eigene Darstellung}},label={fig:bombardierFileServer}]
 	bombardier -c 500 -d 30s http://localhost:3000/example.png
 \end{lstlisting}
 
 \subsection{Berechnung der Fibonacci-Folge} \label{subsec:fibonacci}
 Als letztes Szenario wird die Fibonacci-Folge für die Zahl 45 berechnet, um die Leistung bei der Ausführung rechenintensiver Aufgaben zu bewerten. Hierfür nutzen beide Laufzeitumgebungen die in \autoref{fig:fibonacci} dargestellte Implementierung.
 
-\begin{lstlisting}[caption={Berechnung der Fibonacci-Folge},label={fig:fibonacci}]
+\begin{lstlisting}[caption={[Berechnung der Fibonacci-Folge]Berechnung der Fibonacci-Folge\\\textit{Quelle: Eigene Darstellung}},label={fig:fibonacci}]
 	const fibonacci = (number) => {
 		if (number <= 0) {
 			return 0;
@@ -175,8 +175,8 @@ Als letztes Szenario wird die Fibonacci-Folge für die Zahl 45 berechnet, um die
 \end{lstlisting}
 
 \noindent
-Das Programm wird mit beiden Laufzeitumgebungen und GNU Time zur Erhebung der notwendigen Metriken ausgeführt. \autoref{fig:timefibonacciUbuntu} stellt dies beispielsweise für Node.js unter Ubuntu dar. Auf MacOS muss ``/usr/bin/time`` durch ``gtime`` ersetzt werden.
-\begin{lstlisting}[caption={Messung der Fibonacci-Berechnung in Node.js unter Ubuntu},label={fig:timefibonacciUbuntu}]
+Das Programm wird mit beiden Laufzeitumgebungen und GNU Time zur Erhebung der notwendigen Metriken ausgeführt. \autoref{fig:timefibonacciUbuntu} stellt dies beispielsweise für Node.js unter Ubuntu dar. Auf MacOS muss \textit{/usr/bin/time} durch \textit{gtime} ersetzt werden.
+\begin{lstlisting}[caption={[Messung der Fibonacci-Folge auf Ubuntu]Messung der Fibonacci-Folge auf Ubuntu\\\textit{Quelle: Eigene Darstellung}},label={fig:timefibonacciUbuntu}]
 	/usr/bin/time -f "Execution Time: %e\nMaximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" node fibonacci.js
 \end{lstlisting}
 
