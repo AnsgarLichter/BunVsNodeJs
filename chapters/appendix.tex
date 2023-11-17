@@ -1,6 +1,6 @@
 % !TeX root = ..\main.tex
 \appendix
-\begin{landscape}
+\uselandscape
 	\chapter{Ergebnisse des Benchmarks} \label{apx:benchmark-results}
 	
 	\section{HTTP-Server} \label{sec:benchmark-results-http-server}
@@ -177,10 +177,7 @@
 		Durchschnitt & 32285.812 & 15.49 & 8446 & 100 & 96.4 & 86449.6 \\
 		\bottomrule
 	\end{longtable}
-	
-\end{landscape}
 
-\begin{landscape}
 	\section{Datei-Server} \label{sec:benchmark-results-file-server}
 	
 	\begin{longtable}{
@@ -635,8 +632,8 @@
 		Durchschnitt & 7,18 & 99,60 & 43827,20 \\
 		\bottomrule
 	\end{longtable}
-\end{landscape}
 
+\useportrait
 \section{Zusätzliche Diagramme} \label{sec:benchmark-results-diagrams}
 
 \begin{figure}[h!]

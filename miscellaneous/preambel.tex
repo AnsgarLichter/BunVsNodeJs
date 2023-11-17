@@ -12,7 +12,25 @@
 \selectlanguage{ngerman}
 
 % Seitenränder
+\usepackage[usegeometry]{typearea}% before geometry!
 \usepackage[a4paper,left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
+
+\newcommand*{\useportrait}{%
+	\clearpage
+	\KOMAoptions{paper=portrait,DIV=current}%switch to portrait
+	\newgeometry{% geometry settings for portrait
+		left=3cm,right=3cm,top=3cm,bottom=3cm
+	}%
+	\fancyhfoffset{0pt}% <- recalculate head and foot width for fancyhdr
+}
+\newcommand*{\uselandscape}{%
+	\clearpage
+	\KOMAoptions{paper=landscape,DIV=current}%switch to landscape
+	\newgeometry{% geometry settings for landscape
+		left=3cm,right=3cm,top=3cm,bottom=3cm
+	}%
+	\fancyhfoffset{0pt}% recalculate head and foot width for fancyhdr
+}
 
 % Schriftpakete
 \usepackage{tabularx}       % Dynamische Tabellen
