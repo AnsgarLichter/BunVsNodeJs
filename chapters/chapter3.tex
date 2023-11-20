@@ -241,14 +241,14 @@ Die RAM- und CPU-Nutzung der Laufzeitumgebungen werden bei 1.000 gleichzeitigen 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=\linewidth]{./images/fibonacciRuntime.png}
-	\caption{Ausführungszeit für die Berechnung der Fibonacci-Folge}
+	\caption{Berechnung der Fibonacci-Folge - Ausführungszeit}
 	\label{fig:fibonacciRuntime}
 	\textit{Quelle: Eigene Darstellung}
 \end{figure}
 
 
 \noindent
-Der dritte Testfall konzentriert sich auf die Leistung von Bun und Node.js bei der Ausübung rechenintensiver Aufgaben. Die Ausführungszeiten sind in \autoref{fig:fibonacciRuntime} dargestellt. Bun führt die Berechnung durchschnittlich in 3,24 Sekunden auf dem MacBook Pro und in 4,47 Sekunden auf dem Desktop-PC durch. Node.js zeigte kaum Unterschiede zwischen der LTS- und der neuesten Version, wobei die schnellste Berechnung 6,32 Sekunden (MacBook Pro) und 7,18 Sekunden (Desktop-PC) dauerte. Somit ist Bun auf dem MacBook Pro ca. 50\% und auf dem Desktop-PC ungefähr 40\% schneller. Die CPU-Auslastung beträgt sowohl bei Bun als auch bei Node.js ca. 100\% \todo{Verweis auf Statistik im Anhang - die fehlt aktuell noch}. Der maximal verwendete Arbeitsspeicher unterscheidet sich auf dem Desktop-PC nur um maximal 3 MB. Erwähnenswert ist, dass hier die neuste Version von Node.js 1 MB weniger Arbeitsspeicher als Bun genutzt hat. Auf dem MacBook Pro sind die Unterschiede größer. Bun benötigt maximal ca. 26 MB RAM, Node.js im Vergleich dazu 42 MB (LTS) und 37 MB (Neuste Version) \todo{Verweis auf Statistik im Anhang - die fehlt aktuell noch}.\newline
+Der dritte Testfall konzentriert sich auf die Leistung von Bun und Node.js bei der Ausübung rechenintensiver Aufgaben. Die Ausführungszeiten sind in \autoref{fig:fibonacciRuntime} dargestellt. Bun führt die Berechnung durchschnittlich in 3,24 Sekunden auf dem MacBook Pro und in 4,47 Sekunden auf dem Desktop-PC durch. Node.js zeigte kaum Unterschiede zwischen der LTS- und der neuesten Version, wobei die schnellste Berechnung 6,32 Sekunden (MacBook Pro) und 7,18 Sekunden (Desktop-PC) dauerte. Somit ist Bun auf dem MacBook Pro ca. 50\% und auf dem Desktop-PC ungefähr 40\% schneller. Die CPU-Auslastung beträgt sowohl bei Bun als auch bei Node.js ca. 100\% (siehe \autoref{fig:fibonacciCpuUsage} in \autoref{sec:benchmark-results-diagrams}). Der maximal verwendete Arbeitsspeicher unterscheidet sich auf dem Desktop-PC nur um maximal 3 MB. Erwähnenswert ist, dass hier die neuste Version von Node.js 1 MB weniger Arbeitsspeicher als Bun genutzt hat. Auf dem MacBook Pro sind die Unterschiede größer. Bun benötigt maximal ca. 26 MB RAM, die neuste Version von Node.js im Vergleich dazu 37 MB und die LTS-Version 42 MB (siehe \autoref{fig:fibonacciRamUsage} in \autoref{sec:benchmark-results-diagrams}).\newline
 Die Betrachtung der CPU-Auslastung, der RAM-Nutzung und der Ausführungszeiten bestätigt die beobachteten Leistungsunterschiede aus den beiden vorherigen Testszenarien. Unabhängig von der betrachteten Metrik weist Bun eine deutlich höhere Leistungsfähigkeit auf beiden Endgeräten auf.
 
 \section{Fazit} \label{sec:performance-conclusion}
