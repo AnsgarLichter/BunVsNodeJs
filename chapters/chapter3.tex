@@ -92,11 +92,11 @@ Um die Performance dieser Programme zu testen, werden mit Bombardier 500 gleichz
 \noindent
 Die Server werden mit der jeweiligen Laufzeitumgebung gestartet. Zur Ermittlung der CPU- und RAM-Auslastung wird GNU Time verwendet. Die Befehle zur Messung der CPU- und RAM-Auslastung sind in Ubuntu und MacOS in den Abbildungen \ref{fig:timeHTTPServerUbuntu} und \ref{fig:timeHTTPServerMacOS} dargestellt. Um dieselben Messungen mit Node.js durchzuführen, muss \textit{bun} durch \textit{node} ersetzt werden.
 
-\begin{lstlisting}[caption={[CPU- und RAM-Messung auf Ubuntu]CPU- und RAM-Messung auf Ubuntu\\\textit{Quelle: Eigene Darstellung}},label={fig:timeHTTPServerUbuntu}]
+\begin{lstlisting}[caption={[CPU- und RAM-Messung auf dem Desktop-PC]CPU- und RAM-Messung auf dem Desktop-PC\\\textit{Quelle: Eigene Darstellung}},label={fig:timeHTTPServerUbuntu}]
 	/usr/bin/time -f "Execution Time: %e\nMaximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" bun httpServer.js
 \end{lstlisting}
 
-\begin{lstlisting}[caption={[CPU- und RAM-Messung auf macOS]CPU- und RAM-Messung auf macOS\\\textit{Quelle: Eigene Darstellung}},label={fig:timeHTTPServerMacOS}]
+\begin{lstlisting}[caption={[CPU- und RAM-Messung auf dem MacBook Pro]CPU- und RAM-Messung auf dem MacBook Pro\\\textit{Quelle: Eigene Darstellung}},label={fig:timeHTTPServerMacOS}]
 	gtime -f "Execution Time: %e\nMaximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" bun httpServer.js
 \end{lstlisting}
 
@@ -176,7 +176,7 @@ Als letztes Szenario wird die Fibonacci-Folge für die Zahl 45 berechnet, um die
 
 \noindent
 Das Programm wird mit beiden Laufzeitumgebungen und GNU Time zur Erhebung der notwendigen Metriken ausgeführt. \autoref{fig:timefibonacciUbuntu} stellt dies beispielsweise für Node.js unter Ubuntu dar. Auf MacOS muss \textit{/usr/bin/time} durch \textit{gtime} ersetzt werden. Um dieselben Messungen mit Bun auszuführen, muss \textit{node} durch \textit{bun} ersetzt werden.
-\begin{lstlisting}[caption={[Messung der Fibonacci-Folge auf Ubuntu]Messung der Fibonacci-Folge auf Ubuntu\\\textit{Quelle: Eigene Darstellung}},label={fig:timefibonacciUbuntu}]
+\begin{lstlisting}[caption={[Messung der Fibonacci-Folge auf dem Desktop-PC]Messung der Fibonacci-Folge auf dem Desktop-PC\\\textit{Quelle: Eigene Darstellung}},label={fig:timefibonacciUbuntu}]
 	/usr/bin/time -f "Execution Time: %e\nMaximum Resident Set Size (RSS): %M\nPercent of CPU This Job Got: %P" node fibonacci.js
 \end{lstlisting}
 
