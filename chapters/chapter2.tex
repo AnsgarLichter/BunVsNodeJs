@@ -1,6 +1,6 @@
 % !TeX root = ..\main.tex
 \npchapter{Grundlagen} \label{ch:foundations}
-Dieses Kapitel stellt die benötigten Grundlagen vor, die für das Verständnis der darauffolgenden Kapitel notwendig sind. Hierzu zählen die Vorstellung von Node.js und Bun sowie weitere Grundlagen zu Performanceanalysen.
+Dieses Kapitel stellt die benötigten Grundlagen vor, die für das Verständnis der darauffolgenden Kapitel notwendig sind. Hierzu zählen die Vorstellung von Node.js und Bun sowie weitere Grundlagen zur Performance.
 
 \section{Node.js} \label{sec:foundations-Node.js}
 Node.js ist ein beliebtes Tool für eine Vielzahl an unterschiedlichen Projekten, darunter leichtgewichtige Webservices, dynamische Webanwendungen und Tools für die Kommandozeile. Es handelt sich um eine plattformunabhängige Open-Source-Laufzeitumgebung, die es ermöglicht, JavaScript außerhalb des Browsers auszuführen. Node.js verwendet die V8 JavaScript Engine von Google. Diese ist in C++ geschrieben und wird von Google Chrome verwendet. Durch den Einsatz dieser Komponenten erreicht Node.js eine hohe Performance, weshalb Unternehmen wie Netflix und Uber Node.js in ihren Softwareprojekten einsetzen.\cite{OpenJSFoundation.2022}\\
@@ -15,15 +15,15 @@ Node.js ist ein beliebtes Tool für eine Vielzahl an unterschiedlichen Projekten
  
 \noindent
 Wie in \autoref{fig:nodejsArchitecture} zu sehen, nutzt Node.js grundsätzlich nur einen Thread und erstellt nicht für jede neue Anfrage einen neuen Thread. Sobald eine Applikation gestartet wird, wird in dem erzeugten Thread der Node.js-Prozess gestartet. Die V8 Engine optimiert den Maschinencode an häufig benötigten Stellen, wobei dies nicht sofort geschieht, da die Übersetzung in Maschinencode aufgrund der Just-in-Time-Kompilierung eine zeitsensitive Aufgabe darstellt. Darüber hinaus ist in der Engine ein Garbage Collector integriert, der nicht mehr verwendete Objekte löscht.\cite{Springer.2022} \newline 
-Für weitere Aufgaben setzt Node.js auf Bibliotheken, die fertige und etablierte Lösungsansätze für häufig benötigte Aufgaben zur Verfügung stellen. Nur für Aufgaben, für die es keine etablierte Bibliothek gibt, werden eigene Implementierungen verwendet. Im Folgenden werden die wichtigsten Komponenten vorgestellt.\cite{Springer.2022}\\
+Für weitere Aufgaben setzt Node.js auf Bibliotheken, die fertige und etablierte Lösungsansätze für häufig benötigte Aufgaben zur Verfügung stellen. Nur für Aufgaben, für die keine etablierte Bibliothek existiert, werden eigene Implementierungen verwendet. Im Folgenden werden die wichtigsten Komponenten vorgestellt.\cite{Springer.2022}\\
 
 \noindent
 \textbf{Node.js Bindings} \newline
-Node.js Bindings, auch bekannt als Node.js Add-ons, schaffen die Möglichkeit C- oder C++-Quellcode in Node.js zu integrieren. Entwickler können Erweiterungen in nativem Code erstellen und in ihren Anwendungen in JavaScript nutzen. Dies ermöglicht die Nutzung von Systemfunktionalitäten. Dies wird beispielsweise für den Zugriff auf das Dateisystem im Modul \textit{fs} verwendet. Dieses ist in dem \ac{api} von Node.js enthalten. Darin bietet Node.js viele Lösungen für häufig benötigte Aufgaben, um die Entwicklung zu vereinfachen. Diese sind global im gesamten Anwendungscode verfügbar. Zu den globalen Objekten gehören beispielsweise \textit{console} für die Ausgabe von Informationen in der Konsole und \textit{Buffer} für den Umgang mit binären Daten. In der \ac{api} ist neben dem Modul \textit{fs} beispielsweise das Modul \textit{http} enthalten, um den Umgang mit dem HTTP-Protokoll zu vereinfachen. Die Module selbst sind in JavaScript geschrieben. Das heißt, der Kern von Node.js liegt in C (Libuv) und C++ (V8 Engine)  vor, die übrigen Komponenten sind in der Sprache der Plattform geschrieben. Allerdings ist in der Standard-API keine Unterstützung für TypeScript enthalten. Hierzu muss ein TypeScript-Compiler separat installiert werden.\cite{Springer.2022, OpenJSFoundation.2022b, OpenJSFoundation.o.J.b}\\
+Node.js Bindings, auch bekannt als Node.js Add-ons, schaffen die Möglichkeit C- oder C++-Quellcode in Node.js zu integrieren. Entwickler können Erweiterungen in nativem Code erstellen und in ihren Anwendungen in JavaScript nutzen. Dies ermöglicht die Nutzung von Systemfunktionalitäten. Dies wird beispielsweise für den Zugriff auf das Dateisystem im Modul \glq fs\grq{} verwendet. Dieses ist in dem \ac{api} von Node.js enthalten. Darin bietet Node.js viele Lösungen für häufig benötigte Aufgaben, um die Entwicklung zu vereinfachen. Diese sind global im gesamten Anwendungscode verfügbar. Zu den globalen Objekten gehören beispielsweise \glq console\grq{} für die Ausgabe von Informationen in der Konsole und \glq Buffer\grq{} für den Umgang mit binären Daten. In der \ac{api} ist neben dem Modul \glq fs\grq{} beispielsweise das Modul \glq http\grq{} enthalten, um den Umgang mit dem HTTP-Protokoll zu vereinfachen. Die Module selbst sind in JavaScript geschrieben. Das heißt, der Kern von Node.js liegt in C (Libuv) und C++ (V8 Engine)  vor, die übrigen Komponenten sind in der Sprache der Plattform geschrieben. Allerdings ist in der Standard-API keine Unterstützung für TypeScript enthalten. Hierzu muss ein TypeScript-Compiler separat installiert werden.\cite{Springer.2022, OpenJSFoundation.2022b, OpenJSFoundation.o.J.b}\\
 
 \noindent
 \textbf{Event Loop} \newline
-Node.js verwendet eine eventgesteuerte Architektur. Anstatt den Quellcode linear auszuführen, werden definierte Events ausgelöst, für die zuvor Callback-Funktionen registriert wurden. Dieses Konzept wird genutzt, um eine hohe Anzahl von asynchronen Aufgaben zu bewältigen. Lese- und Schreiboperationen werden an den Event Loop ausgelagert, um dabei den einzelnen Thread der Anwendung nicht zu blockieren. Wenn auf externe Ressourcen zugegriffen werden muss, leitet der Event Loop die Anfrage weiter und die registrierte Callback-Funktion gibt die Anfrage an das Betriebssystem weiter. In der Zwischenzeit kann Node.js andere Operationen ausführen. Das Ergebnis der externen Operation wird dann über den Event Loop zurückgeliefert.\cite{Springer.2022} \newline 
+Node.js verwendet eine eventgesteuerte Architektur. Anstatt den Quellcode linear auszuführen, werden definierte Events ausgelöst, für die zuvor Callback-Funktionen registriert wurden. Dieses Konzept wird genutzt, um eine hohe Anzahl von asynchronen Aufgaben zu bewältigen. Lese- und Schreiboperationen werden an den Event Loop ausgelagert, um dabei den einzelnen Thread der Anwendung nicht zu blockieren. Wenn auf externe Ressourcen zugegriffen werden muss, leitet der Event Loop die Anfrage weiter und die registrierte Callback-Funktion gibt die Anfrage an das Betriebssystem weiter. In der Zwischenzeit kann Node.js andere Operationen ausführen. Das Ergebnis der externen Operation wird über den Event Loop zurückgeliefert.\cite{Springer.2022} \newline 
 Während der Laufzeit werden viele Events erzeugt und in einer Message Queue, der Event Queue, nacheinander gespeichert. Node.js nutzt \glqq First In - First Out\grqq{} und beginnt demnach mit der Verarbeitung der ältesten Events und arbeitet sich durch die Queue, bis keine Events mehr vorhanden sind.\cite{OpenJSFoundation.o.J.c}\\
 
 \noindent
@@ -32,17 +32,19 @@ Der Event Loop von Node.js basiert ursprünglich auf der Bibliothek \glq libev\g
 
 \noindent
 \textbf{\ac{npm}} \newline
-Der \ac{npm} ist entscheidend für den Erfolg von Node.js, da es ein Paket für eine Vielzahl an Anwendungsfällen gibt. Denn im September 2021 existieren mehr als 2,1 Millionen Pakete. Ursprünglich wurde \ac{npm} entwickelt, um Abhängigkeiten in Projekten zu verwalten. Mittlerweile wird \ac{npm} auch als Werkzeug für JavaScript im Frontend unterstützt. Der \ac{npm} ist nicht Teil des Executables von Node.js und wird deshalb bei der Installation häufig mitgeliefert. \cite{Springer.2022, OpenJSFoundation.2022b}\\
+Der \ac{npm} ist entscheidend für den Erfolg von Node.js. Er wurde entwickelt, um die Abhängigkeiten in Projekten zu verwalten. Mittlerweile gibt es Pakete für eine Vielzahl an Anwendungsfällen. Denn im September 2021 existieren mehr als 2,1 Millionen Pakete. Der \ac{npm} ist nicht Teil des Executables von Node.js und wird deshalb bei der Installation häufig mitgeliefert. \cite{Springer.2022, OpenJSFoundation.2022b}\\
 
 \noindent
 Zusammenfassend zeichnet sich Node.js durch eine eventgesteuerte Architektur und durch ein nicht blockierendes Modell für Ein- und Ausgabeoperationen aus. Dadurch wird es leichtgewichtig und effizient. Dies hat verschiedene Vor- und Nachteile.\newline
-Zu den Vorteilen gehören eine hohe Performance durch die Nutzung der V8 JavaScript Engine und die Plattformunabhängigkeit. Eine weitere Stärke ist die große und aktive Community an Entwicklern. Dank der Popularität gibt es viele etablierte Lösungsansätze, die den Entwicklungsprozess beschleunigen und vereinfachen. Node.js ermöglicht die Verwendung der JavaScript-Sprache sowohl auf der Server- als auch auf der Clientseite. Dies vereinfacht die Entwicklung von Full-Stack-Anwendungen.\cite{Brown.November2019, OpenJSFoundation.2022b} \newline
-Allerdings existieren auch Nachteile bei der Verwendung von Node.js. Das Single-Thread-Modell kann bei rechenintensiven oder CPU-lastigen Aufgaben zu Engpässen führen, da es nur einen Hauptthread für die Ausführung von Code gibt  \cite{Chhetri.2016}. Ein weiterer Nachteil ist, dass Node.js über eine begrenzte Standardbibliothek verfügt, sodass Entwickler häufig auf externe Module und Pakete zurückgreifen müssen, beispielsweise ein Transpiler für TypeScript \cite{OpenJSFoundation.2022b}.
+Zu den Vorteilen gehören eine hohe Performance durch die Nutzung der V8 JavaScript Engine. Weitere Stärken sind die große und aktive Community an Entwicklern und die Plattformunabhängigkeit. Node.js ermöglicht die Verwendung der JavaScript-Sprache sowohl auf der Server- als auch auf der Clientseite. Dies vereinfacht die Entwicklung von Full-Stack-Anwendungen.\cite{Brown.November2019, OpenJSFoundation.2022b}\
+
+\noindent
+Allerdings existieren auch Nachteile bei der Verwendung von Node.js. Das Single-Thread-Modell kann bei rechenintensiven oder CPU-lastigen Aufgaben zu Engpässen führen, da es nur einen Hauptthread für die Ausführung der Anwendung gibt  \cite{Chhetri.2016}. Ein weiterer Nachteil ist, dass Node.js über eine begrenzte Standardbibliothek verfügt, sodass Entwickler häufig auf externe Module und Pakete zurückgreifen müssen, beispielsweise auf einen Transpiler für TypeScript \cite{OpenJSFoundation.2022b}.
 
 \section{Bun} \label{sec:foundations-Bun}
-Bun ist ein Open-Source-Toolkit für JavaScript. Dieses kombiniert verschiedene serverseitige Komponenten, um eine leistungsstarkes Paket zur Verfügung zu stellen. Bun ist auf MacOS und Linux für die produktive Nutzung freigegeben. Die Version von Windows besitzt aktuell einen experimentellen Status und ist noch nicht hinsichtlich der Performance optimiert. Alternativ kann auf Windows die veröffentlichte Linux-Version über das Windows Subsystem für Linux installiert werden. Ursprünglich ist Bun als ein persönliches Freizeitprojekt von Jared Sumner gestartet. Mittlerweile hat es sich zu einer wettbewerbsfähige Alternative zu bewährten Technologien in der Webentwicklung etabliert.\cite{Sumner.2023c, Tyson.2023}\\
+Bun ist ein Open-Source-Toolkit für JavaScript. Dieses kombiniert verschiedene serverseitige Komponenten, um ein leistungsstarkes Paket zur Verfügung zu stellen. Bun ist auf MacOS und Linux für die produktive Nutzung freigegeben. Die Version von Windows besitzt aktuell einen experimentellen Status und ist noch nicht hinsichtlich der Performance optimiert. Alternativ kann auf Windows die veröffentlichte Linux-Version über das Windows Subsystem für Linux installiert werden. Ursprünglich ist Bun als ein persönliches Freizeitprojekt von Jared Sumner gestartet. Mittlerweile hat es sich zu einer wettbewerbsfähige Alternative zu bewährten Technologien in der Webentwicklung etabliert.\cite{Sumner.2023c, Tyson.2023}\\
 
-\begin{figure}[h]
+\begin{figure}[!htb]
 	\centering
 	\includegraphics[width=\linewidth]{./images/EcosystemBunvsNode.png}
 	\caption{Vergleich der Ökosysteme von Bun und Node.js}
@@ -68,15 +70,15 @@ Bun versucht, das Rundum-sorglos-Tool zu sein, damit alle benötigten Funktional
 Bun ist in Zig geschrieben. Dies ist eine systemnahe Programmiersprache wie C und C++, die sich vor allem auf Einfachheit und Klarheit konzentriert \cite{ZigSoftwareFoundation.o.J.}. Die Entwickler haben sich aufgrund der guten Performance und des Speichermanagements für Zig entschieden. Zig ermöglicht mit dessen manuellem Speichermanagement, Klarheit im Kontrollfluss und Klarheit beim Allokieren von Speicher weitere Verbesserungen der Effizienz. Anstatt der V8 JavaScript Engine von Google verwendet Bun die JavaScriptCore Engine. Das ist die Engine für WebKit, die unter anderem in Apple's Safari-Browser genutzt wird. In Kombination mit Zig sorgt die JavaScriptCore Engine für eine bessere Performance und zu reduzierten Startzeiten. Dies ist auf die Architektur der JavaScriptCore Engine mit drei \ac{jit-compiler-dativ-plural} \acused{jit-compiler} zurückzuführen. Dadurch kann die Engine den Quellcode besser optimieren. Das ist vor allem im Bereich des Serverless Computing ein Vorteil gegenüber anderen Alternativen. Die niedrigen Startzeiten helfen die Skalierbarkeit einer Software zu verbessern, indem neue Knoten schneller hinzugezogen werden können.\cite{OvenSh.2023c, OvenSh.2022, Apple.o.J., Apple.o.J.b, Silva.2020}
 
 \noindent
-Node.js bietet viele Module, globale Objekte und Standard-Web-APIs an (siehe \autoref{sec:foundations-Node.js}). Bun möchte eine nahtlose Integration mit Node.js anbieten. Dazu haben die Entwickler verbesserte Versionen für viele dieser Objekte implementiert. Hierzu zählen beispielsweise:
+Node.js bietet viele Module, globale Objekte und Standard-Web-APIs an (siehe \autoref{sec:foundations-Node.js}). Bun möchte eine nahtlose Integration mit Node.js anbieten. Dazu haben die Entwickler viele dieser Objekte in Bun's API implementiert. Hierzu zählen beispielsweise:
 \begin{itemize}
-	\item Standard-Web-API: \textit{fetch}, \textit{Request}, \textit{Response},
-	\item Module: \text{http}, \text{https}, \text{path},
-	\item Globale Objekte: \text{btoa} (Binary to ASCII), \textit{atob} (ASCII to Binary).\cite{OvenSh.2023c}
+	\item Standard-Web-API: \glq fetch\grq{}, \glq Request\grq{}, \glq Response\grq{},
+	\item Module: \glq http\grq{}, \glq https\grq{}, \glq path\grq{},
+	\item Globale Objekte: \glq btoa\grq{} (Binary to ASCII), \glq atob\grq{} (ASCII to Binary).\cite{OvenSh.2023c}
 \end{itemize} 
 
 \noindent
-Allerdings existieren auch viele Module und globale Objekte, für die die Unterstützung teilweise oder komplett fehlen, zum Beispiel \textit{tel}, \textit{net} oder \textit{http2} \cite{OvenSh.2023c}. Daraus folgt, dass die Kompatibilität von bestehenden Node.js-Projekten von den verwendeten Objekten und Modulen abhängt.
+Allerdings existieren auch viele Module und globale Objekte, für die die Unterstützung teilweise oder komplett fehlen, zum Beispiel \glq tel\grq{}, \glq net\grq{} oder \glq http2\grq{} \cite{OvenSh.2023c}. Daraus folgt, dass die Kompatibilität von bestehenden Node.js-Projekten von den verwendeten Objekten und Modulen abhängt.
 
 \section{Performance als Qualitätsattribut} \label{sec:foundations-Performance}
 Um eine qualitativ hochwertige Software zu entwickeln, genügt es nicht, die funktionalen Anforderungen zu erfüllen. Entwickler tragen die Verantwortung sowohl die funktionalen als auch die nichtfunktionalen Anforderungen in vollem Umfang zu erfüllen. Die Qualität einer Software besteht darin, in welchem Maße die Software die expliziten und impliziten Bedürfnisse seiner Stakeholder zufriedenstellt und so einen Mehrwert bietet. Diese Bedürfnisse werden im Qualitätsmodell nach ISO / IEC 25010:2011 dargestellt.\cite{.2022}\\
@@ -90,7 +92,7 @@ Um eine qualitativ hochwertige Software zu entwickeln, genügt es nicht, die fun
 \end{figure}
 
 \noindent
-\autoref{fig:softwareQuality} zeigt die acht Charakteristika der Software-Qualität nach ISO / IEC 25010: Funktionalität, Performance, Kompatibilität, Benutzbarkeit, Zuverlässigkeit, Sicherheit, Wartbarkeit und Portierbarkeit. Der Standard bietet ein Framework für die Bewertung der Qualität einer Software an. Er hilft so Software-Produkte zu verbessern und alle Teilbereiche zu beachten, indem der Standard als Leitfaden vom Identifizieren der Anforderungen bis zur Qualitätskontrolle der Software unterstützt.\cite{ISOIEC.}\\
+\autoref{fig:softwareQuality} zeigt die acht Charakteristika der Software-Qualität nach ISO / IEC 25010:2011: Funktionalität, Performance, Kompatibilität, Benutzbarkeit, Zuverlässigkeit, Sicherheit, Wartbarkeit und Portierbarkeit. Der Standard bietet ein Framework für die Bewertung der Qualität einer Software an. Er hilft so Software-Produkte zu verbessern und alle Teilbereiche zu beachten, indem der Standard als Leitfaden vom Identifizieren der Anforderungen bis zur Qualitätskontrolle der Software unterstützt.\cite{ISOIEC.}\\
 
 \noindent
 Dass IEEE Standard Glossary of Software Engineering Terminology definiert Performance wie folgt:
@@ -99,7 +101,7 @@ Dass IEEE Standard Glossary of Software Engineering Terminology definiert Perfor
 \end{quote}
 
 \noindent
-Demnach beschreibt Performance die Reaktion eines Systems auf die Durchführung einer Aktion über einen definierten Zeitraum. Um die Performance einer Software bestimmen zu können, stellt ISO / IEC 25010 drei Charakteristiken zur Verfügung (siehe \autoref{fig:softwareQuality}), die in den folgenden Absätzen beschrieben werden.\\
+Demnach beschreibt Performance die Reaktion eines Systems auf die Durchführung einer Aktion über einen definierten Zeitraum. Um die Performance einer Software bestimmen zu können, stellt ISO / IEC 25010:2011 drei Charakteristiken zur Verfügung (siehe \autoref{fig:softwareQuality}), die in den folgenden Absätzen beschrieben werden.\\
 
 \noindent
 \textbf{Zeitverhalten}\newline
