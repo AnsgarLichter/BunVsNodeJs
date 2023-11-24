@@ -12,7 +12,8 @@
  author = {{OpenJS Foundation}},
  year = {o. J.},
  title = {{The Event Loop}},
- url = {https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick#what-is-the-event-loop}
+ url = {https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick#what-is-the-event-loop},
+ urldate = {24.11.2023}
 }
 
 
@@ -21,7 +22,7 @@
  year = {2022},
  title = {{An introduction to the NPM package manager}},
  url = {https://nodejs.org/en/learn/getting-started/an-introduction-to-the-npm-package-manager},
- urldate = {09.10.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -30,7 +31,7 @@
  year = {2022},
  title = {{Introduction to Node.js}},
  url = {https://nodejs.dev/en/learn/},
- urldate = {09.10.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -39,7 +40,7 @@
  year = {2023},
  title = {{Node.js 20 ChangeLog}},
  url = {https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V20.md},
- urldate = {17.10.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -48,7 +49,7 @@
  year = {2023},
  title = {{Node.js 21 ChangeLog}},
  url = {https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V21.md#21.0.0},
- urldate = {17.10.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -57,7 +58,7 @@
  year = {2022},
  title = {{Why zig}},
  url = {https://github.com/oven-sh/bun/discussions/994},
- urldate = {07.11.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -66,7 +67,7 @@
  year = {2023},
  title = {{Add a trusted dependency with Bun}},
  url = {https://bun.sh/guides/install/trusted},
- urldate = {05.11.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -75,25 +76,34 @@
  year = {2023},
  title = {{Bun is a fast JavaScript all-in-one toolkit}},
  url = {https://bun.sh/},
- urldate = {14.11.2023}
+ urldate = {24.11.2023}
 }
 
 
 @misc{OvenSh.2023c,
  editor = {Oven-Sh},
  year = {2023},
- title = {{Offizielle Dokumentation}},
- url = {https://bun.sh/docs},
- urldate = {07.11.2023}
+ title = {{Node.js compatibility}},
+ url = {https://bun.sh/docs/runtime/nodejs-apis},
+ urldate = {24.11.2023}
 }
 
 
 @misc{OvenSh.2023d,
  editor = {Oven-Sh},
  year = {2023},
+ title = {{Offizielle Dokumentation}},
+ url = {https://bun.sh/docs},
+ urldate = {24.11.2023}
+}
+
+
+@misc{OvenSh.2023e,
+ editor = {Oven-Sh},
+ year = {2023},
  title = {{TypeScript}},
  url = {https://bun.sh/docs/typescript},
- urldate = {05.11.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -102,7 +112,7 @@
  year = {2023},
  title = {{Unable to build NestJS based project}},
  url = {https://github.com/oven-sh/bun/issues/4803},
- urldate = {05.11.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -110,20 +120,28 @@
  editor = {Q-Success},
  year = {2023},
  title = {{Usage statistics of JavaScript for websites}},
- url = {https://w3techs.com/technologies/details/pl-js}
-}
-
-
-@misc{OpenJSFoundation.o.J.b,
- author = {{OpenJS Foundation}},
- year = {o. J.},
- title = {{Node.js  API reference documentation}},
- url = {https://nodejs.org/api/documentation.html},
- urldate = {13.10.2023}
+ url = {https://w3techs.com/technologies/details/pl-js},
+ urldate = {24.11.2023}
 }
 
 
 @inproceedings{Silva.2020,
+ abstract = {Function-as-service (FaaS) platforms promise a simpler programming model for cloud computing, in which the developers concentrate on writing its applications. In contrast, platform providers take care of resource management and administration. As FaaS users are billed based on the execution of the functions, platform providers have a natural incentive not to keep idle resources running at the platform's expense. However, this strategy may lead to the cold start issue, in which the execution of a function is delayed because there is no ready resource to host the execution. Cold starts can take hundreds of milliseconds to seconds and have been a prohibitive and painful disadvantage for some applications. This work describes and evaluates a technique to start functions, which restores snapshots from previously executed function processes. We developed a prototype of this technique based on the CRIU process checkpoint/restore Linux tool. We evaluate this prototype by running experiments that compare its start-up time against the standard Unix process creation/start-up procedure. We analyze the following three functions: i) a {\textquotedbl}do-nothing{\textquotedbl} function, ii) an Image Resizer function, and iii) a function that renders Markdown files. The results attained indicate that the technique can improve the start-up time of function replicas by 40{\%} (in the worst case of a {\textquotedbl}do-nothing{\textquotedbl} function) and up to 71{\%} for the Image Resizer one. Further analysis indicates that the runtime initialization is a key factor, and we confirmed it by performing a sensitivity analysis based on synthetically generated functions of different code sizes. These experiments demonstrate that it is critical to decide when to create a snapshot of a function. When one creates the snapshots of warm functions, the speed-up achieved by the prebaking technique is even higher: the speed-up increases from 127.45{\%} to 403.96{\%}, for a small, synthetic function; and for a bigger, synthetic function, this ratio increases from 121.07{\%} to 1932.49{\%}.},
+ author = {Silva, Paulo and Fireman, Daniel and Pereira, Thiago Emmanuel},
+ title = {{Prebaking Functions to Warm the Serverless Cold Start}},
+ keywords = {cloud;faas;performance evaluation;serverless},
+ pages = {1--13},
+ publisher = {{Association for Computing Machinery}},
+ isbn = {9781450381536},
+ series = {{Middleware '20}},
+ booktitle = {{Proceedings of the 21st International Middleware Conference}},
+ year = {2020},
+ address = {New York, NY, USA},
+ doi = {10.1145/3423211.3425682}
+}
+
+
+@inproceedings{Silva.2020b,
  abstract = {Function-as-service (FaaS) platforms promise a simpler programming model for cloud computing, in which the developers concentrate on writing its applications. In contrast, platform providers take care of resource management and administration. As FaaS users are billed based on the execution of the functions, platform providers have a natural incentive not to keep idle resources running at the platform's expense. However, this strategy may lead to the cold start issue, in which the execution of a function is delayed because there is no ready resource to host the execution. Cold starts can take hundreds of milliseconds to seconds and have been a prohibitive and painful disadvantage for some applications. This work describes and evaluates a technique to start functions, which restores snapshots from previously executed function processes. We developed a prototype of this technique based on the CRIU process checkpoint/restore Linux tool. We evaluate this prototype by running experiments that compare its start-up time against the standard Unix process creation/start-up procedure. We analyze the following three functions: i) a {\textquotedbl}do-nothing{\textquotedbl} function, ii) an Image Resizer function, and iii) a function that renders Markdown files. The results attained indicate that the technique can improve the start-up time of function replicas by 40{\%} (in the worst case of a {\textquotedbl}do-nothing{\textquotedbl} function) and up to 71{\%} for the Image Resizer one. Further analysis indicates that the runtime initialization is a key factor, and we confirmed it by performing a sensitivity analysis based on synthetically generated functions of different code sizes. These experiments demonstrate that it is critical to decide when to create a snapshot of a function. When one creates the snapshots of warm functions, the speed-up achieved by the prebaking technique is even higher: the speed-up increases from 127.45{\%} to 403.96{\%}, for a small, synthetic function; and for a bigger, synthetic function, this ratio increases from 121.07{\%} to 1932.49{\%}.},
  author = {Silva, Paulo and Fireman, Daniel and Pereira, Thiago Emmanuel},
  title = {{Prebaking Functions to Warm the Serverless Cold Start}},
@@ -159,7 +177,7 @@
  year = {2023},
  title = {{Stack Overflow Developer Survey 2023}},
  url = {https://survey.stackoverflow.co/2023/#overview},
- urldate = {09.10.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -168,7 +186,7 @@
  year = {2022},
  title = {{Bun's Roadmap}},
  url = {https://github.com/oven-sh/bun/issues/159},
- urldate = {20.11.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -177,7 +195,7 @@
  year = {2023},
  title = {bcrypt async functions segfault},
  url = {https://github.com/oven-sh/bun/issues/3201},
- urldate = {06.11.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -186,7 +204,7 @@
  year = {2023},
  title = {{Bun v1.0.6}},
  url = {https://bun.sh/blog/bun-v1.0.6},
- urldate = {17.10.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -195,7 +213,7 @@
  year = {2023},
  title = {{Bun 1.0}},
  url = {https://bun.sh/blog/bun-v1.0},
- urldate = {10.10.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -203,7 +221,8 @@
  author = {Sumner, Jarred},
  year = {2022},
  title = {{Support NestJS}},
- url = {https://github.com/oven-sh/bun/issues/1641}
+ url = {https://github.com/oven-sh/bun/issues/1641},
+ urldate = {24.11.2023}
 }
 
 
@@ -225,7 +244,7 @@
  author = {TypeORM},
  title = {{TypeORM - Dokumentation}},
  url = {https://typeorm.io/#relations-in-esm-projects},
- urldate = {05.11.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -234,7 +253,7 @@
  year = {2021},
  title = {{Changelog}},
  url = {https://github.com/typeorm/typeorm/blob/master/CHANGELOG.md#deprecations},
- urldate = {05.11.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -253,23 +272,30 @@
  year = {2023},
  title = {{Add note that windows binaries are not yet available}},
  url = {https://github.com/oven-sh/bun/pull/4780},
- urldate = {22.10.2023}
+ urldate = {24.11.2023}
 }
 
 
-@inproceedings{Silva.2020b,
- abstract = {Function-as-service (FaaS) platforms promise a simpler programming model for cloud computing, in which the developers concentrate on writing its applications. In contrast, platform providers take care of resource management and administration. As FaaS users are billed based on the execution of the functions, platform providers have a natural incentive not to keep idle resources running at the platform's expense. However, this strategy may lead to the cold start issue, in which the execution of a function is delayed because there is no ready resource to host the execution. Cold starts can take hundreds of milliseconds to seconds and have been a prohibitive and painful disadvantage for some applications. This work describes and evaluates a technique to start functions, which restores snapshots from previously executed function processes. We developed a prototype of this technique based on the CRIU process checkpoint/restore Linux tool. We evaluate this prototype by running experiments that compare its start-up time against the standard Unix process creation/start-up procedure. We analyze the following three functions: i) a {\textquotedbl}do-nothing{\textquotedbl} function, ii) an Image Resizer function, and iii) a function that renders Markdown files. The results attained indicate that the technique can improve the start-up time of function replicas by 40{\%} (in the worst case of a {\textquotedbl}do-nothing{\textquotedbl} function) and up to 71{\%} for the Image Resizer one. Further analysis indicates that the runtime initialization is a key factor, and we confirmed it by performing a sensitivity analysis based on synthetically generated functions of different code sizes. These experiments demonstrate that it is critical to decide when to create a snapshot of a function. When one creates the snapshots of warm functions, the speed-up achieved by the prebaking technique is even higher: the speed-up increases from 127.45{\%} to 403.96{\%}, for a small, synthetic function; and for a bigger, synthetic function, this ratio increases from 121.07{\%} to 1932.49{\%}.},
- author = {Silva, Paulo and Fireman, Daniel and Pereira, Thiago Emmanuel},
- title = {{Prebaking Functions to Warm the Serverless Cold Start}},
- keywords = {cloud;faas;performance evaluation;serverless},
- pages = {1--13},
- publisher = {{Association for Computing Machinery}},
- isbn = {9781450381536},
- series = {{Middleware '20}},
- booktitle = {{Proceedings of the 21st International Middleware Conference}},
- year = {2020},
- address = {New York, NY, USA},
- doi = {10.1145/3423211.3425682}
+@misc{OpenJSFoundation.o.J.b,
+ author = {{OpenJS Foundation}},
+ year = {o. J.},
+ title = {{Node.js  API reference documentation}},
+ url = {https://nodejs.org/api/documentation.html},
+ urldate = {24.11.2023}
+}
+
+
+@inproceedings{Yeole.2011,
+ author = {Yeole, A. S. and Meshram, B. B.},
+ title = {{Analysis of different technique for detection of SQL injection}},
+ pages = {963},
+ publisher = {ACM},
+ isbn = {9781450304498},
+ editor = {Mishra, B. K. and Sedamkar, R. R. and Bharadi, V. A.},
+ booktitle = {{Proceedings of the International Conference {\&} Workshop on Emerging Trends in Technology 2011}},
+ year = {2011},
+ address = {New York},
+ doi = {10.1145/1980022.1980229}
 }
 
 
@@ -278,16 +304,7 @@
  year = {o. J.},
  title = {{Node.js}},
  url = {https://nodejs.org/en},
- urldate = {17.10.2023}
-}
-
-
-@misc{Node.js.2023,
- author = {Node.js},
- year = {2023},
- title = {{Maintaining Dependencies}},
- url = {https://github.com/nodejs/node/blob/main/doc/contributing/maintaining/maintaining-dependencies.md},
- urldate = {09.10.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -295,7 +312,8 @@
  author = {Mysliwiec, Kamil},
  year = {2023},
  title = {{Introduction}},
- url = {https://docs.nestjs.com/}
+ url = {https://docs.nestjs.com/},
+ urldate = {24.11.2023}
 }
 
 
@@ -347,7 +365,7 @@
  year = {o. J.},
  title = {{WebKit}},
  url = {https://webkit.org/},
- urldate = {12.10.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -356,7 +374,7 @@
  year = {o.J.},
  title = {{WebKit Documentation - JavaScriptCore}},
  url = {https://docs.webkit.org/Deep%20Dive/JSC/JavaScriptCore.html},
- urldate = {13.10.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -380,16 +398,14 @@
 }
 
 
-@misc{Brown.November2019,
+@book{Brown.2020,
  author = {Brown, Ethan},
- year = {November 2019},
- title = {{Web development with Node and Express : leveraging the JavaScript stack}},
- url = {https://search.ebscohost.com/login.aspx?direct=true&scope=site&db=nlebk&db=nlabk&AN=2295093},
- keywords = {Electronic books;Node.js / JavaScript / Programmierung},
- address = {Beijing},
- edition = {2nd edition},
- publisher = {OReilly},
- isbn = {9781492053484}
+ year = {2020},
+ title = {{Web development with Node and Express: Leveraging the JavaScript stack}},
+ address = {Sebastopol, CA},
+ edition = {Second edition},
+ publisher = {{O'Reilly Media, Inc}},
+ isbn = {978-1-492-05351-4}
 }
 
 
@@ -407,7 +423,7 @@
  year = {2018},
  title = {node.bcrypt.js},
  url = {https://github.com/kelektiv/node.bcrypt.js},
- urldate = {05.11.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -437,7 +453,7 @@
  year = {2016},
  title = {{Bombardier}},
  url = {https://github.com/codesenberg/bombardier},
- urldate = {06.11.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -456,7 +472,8 @@
  author = {{Free Software Foundation}},
  year = {2018},
  title = {{GNU Time}},
- url = {https://www.gnu.org/software/time/}
+ url = {https://www.gnu.org/software/time/},
+ urldate = {24.11.2023}
 }
 
 
@@ -465,7 +482,7 @@
  year = {2022},
  title = {{State of JavaScript 2022}},
  url = {https://2022.stateofjs.com/en-US/other-tools/},
- urldate = {10.10.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -507,7 +524,7 @@
 @misc{ISOIEC.,
  title = {{Systems and software engineering --- Systems and software Quality Requirements and Evaluation (SQuaRE) --- System and software quality models}},
  url = {https://www.iso.org/obp/ui/#iso:std:iso-iec:25010:ed-1:v1:en},
- urldate = {16.10.2023},
+ urldate = {24.11.2023},
  number = {ISO/IEC 25010:2011},
  author = {{ISO / IEC}}
 }
@@ -526,7 +543,8 @@
  author = {McDonnel, Colin},
  year = {2023},
  title = {{Bun v1.0.3}},
- url = {https://bun.sh/blog/bun-v1.0.3}
+ url = {https://bun.sh/blog/bun-v1.0.3},
+ urldate = {24.11.2023}
 }
 
 
@@ -546,7 +564,7 @@
  year = {o. J.},
  title = {{TypeScript is JavaScript with syntax for types.}},
  url = {https://www.typescriptlang.org/},
- urldate = {10.10.2023}
+ urldate = {24.11.2023}
 }
 
 
@@ -554,7 +572,8 @@
  editor = {Microsoft},
  year = {2023},
  title = {{TSConfig Reference}},
- url = {https://www.typescriptlang.org/tsconfig#experimentalDecorators}
+ url = {https://www.typescriptlang.org/tsconfig#experimentalDecorators},
+ urldate = {24.11.2023}
 }
 
 
@@ -569,17 +588,12 @@
 }
 
 
-@inproceedings{Yeole.2011,
- author = {Yeole, A. S. and Meshram, B. B.},
- title = {{Analysis of different technique for detection of SQL injection}},
- pages = {963},
- publisher = {ACM},
- isbn = {9781450304498},
- editor = {Mishra, B. K. and Sedamkar, R. R. and Bharadi, V. A.},
- booktitle = {{Proceedings of the International Conference {\&} Workshop on Emerging Trends in Technology 2011}},
- year = {2011},
- address = {New York},
- doi = {10.1145/1980022.1980229}
+@misc{Node.js.2023,
+ author = {Node.js},
+ year = {2023},
+ title = {{Maintaining Dependencies}},
+ url = {https://github.com/nodejs/node/blob/main/doc/contributing/maintaining/maintaining-dependencies.md},
+ urldate = {24.11.2023}
 }
 
 
@@ -588,7 +602,7 @@
  year = {o. J.},
  title = {{Why Zig When There is Already C++, D, and Rust?}},
  url = {https://ziglang.org/learn/why_zig_rust_d_cpp/#a-package-manager-and-build-system-for-existing-projects},
- urldate = {12.10.2023}
+ urldate = {24.11.2023}
 }
 
 

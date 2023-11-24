@@ -3,7 +3,7 @@
 Dieses Kapitel stellt die benötigten Grundlagen vor, die für das Verständnis der darauffolgenden Kapitel notwendig sind. Hierzu zählen die Vorstellung von Node.js und Bun sowie weitere Grundlagen zur Performance.
 
 \section{Node.js} \label{sec:foundations-Node.js}
-Node.js ist ein beliebtes Tool für eine Vielzahl an unterschiedlichen Projekten, darunter leichtgewichtige Webservices, dynamische Webanwendungen und Tools für die Kommandozeile. Es handelt sich um eine plattformunabhängige Open-Source-Laufzeitumgebung, die es ermöglicht, JavaScript außerhalb des Browsers auszuführen. Node.js verwendet die V8 JavaScript Engine von Google. Diese ist in C++ geschrieben und wird von Google Chrome verwendet. Durch den Einsatz dieser Komponenten erreicht Node.js eine hohe Performance, weshalb Unternehmen wie Netflix und Uber Node.js in ihren Softwareprojekten einsetzen.\cite{OpenJSFoundation.2022}\\
+Node.js ist ein beliebtes Tool für eine Vielzahl an unterschiedlichen Projekten, darunter leichtgewichtige Webservices, dynamische Webanwendungen und Tools für die Kommandozeile. Es handelt sich um eine plattformunabhängige Open-Source-Laufzeitumgebung, die es ermöglicht, JavaScript außerhalb des Browsers auszuführen. Node.js verwendet die V8 JavaScript Engine von Google. Diese ist in C++ geschrieben und wird von Google Chrome verwendet. Durch den Einsatz dieser Komponenten erreicht Node.js eine hohe Performance.\cite{OpenJSFoundation.2022b}\\
 
 \begin{figure}[h]
 	\centering
@@ -24,19 +24,19 @@ Node.js Bindings, auch bekannt als Node.js Add-ons, schaffen die Möglichkeit C-
 \noindent
 \textbf{Event Loop} \newline
 Node.js verwendet eine eventgesteuerte Architektur. Anstatt den Quellcode linear auszuführen, werden definierte Events ausgelöst, für die zuvor Callback-Funktionen registriert wurden. Dieses Konzept wird genutzt, um eine hohe Anzahl von asynchronen Aufgaben zu bewältigen. Lese- und Schreiboperationen werden an den Event Loop ausgelagert, um dabei den einzelnen Thread der Anwendung nicht zu blockieren. Wenn auf externe Ressourcen zugegriffen werden muss, leitet der Event Loop die Anfrage weiter und die registrierte Callback-Funktion gibt die Anfrage an das Betriebssystem weiter. In der Zwischenzeit kann Node.js andere Operationen ausführen. Das Ergebnis der externen Operation wird über den Event Loop zurückgeliefert.\cite{Springer.2022} \newline 
-Während der Laufzeit werden viele Events erzeugt und in einer Message Queue, der Event Queue, nacheinander gespeichert. Node.js nutzt \glqq First In - First Out\grqq{} und beginnt demnach mit der Verarbeitung der ältesten Events und arbeitet sich durch die Queue, bis keine Events mehr vorhanden sind.\cite{OpenJSFoundation.o.J.c}\\
+Während der Laufzeit werden viele Events erzeugt und in einer Message Queue, der Event Queue, nacheinander gespeichert. Node.js nutzt \glqq First In - First Out\grqq{} und beginnt demnach mit der Verarbeitung der ältesten Events und arbeitet sich durch die Queue, bis keine Events mehr vorhanden sind.\cite{OpenJSFoundation.o.J.}\\
 
 \noindent
-\textbf{\glq Libuv\grq{}} \newline
-Der Event Loop von Node.js basiert ursprünglich auf der Bibliothek \glq libev\grq{}. Diese ist in C geschrieben und für ihre hohe Leistung und umfangreichen Features bekannt. Allerdings stützt sich \glq libev\grq{} auf native UNIX-Funktionen. Diese sind auf Windows über eine andere Schnittstelle nutzbar. Daher dient \glq libuv\grq{} als Abstraktionsebene zwischen Node.js, libev und der Windows-Schnittstelle. Dadurch sind der Event Loop und die Laufzeitumgebung auf allen Plattformen lauffähig. \glq Libuv\grq{} verwaltet alle asynchronen I/O-Operationen, einschließlich Dateisystemzugriffe und asynchrone TCP- und UDP-Verbindungen.\cite{Springer.2022} \\
+\textbf{Libuv} \newline
+Der Event Loop von Node.js basiert ursprünglich auf der Bibliothek \glq libev\grq{}. Diese ist in C geschrieben und für ihre hohe Leistung und umfangreichen Features bekannt. Allerdings stützt sich \glq libev\grq{} auf native UNIX-Funktionen. Diese sind auf Windows über eine andere Schnittstelle nutzbar. Daher dient \glq libuv\grq{} als Abstraktionsebene zwischen Node.js, \glq libev\grq{} und der Windows-Schnittstelle. Dadurch sind der Event Loop und die Laufzeitumgebung auf allen Plattformen lauffähig. \glq Libuv\grq{} verwaltet alle asynchronen I/O-Operationen, einschließlich Dateisystemzugriffe und asynchrone TCP- und UDP-Verbindungen.\cite{Springer.2022} \\
 
 \noindent
 \textbf{\ac{npm}} \newline
-Der \ac{npm} ist entscheidend für den Erfolg von Node.js. Er wurde entwickelt, um die Abhängigkeiten in Projekten zu verwalten. Mittlerweile gibt es Pakete für eine Vielzahl an Anwendungsfällen. Denn im September 2021 existieren mehr als 2,1 Millionen Pakete. Der \ac{npm} ist nicht Teil des Executables von Node.js und wird deshalb bei der Installation häufig mitgeliefert. \cite{Springer.2022, OpenJSFoundation.2022b}\\
+Der \ac{npm} ist entscheidend für den Erfolg von Node.js. Er wurde entwickelt, um die Abhängigkeiten in Projekten zu verwalten. Mittlerweile gibt es Pakete für eine Vielzahl an Anwendungsfällen. Denn im September 2021 existieren mehr als 2,1 Millionen Pakete. Der \ac{npm} ist nicht Teil des Executables von Node.js und wird deshalb bei der Installation häufig mitgeliefert. \cite{Springer.2022, OpenJSFoundation.2022}\\
 
 \noindent
 Zusammenfassend zeichnet sich Node.js durch eine eventgesteuerte Architektur und durch ein nicht blockierendes Modell für Ein- und Ausgabeoperationen aus. Dadurch wird es leichtgewichtig und effizient. Dies hat verschiedene Vor- und Nachteile.\newline
-Zu den Vorteilen gehören eine hohe Performance durch die Nutzung der V8 JavaScript Engine. Weitere Stärken sind die große und aktive Community an Entwicklern und die Plattformunabhängigkeit. Node.js ermöglicht die Verwendung der JavaScript-Sprache sowohl auf der Server- als auch auf der Clientseite. Dies vereinfacht die Entwicklung von Full-Stack-Anwendungen.\cite{Brown.November2019, OpenJSFoundation.2022b}\
+Zu den Vorteilen gehören eine hohe Performance durch die Nutzung der V8 JavaScript Engine. Weitere Stärken sind die große und aktive Community an Entwicklern und die Plattformunabhängigkeit. Node.js ermöglicht die Verwendung der JavaScript-Sprache sowohl auf der Server- als auch auf der Clientseite. Dies vereinfacht die Entwicklung von Full-Stack-Anwendungen.\cite{Brown.2020, OpenJSFoundation.2022b}\
 
 \noindent
 Allerdings existieren auch Nachteile bei der Verwendung von Node.js. Das Single-Thread-Modell kann bei rechenintensiven oder CPU-lastigen Aufgaben zu Engpässen führen, da es nur einen Hauptthread für die Ausführung der Anwendung gibt  \cite{Chhetri.2016}. Ein weiterer Nachteil ist, dass Node.js über eine begrenzte Standardbibliothek verfügt, sodass Entwickler häufig auf externe Module und Pakete zurückgreifen müssen, beispielsweise auf einen Transpiler für TypeScript \cite{OpenJSFoundation.2022b}.
@@ -49,7 +49,7 @@ Bun ist ein Open-Source-Toolkit für JavaScript. Dieses kombiniert verschiedene 
 	\includegraphics[width=\linewidth]{./images/EcosystemBunvsNode.png}
 	\caption{Vergleich der Ökosysteme von Bun und Node.js}
 	\label{fig:ecosystemComparison}
-	\textit{Quelle: in Anlehnung an \cite{Springer.2022, OvenSh.2023c}}
+	\textit{Quelle: in Anlehnung an \cite{Springer.2022, OvenSh.2023d}}
 \end{figure}
 
 \noindent
@@ -64,10 +64,10 @@ Bun ist ein Open-Source-Toolkit für JavaScript. Dieses kombiniert verschiedene 
 \end{itemize}
 
 \noindent
-Bun versucht, das Rundum-sorglos-Tool zu sein, damit alle benötigten Funktionalitäten im Kontext von JavaScript nativ verfügbar sind. Gleichzeitig sollen dadurch die Abhängigkeiten einer Software auf Basis von Bun reduziert werden. In Node.js ist nur die Laufzeitumgebung enthalten, die anderen Komponenten müssen separat installiert werden. Dies bietet allerdings mehr Flexibilität bei der Auswahl der gewünschten Tools.\cite{Springer.2022, OvenSh.2023c}\\
+Bun versucht, das Rundum-sorglos-Tool zu sein, damit alle benötigten Funktionalitäten im Kontext von JavaScript nativ verfügbar sind. Gleichzeitig sollen dadurch die Abhängigkeiten einer Software auf Basis von Bun reduziert werden. In Node.js ist nur die Laufzeitumgebung enthalten, die anderen Komponenten müssen separat installiert werden. Dies bietet allerdings mehr Flexibilität bei der Auswahl der gewünschten Tools.\cite{Springer.2022, OvenSh.2023d}\\
 
 \noindent
-Bun ist in Zig geschrieben. Dies ist eine systemnahe Programmiersprache wie C und C++, die sich vor allem auf Einfachheit und Klarheit konzentriert \cite{ZigSoftwareFoundation.o.J.}. Die Entwickler haben sich aufgrund der guten Performance und des Speichermanagements für Zig entschieden. Zig ermöglicht mit dessen manuellem Speichermanagement, Klarheit im Kontrollfluss und Klarheit beim Allokieren von Speicher weitere Verbesserungen der Effizienz. Anstatt der V8 JavaScript Engine von Google verwendet Bun die JavaScriptCore Engine. Das ist die Engine für WebKit, die unter anderem in Apple's Safari-Browser genutzt wird. In Kombination mit Zig sorgt diese für eine bessere Performance und zu reduzierten Startzeiten. Dies ist auf die Architektur der JavaScriptCore Engine mit drei \ac{jit-compiler-dativ-plural} \acused{jit-compiler} zurückzuführen. Dadurch kann die Engine den Quellcode besser optimieren. Das ist vor allem im Bereich des Serverless Computing ein Vorteil gegenüber anderen Alternativen. Die niedrigen Startzeiten helfen die Skalierbarkeit einer Software zu verbessern, indem neue Knoten schneller hinzugezogen werden können.\cite{OvenSh.2023c, OvenSh.2022, Apple.o.J., Apple.o.J.b, Silva.2020}
+Bun ist in Zig geschrieben. Dies ist eine systemnahe Programmiersprache wie C und C++, die sich vor allem auf Einfachheit und Klarheit konzentriert \cite{ZigSoftwareFoundation.o.J.}. Die Entwickler haben sich aufgrund der guten Performance und des Speichermanagements für Zig entschieden. Zig ermöglicht mit dessen manuellem Speichermanagement, Klarheit im Kontrollfluss und Klarheit beim Allokieren von Speicher weitere Verbesserungen der Effizienz. Anstatt der V8 JavaScript Engine von Google verwendet Bun die JavaScriptCore Engine. Das ist die Engine für WebKit, die unter anderem in Apple's Safari-Browser genutzt wird. In Kombination mit Zig sorgt diese für eine bessere Performance und zu reduzierten Startzeiten. Dies ist auf die Architektur der JavaScriptCore Engine mit drei \ac{jit-compiler-dativ-plural} \acused{jit-compiler} zurückzuführen. Dadurch kann die Engine den Quellcode besser optimieren. Das ist vor allem im Bereich des Serverless Computing ein Vorteil gegenüber anderen Alternativen. Die niedrigen Startzeiten helfen die Skalierbarkeit einer Software zu verbessern, indem neue Knoten schneller hinzugezogen werden können.\cite{OvenSh.2023d, OvenSh.2022, Apple.o.J., Apple.o.J.b, Silva.2020}
 
 \noindent
 Node.js bietet viele Module, globale Objekte und Standard-Web-APIs an (siehe \autoref{sec:foundations-Node.js}). Bun möchte eine nahtlose Integration mit Node.js anbieten. Dazu haben die Entwickler viele dieser Objekte in Bun's API implementiert. Hierzu zählen beispielsweise:
