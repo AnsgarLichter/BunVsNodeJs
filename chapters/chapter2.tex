@@ -3,7 +3,7 @@
 Dieses Kapitel stellt die benötigten Grundlagen vor, die für das Verständnis der darauffolgenden Kapitel notwendig sind. Hierzu zählen die Vorstellung von Node.js und Bun sowie weitere Grundlagen zur Performance.
 
 \section{Node.js} \label{sec:foundations-Node.js}
-Node.js ist ein beliebtes Tool für eine Vielzahl an unterschiedlichen Projekten, darunter leichtgewichtige Webservices, dynamische Webanwendungen und Tools für die Kommandozeile. Es handelt sich um eine plattformunabhängige Open-Source-Laufzeitumgebung, die es ermöglicht, JavaScript außerhalb des Browsers auszuführen. Node.js verwendet die V8 JavaScript Engine von Google. Diese ist in C++ geschrieben und wird von Google Chrome verwendet. Durch den Einsatz dieser Komponenten erreicht Node.js eine hohe Performance.\cite{OpenJSFoundation.2022b}\\
+Node.js ist ein beliebtes Tool für eine Vielzahl an unterschiedlichen Projekten, darunter leichtgewichtige Webservices, dynamische Webanwendungen und Tools für die Kommandozeile. Es handelt sich um eine plattformunabhängige Open-Source-Laufzeitumgebung, die es ermöglicht, JavaScript außerhalb des Browsers auszuführen. Node.js verwendet die V8 JavaScript Engine von Google. Diese ist in C++ geschrieben und wird von Google Chrome verwendet. Durch den Einsatz dieser Komponenten erreicht Node.js eine hohe Performance.\cite{OpenJSFoundation.2022b, OpenJSFoundation.2022e}\\
 
 \begin{figure}[h]
 	\centering
@@ -19,7 +19,7 @@ Für weitere Aufgaben setzt Node.js auf Bibliotheken, die fertige und etablierte
 
 \noindent
 \textbf{Node.js Bindings} \newline
-Node.js Bindings, auch bekannt als Node.js Add-ons, schaffen die Möglichkeit C- oder C++-Quellcode in Node.js zu integrieren. Entwickler können Erweiterungen in nativem Code erstellen und in ihren Anwendungen in JavaScript nutzen. Dies ermöglicht die Nutzung von Systemfunktionalitäten. Dies wird beispielsweise für den Zugriff auf das Dateisystem im Modul \glq fs\grq{} verwendet. Dieses ist in dem \ac{api} von Node.js enthalten. Darin bietet Node.js viele Lösungen für häufig benötigte Aufgaben, um die Entwicklung zu vereinfachen. Diese sind global im gesamten Anwendungscode verfügbar. Zu den globalen Objekten gehören beispielsweise \glq console\grq{} für die Ausgabe von Informationen in der Konsole und \glq Buffer\grq{} für den Umgang mit binären Daten. In der \ac{api} ist neben dem Modul \glq fs\grq{} beispielsweise das Modul \glq http\grq{} enthalten, um den Umgang mit dem HTTP-Protokoll zu vereinfachen. Die Module selbst sind in JavaScript geschrieben. Das heißt, der Kern von Node.js liegt in C (Libuv) und C++ (V8 Engine)  vor, die übrigen Komponenten sind in der Sprache der Plattform geschrieben. Allerdings ist in der Standard-API keine Unterstützung für TypeScript enthalten. Hierzu muss ein TypeScript-Compiler separat installiert werden.\cite{Springer.2022, OpenJSFoundation.2022b, OpenJSFoundation.o.J.b}\\
+Node.js Bindings, auch bekannt als Node.js Add-ons, schaffen die Möglichkeit C- oder C++-Quellcode in Node.js zu integrieren. Entwickler können Erweiterungen in nativem Code erstellen und in ihren Anwendungen in JavaScript nutzen. Dies ermöglicht die Nutzung von Systemfunktionalitäten. Dies wird beispielsweise für den Zugriff auf das Dateisystem im Modul \glq fs\grq{} verwendet. Dieses ist in dem \ac{api} von Node.js enthalten. Darin bietet Node.js viele Lösungen für häufig benötigte Aufgaben, um die Entwicklung zu vereinfachen. Diese sind global im gesamten Anwendungscode verfügbar. Zu den globalen Objekten gehören beispielsweise \glq console\grq{} für die Ausgabe von Informationen in der Konsole und \glq Buffer\grq{} für den Umgang mit binären Daten. In der \ac{api} ist neben dem Modul \glq fs\grq{} beispielsweise das Modul \glq http\grq{} enthalten, um den Umgang mit dem HTTP-Protokoll zu vereinfachen. Die Module selbst sind in JavaScript geschrieben. Das heißt, der Kern von Node.js liegt in C (Libuv) und C++ (V8 Engine)  vor, die übrigen Komponenten sind in der Sprache der Plattform geschrieben. Allerdings ist in der Standard-API keine Unterstützung für TypeScript enthalten. Hierzu muss ein TypeScript-Compiler separat installiert werden.\cite{Springer.2022, OpenJSFoundation.2022d}\\
 
 \noindent
 \textbf{Event Loop} \newline
@@ -39,7 +39,7 @@ Zusammenfassend zeichnet sich Node.js durch eine eventgesteuerte Architektur und
 Zu den Vorteilen gehören eine hohe Performance durch die Nutzung der V8 JavaScript Engine. Weitere Stärken sind die große und aktive Community an Entwicklern und die Plattformunabhängigkeit. Node.js ermöglicht die Verwendung der JavaScript-Sprache sowohl auf der Server- als auch auf der Clientseite. Dies vereinfacht die Entwicklung von Full-Stack-Anwendungen.\cite{Brown.2020, OpenJSFoundation.2022b}\
 
 \noindent
-Allerdings existieren auch Nachteile bei der Verwendung von Node.js. Das Single-Thread-Modell kann bei rechenintensiven oder CPU-lastigen Aufgaben zu Engpässen führen, da es nur einen Hauptthread für die Ausführung der Anwendung gibt  \cite{Chhetri.2016}. Ein weiterer Nachteil ist, dass Node.js über eine begrenzte Standardbibliothek verfügt, sodass Entwickler häufig auf externe Module und Pakete zurückgreifen müssen, beispielsweise auf einen Transpiler für TypeScript \cite{OpenJSFoundation.2022b}.
+Allerdings existieren auch Nachteile bei der Verwendung von Node.js. Das Single-Thread-Modell kann bei rechenintensiven oder CPU-lastigen Aufgaben zu Engpässen führen, da es nur einen Hauptthread für die Ausführung der Anwendung gibt  \cite{Chhetri.2016}. Ein weiterer Nachteil ist, dass Node.js über eine begrenzte Standardbibliothek verfügt, sodass Entwickler häufig auf externe Module und Pakete zurückgreifen müssen, beispielsweise auf einen Transpiler für TypeScript \cite{OpenJSFoundation.2022d}.
 
 \section{Bun} \label{sec:foundations-Bun}
 Bun ist ein Open-Source-Toolkit für JavaScript. Dieses kombiniert verschiedene serverseitige Komponenten, um ein leistungsstarkes Paket zur Verfügung zu stellen. Bun ist auf MacOS und Linux für die produktive Nutzung freigegeben. Die Version von Windows besitzt aktuell einen experimentellen Status und ist noch nicht hinsichtlich der Performance optimiert. Alternativ kann auf Windows die veröffentlichte Linux-Version über das Windows Subsystem für Linux installiert werden. Ursprünglich ist Bun als ein persönliches Freizeitprojekt von Jared Sumner gestartet. Mittlerweile hat es sich zu einer wettbewerbsfähige Alternative zu bewährten Technologien in der Webentwicklung etabliert.\cite{Sumner.2023c, Tyson.2023}\\
@@ -49,7 +49,7 @@ Bun ist ein Open-Source-Toolkit für JavaScript. Dieses kombiniert verschiedene 
 	\includegraphics[width=\linewidth]{./images/EcosystemBunvsNode.png}
 	\caption{Vergleich der Ökosysteme von Bun und Node.js}
 	\label{fig:ecosystemComparison}
-	\textit{Quelle: in Anlehnung an \cite{Springer.2022, OvenSh.2023d}}
+	\textit{Quelle: in Anlehnung an \cite{Sumner.2023c, Springer.2022, OvenSh.2023d}}
 \end{figure}
 
 \noindent
@@ -97,7 +97,7 @@ Um eine qualitativ hochwertige Software zu entwickeln, genügt es nicht, die fun
 \noindent
 Dass IEEE Standard Glossary of Software Engineering Terminology definiert Performance wie folgt:
 \begin{quote}
-	\emph{\grqq{}The degree to which a system or component accomplishes its designated functions within given constraints, such as speed, accuracy, or memory usage\grqq{}} \cite{IEEE.}
+	\emph{\grqq{}The degree to which a system or component accomplishes its designated functions within given constraints, such as speed, accuracy, or memory usage.\grqq{}} \cite{IEEE.}
 \end{quote}
 
 \noindent
